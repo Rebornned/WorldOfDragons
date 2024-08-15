@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="main_window">
+    <property name="name">main_window</property>
+    <property name="width-request">1000</property>
+    <property name="height-request">600</property>
+    <property name="can-focus">True</property>
+    <property name="title" translatable="yes">Targaryens dragons</property>
+    <property name="default-width">1000</property>
+    <property name="default-height">600</property>
+    <child>
+      <object class="GtkStack" id="main_stack">
+        <property name="name">main_stack</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="transition-type">crossfade</property>
+        <child>
+          <object class="GtkFixed" id="fr1_start">
+            <property name="name">fr1_start</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr1_img">
+                    <property name="name">fr1_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr1_btn_start">
+                <property name="label" translatable="yes">Iniciar</property>
+                <property name="name">fr1_btn_start</property>
+                <property name="width-request">191</property>
+                <property name="height-request">68</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="menu_btns"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">404</property>
+                <property name="y">478</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr1_tittle_label">
+                <property name="name">fr1_tittle_label</property>
+                <property name="width-request">847</property>
+                <property name="height-request">108</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Targaryen Dragons</property>
+                <style>
+                  <class name="tittle_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">76</property>
+                <property name="y">17</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">start_page</property>
+            <property name="title" translatable="yes">start_page</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fr2_login">
+            <property name="name">fr2_login</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="name">overlay</property>
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr2_img">
+                    <property name="name">fr2_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr2_btn_login">
+                <property name="label" translatable="yes">Entrar</property>
+                <property name="name">fr2_btn_login</property>
+                <property name="width-request">312</property>
+                <property name="height-request">64</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="menu_btns"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">418</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr2_btn_create">
+                <property name="label" translatable="yes">Criar conta</property>
+                <property name="name">fr2_btn_create</property>
+                <property name="width-request">148</property>
+                <property name="height-request">55</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="side_btns"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">427</property>
+                <property name="y">529</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr2_inp_name">
+                <property name="name">fr2_inp_name</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">218</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr2_inp_pass">
+                <property name="name">fr2_inp_pass</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="visibility">False</property>
+                <property name="invisible-char">*</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <property name="caps-lock-warning">False</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">325</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr2_label_name">
+                <property name="name">fr2_label_name</property>
+                <property name="width-request">93</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Username</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">191</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr2_label_pass">
+                <property name="name">fr2_label_pass</property>
+                <property name="width-request">93</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Password</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">299</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr2_tittle_label">
+                <property name="name">fr2_tittle_label</property>
+                <property name="width-request">232</property>
+                <property name="height-request">108</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Login</property>
+                <style>
+                  <class name="tittle_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">385</property>
+                <property name="y">20</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr2_btn_forget">
+                <property name="label" translatable="yes">Esqueceu a senha?</property>
+                <property name="name">fr2_btn_forget</property>
+                <property name="width-request">120</property>
+                <property name="height-request">18</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="fr2_forget"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">495</property>
+                <property name="y">372</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEventBox" id="fr2_dummy">
+                <property name="name">fr2_dummy</property>
+                <property name="width-request">-1</property>
+                <property name="height-request">1</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="visible-window">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="name">login_page</property>
+            <property name="title" translatable="yes">login_page</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fr3_create">
+            <property name="name">fr3_create</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="name">overlay</property>
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr3_img">
+                    <property name="name">fr3_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr3_btn_account">
+                <property name="label" translatable="yes">Criar</property>
+                <property name="name">fr3_btn_account</property>
+                <property name="width-request">312</property>
+                <property name="height-request">64</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="menu_btns"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">503</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr3_btn_back">
+                <property name="label" translatable="yes">Voltar</property>
+                <property name="name">fr3_btn_back</property>
+                <property name="width-request">148</property>
+                <property name="height-request">55</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="side_btns"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">45</property>
+                <property name="y">512</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr3_inp_name">
+                <property name="name">fr3_inp_name</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <property name="caps-lock-warning">False</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">185</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr3_inp_pass">
+                <property name="name">fr3_inp_pass</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="visibility">False</property>
+                <property name="invisible-char">*</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <property name="caps-lock-warning">False</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">347</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr3_label_name">
+                <property name="name">fr3_label_name</property>
+                <property name="width-request">93</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Username</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">158</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr3_label_pass">
+                <property name="name">fr3_label_pass</property>
+                <property name="width-request">93</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Password</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">320</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr3_tittle_label">
+                <property name="name">fr3_tittle_label</property>
+                <property name="width-request">388</property>
+                <property name="height-request">108</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Cadastro</property>
+                <style>
+                  <class name="tittle_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">306</property>
+                <property name="y">20</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr3_inp_confirm">
+                <property name="name">fr3_inp_confirm</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="visibility">False</property>
+                <property name="invisible-char">*</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <property name="caps-lock-warning">False</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">427</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="fr3_inp_email">
+                <property name="name">fr3_inp_email</property>
+                <property name="width-request">312</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="max-length">30</property>
+                <property name="invisible-char">●</property>
+                <property name="max-width-chars">30</property>
+                <property name="xalign">0.019999999552965164</property>
+                <property name="caps-lock-warning">False</property>
+                <style>
+                  <class name="fr2_entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">345</property>
+                <property name="y">267</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr3_label_confirm">
+                <property name="name">fr3_label_confirm</property>
+                <property name="width-request">187</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Confirm Password</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">402</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr3_label_email">
+                <property name="name">fr3_label_email</property>
+                <property name="width-request">60</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Email</property>
+                <style>
+                  <class name="fr2_labels"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">343</property>
+                <property name="y">240</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">account_page</property>
+            <property name="title" translatable="yes">account_page</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
