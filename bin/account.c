@@ -19,7 +19,11 @@ int main() {
     //    scanf("%s", &new_email);
     //    printf("email: %s | result: %d\n\n", new_email, checkEmail(new_email));
     //}
-    printf("%d", newAccount(accountsList, "Sa", "Sah@gmail.com", "1234"));
+    //printf("%d\n", newAccount(accountsList, "Sa", "Sah@gmail.com", "1234"));
+    //printf("%d\n", validateAccount(accountsList, "Sa", "1234"));
+    //printf("%d\n", validateAccount(accountsList, "Sa", "12345"));
+    //printf("%d\n", delAccountinlist("Sa"));
+    reinsFile(accountsList);
     return 0;
 }
 

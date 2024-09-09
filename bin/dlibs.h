@@ -11,6 +11,7 @@ typedef struct {
 } Account;
 
 typedef struct {
+    char name[100];
     int level;
     int attack;
     int defense;
@@ -27,3 +28,6 @@ int overwriteAccount(FILE * pFile, char *email, char *username);
 int accountsLength(FILE *pFile);
 Account * readAccountvector(FILE *pFile);
 int addAccountinlist(Account *account);
+int delAccountinlist(char *username);
+int validateAccount(FILE *pFile, char *username, char *password);
+void reinsFile(FILE *pFile);

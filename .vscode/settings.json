@@ -5,6 +5,8 @@
         "locale.h": "c",
         "dlibs.h": "c",
         "windows.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "mlibs.h": "c",
+        "unistd.h": "c"
     }
 }
