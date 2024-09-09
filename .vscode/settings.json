@@ -4,6 +4,7 @@
         "gtk.h": "c",
         "locale.h": "c",
         "dlibs.h": "c",
-        "windows.h": "c"
+        "windows.h": "c",
+        "time.h": "c"
     }
 }
