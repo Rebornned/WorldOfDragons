@@ -5,25 +5,70 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+// Compilation: gcc -o account account.c files_libs.c sorts_libs.c
+// Cd bin: cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
+
+
 int newAccount(FILE *pFile, char *user, char *email, char *pass);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int containSpecialchar(char *email);
 
 int main() {
-    //char *string = "Um lobo apenas uiva diante de outro lobo, outrora outro lobo uivara.";
-    //char new_email[200];
+    FILE *accountsFile = createAccountslistfile();
+    FILE *beastsFile = createBeastslistfile();
     
-    FILE *accountsList = createAccountslistfile();
-    //while(1) {
-    //    scanf("%s", &new_email);
-    //    printf("email: %s | result: %d\n\n", new_email, checkEmail(new_email));
-    //}
-    //printf("%d\n", newAccount(accountsList, "Sa", "Sah@gmail.com", "1234"));
-    //printf("%d\n", validateAccount(accountsList, "Sa", "1234"));
-    //printf("%d\n", validateAccount(accountsList, "Sa", "12345"));
+    Dragon newDragon;
+    char string[] = "sim";
+    char inputStr[600];
+    int inputInt;
+    /*
+    while(strcmp(string, "sim") == 0) {
+        scanf("%s", inputStr);
+        strcpy(newDragon.name, inputStr);
+        scanf("%s", inputStr);
+        strcpy(newDragon.history, inputStr);
+        scanf("%s", inputStr);
+        strcpy(newDragon.img_path, inputStr);
+
+        scanf("%d", &inputInt);
+        newDragon.level = inputInt;
+        scanf("%d", &inputInt);
+        newDragon.age = inputInt;
+        scanf("%d", &inputInt);
+        newDragon.attack = inputInt;
+        scanf("%d", &inputInt);
+        newDragon.defense = inputInt;
+        scanf("%d", &inputInt);
+        newDragon.speed = inputInt;
+        scanf("%d", &inputInt);
+        newDragon.health = inputInt;
+        addBeastinlist(&newDragon);
+        scanf("%s", string);
+    }
+    */
+    
+    Dragon *newvector = readBeastvector(beastsFile);
+    printfDragonvector(newvector, beastsLength(beastsFile));
+    newvector = bubbleSort(5, newvector, beastsLength(beastsFile));
+    printf("\nBUBBLED\n\n");
+    printfDragonvector(newvector, beastsLength(beastsFile));
+    
+
+    //readBeastvector(beastsFile);
+    //printf("%d\n", delBeastinlist(beastsFile, "Meraxes"));
+    //printf("%d | \n", newAccount(accountsFile, "Sarah", "Sah@gmail.com", "1234"));
+    //printf("%d | \n", newAccount(accountsFile, "Saleh", "Saleh@gmail.com", "1234"));
+    //printf("%d\n", delAccountinlist(accountsFile ,"Sarah"));
+    //printf("%d\n", delAccountinlist(accountsFile, "Saleh"));
+
+    //printf("%d\n", validateAccount(accountsFile, "Saleh", "1234"));
+    //printf("%d\n", validateAccount(accountsFile, "Sa", "12345"));
+    //printf("%d | \n", changePassword(accountsFile ,"Sah@gmail.com", "123456781", "123456781"));
+    //printf("%d | \n", changePassword(accountsFile ,"Saleh@gmail.com", "12345678", "12345678"));
+    //readAccountvector(accountsFile);
     //printf("%d\n", delAccountinlist("Sa"));
-    reinsFile(accountsList);
+    //reinsFile(accountsFile);
     return 0;
 }
 
@@ -38,15 +83,14 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass) {
             addAccountinlist(&account);
             createAccountfile(user);
         }
-        else   
-            printf("Conta já cadastrada.\n");
+        else {
+            printf("Conta ja cadastrada.\n");
+            return -1;
+        }
     }
     else
-        return 1;
-    /*
-    printf("user: %s\n", account.username);
-    printf("email: %s\n", account.email);
-    printf("senha: %s\n", account.password);*/
+        return -2;
+    return 0;
 }
 
 int checkEmail(char *email) {

@@ -7,26 +7,83 @@
 #include <locale.h>
 
 FILE * createAccountslistfile();
-int createAccountfile(char *username);
-int overwriteAccount(FILE * pFile, char *email, char *username);
-int accountsLength(FILE *pFile);
-Account * readAccountvector(FILE *pFile);
-int addAccountinlist(Account *account);
-void reinsFile(FILE *pFile);
-int delAccountinlist(char *username);
-int validateAccount(FILE *pFile, char *username, char *password);
+FILE * createBeastslistfile();
+FILE * createBeastslistfile();
 
-/*int main() {
-    //createAccountfile();
-    //createAccountfile("Email@hotmail.com");
-    return 0;
-}
-*/
-FILE * createAccountslistfile() {
-    FILE *pFile = fopen("../accounts/accountsList.bin", "rb");
+Dragon * readBeastvector(FILE *pFile);
+Account * readAccountvector(FILE *pFile);
+
+int addAccountinlist(Account *account);
+int addBeastinlist(Dragon *dragon);
+int accountsLength(FILE *pFile);
+int beastsLength(FILE *pFile);
+int delBeastinlist(FILE *pFile, char *name);
+int delAccountinlist(FILE *pFile, char *username);
+
+int createAccountfile(char *username);
+int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
+int overwriteAccount(FILE * pFile, char *email, char *username);
+int validateAccount(FILE *pFile, char *username, char *password);
+void reinsFile(FILE *pFile);
+
+FILE * createBeastslistfile() {
+    FILE *pFile = fopen("../files/beastsList.bin", "rb+");
 
     if(!(pFile)) {
-        pFile = fopen("../accounts/accountsList.bin", "ab");
+        pFile = fopen("../files/beastsList.bin", "ab+");
+    }
+    return pFile;
+}
+
+int addBeastinlist(Dragon *dragon){
+    FILE *pFile = fopen("../files/beastsList.bin", "ab");
+    fwrite(dragon, sizeof(Dragon), 1, pFile);
+    return 0;
+}
+
+int delBeastinlist(FILE *pFile, char *name) {
+    Dragon *vector = readBeastvector(pFile);
+    int length = beastsLength(pFile);
+    reinsFile(pFile);
+    for(int i=0; i < length; i++) {
+        if(strcmp(vector[i].name, name) != 0)
+            fwrite(&vector[i], sizeof(Dragon), 1, pFile);
+    }
+    free(vector);
+    rewind(pFile);
+    return 0;
+}
+
+Dragon * readBeastvector(FILE *pFile) {
+    int length = beastsLength(pFile);
+    Dragon *vector = (Dragon *) malloc(sizeof(Dragon) * length);
+    Dragon dragon;
+
+    if(vector == NULL)
+        return NULL;
+
+    rewind(pFile);
+    int count = 0;
+    while(fread(&dragon, sizeof(Dragon), 1, pFile) != 0) {
+        vector[count++] = dragon;
+        //printf("Nome: %s | Historia: %s | Caminho: %s\n", dragon.name, dragon.history, dragon.img_path);
+        //printf("Level: %d | Idade: %d | Ataque: %d\n", dragon.level, dragon.age, dragon.attack);
+        //printf("Defesa: %d | Velocidade: %d | Vida: %d\n", dragon.defense, dragon.speed, dragon.health);
+    }
+    rewind(pFile);
+    return vector;
+}
+
+int beastsLength(FILE *pFile) {
+    fseek(pFile, 0, SEEK_END);
+    return ftell(pFile) / sizeof(Dragon);
+}
+
+FILE * createAccountslistfile() {
+    FILE *pFile = fopen("../accounts/accountsList.bin", "rb+");
+
+    if(!(pFile)) {
+        pFile = fopen("../accounts/accountsList.bin", "ab+");
     }
     return pFile;
 }
@@ -45,8 +102,7 @@ int addAccountinlist(Account *account) {
     return 0;
 }
 
-int delAccountinlist(char *username) {
-    FILE *pFile = fopen("../accounts/accountsList.bin", "ab");
+int delAccountinlist(FILE *pFile, char *username) {
     char delfilename[200];
     sprintf(delfilename, "../accounts/account_%s.bin", username);
     remove(delfilename);
@@ -63,6 +119,23 @@ int delAccountinlist(char *username) {
     }
     rewind(pFile);
     free(vector);
+    return 0;
+}
+
+int changePassword(FILE *pFile, char *email, char *password, char *confirmPass) {
+    if(strlen(password) < 8 || strlen(confirmPass) < 8)
+        return -1;
+    else
+        if(strcmp(password, confirmPass) != 0)
+            return -2;
+    int length = accountsLength(pFile);
+    Account *vector = readAccountvector(pFile);
+    reinsFile(pFile);
+    for(int i=0; i < length; i++) {
+        if(strcmp(vector[i].email, email) == 0)
+            strcpy(vector[i].password, password);
+        fwrite(&vector[i], sizeof(Account), 1, pFile);
+    }
     return 0;
 }
 
@@ -101,7 +174,7 @@ int overwriteAccount(FILE *pFile, char *email, char *username) {
 int validateAccount(FILE *pFile, char *username, char *password) {
     Account *vector = readAccountvector(pFile);
     for(int i=0; i < accountsLength(pFile); i++) {
-        printf("user: %s | senha: %s\n", &vector[i].username, &vector[i].password);
+        //printf("user: %s | senha: %s\n", &vector[i].username, &vector[i].password);
         if(strcmp(vector[i].username, username) == 0 && strcmp(vector[i].password, password) == 0) {
             free(vector);
             return 0;
@@ -113,7 +186,6 @@ int validateAccount(FILE *pFile, char *username, char *password) {
 
 void reinsFile(FILE *pFile) {
     int fd = fileno(pFile);
-    fflush(pFile);
     ftruncate(fd, 0);
     rewind(pFile);
 }

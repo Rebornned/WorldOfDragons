@@ -11,8 +11,11 @@ typedef struct {
 } Account;
 
 typedef struct {
-    char name[100];
+    char name[25];
+    char history[500];
+    char img_path[300];
     int level;
+    int age;
     int attack;
     int defense;
     int speed;
@@ -22,12 +25,28 @@ typedef struct {
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
-FILE * createAccountslistfile();
+
+Account * readAccountvector(FILE *pFile);
+Dragon * readBeastvector(FILE *pFile);
+
+int addAccountinlist(Account *account);
+int delAccountinlist(FILE *pFile, char *username);
+int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
+
+int addBeastinlist(Dragon *dragon);
+int delBeastinlist(FILE *pFile, char *name);
+
+int validateAccount(FILE *pFile, char *username, char *password);
 int createAccountfile(char *username);
 int overwriteAccount(FILE * pFile, char *email, char *username);
-int accountsLength(FILE *pFile);
-Account * readAccountvector(FILE *pFile);
-int addAccountinlist(Account *account);
-int delAccountinlist(char *username);
-int validateAccount(FILE *pFile, char *username, char *password);
+
+Dragon * bubbleSort(int type, Dragon * vector, int length);
+int printfDragonvector(Dragon * vector, int length);
+
+FILE * createAccountslistfile();
+FILE * createBeastslistfile();
 void reinsFile(FILE *pFile);
+int accountsLength(FILE *pFile);
+int beastsLength(FILE *pFile);
+
+
