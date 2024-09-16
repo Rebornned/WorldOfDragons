@@ -67,3 +67,38 @@
     box-shadow: none;
     color: #fffff0;
 }
+
+/* Frame 5 principal: Bestiário, Fosso, Colíseu*/
+.fr5_tittles {
+    background-image: linear-gradient(transparent, transparent);
+    font-family: 'MedievalSharp';
+    font-size: 64px;
+    border-color: transparent;
+    box-shadow: none;
+    color: #FFFDD0;
+}
+
+.fr5_advancebutton {
+    box-shadow: none;
+    font-size: 0px;
+    outline: none;
+    border: none;
+    background-image: url('../img_files/advance.png');
+    background-repeat: no-repeat;
+}
+
+.fr5_returnbutton {
+    box-shadow: none;
+    font-size: 0px;
+    outline: none;
+    border: none;
+    background-image: url('../img_files/return.png');
+    background-repeat: no-repeat;
+}
+
+.fr5_levelbar {
+    border-width: 2px;
+    border-color: #2D2822;
+    border-style: solid;
+    color: transparent;
+}

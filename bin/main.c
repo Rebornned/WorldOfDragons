@@ -36,6 +36,8 @@ void switchPage(GtkButton *btn, gpointer user_data);
 void clean_elements(GtkEntry **input_vec, GtkLabel **label_vec);
 void labeltextModifier(GtkLabel *label, const gchar *text);
 static void set_cursor_window(GtkWidget *widget, gpointer data);
+gboolean btn_animation_rest_opacity(gpointer data);
+void btn_animation_clicked(GtkWidget *widget, gpointer data);
 
 // ********************************************************************************************************
 
@@ -96,6 +98,12 @@ int main(int argc, char *argv[]) {
 
     // Stack
     fr4_stack = GTK_STACK(gtk_builder_get_object(builder, "fr4_stack"));
+
+    // Frame 5 Principal
+    //GtkWidget *button_test = GTK_WIDGET(gtk_builder_get_object(builder, "button_test"));
+    //GtkWidget *image = gtk_image_new_from_file("../assets/img_files/advance.png");
+    //gtk_button_set_image(GTK_BUTTON(button_test), image);
+
 
     // Registrando sinais de callback para botões executarem funções
     registerSignals(builder);
@@ -192,8 +200,12 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr4_btn_advance = gtk_builder_get_object(builder, "fr4_btn_advance");
     g_signal_connect(fr4_btn_advance, "clicked", G_CALLBACK(switchPage), main_stack);
 
+    GObject *button_test = gtk_builder_get_object(builder, "button_test");
+    g_signal_connect(button_test, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
 
-
+    GObject *button_test1 = gtk_builder_get_object(builder, "button_test1");
+    g_signal_connect(button_test1, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    
     return;
 }
 
@@ -227,4 +239,15 @@ void labeltextModifier(GtkLabel *label, const gchar *text) {
     gchar *valid_utf8_text = g_utf8_make_valid(text, -1);
     gtk_label_set_text(label, valid_utf8_text);
     g_free(valid_utf8_text);
+}
+
+gboolean btn_animation_rest_opacity(gpointer data) {
+    GtkWidget *button = GTK_WIDGET(data); // Converte o gpointer para GtkWidget*
+    gtk_widget_set_opacity(button, 1.0); // Restaura a opacidade
+    return G_SOURCE_REMOVE; // Remove o timeout
+}
+
+void btn_animation_clicked(GtkWidget *widget, gpointer data) {
+    gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
+    g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
 }

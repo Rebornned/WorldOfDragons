@@ -9,6 +9,7 @@
 FILE * createAccountslistfile();
 FILE * createBeastslistfile();
 FILE * createBeastslistfile();
+FILE * getAccountfile(char *username);
 
 Dragon * readBeastvector(FILE *pFile);
 Account * readAccountvector(FILE *pFile);
@@ -20,11 +21,33 @@ int beastsLength(FILE *pFile);
 int delBeastinlist(FILE *pFile, char *name);
 int delAccountinlist(FILE *pFile, char *username);
 
-int createAccountfile(char *username);
 int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
 int overwriteAccount(FILE * pFile, char *email, char *username);
 int validateAccount(FILE *pFile, char *username, char *password);
 void reinsFile(FILE *pFile);
+
+Dragon getplayerDragon(FILE *pFile, char *name) {
+    Dragon newDragon;
+    int fileLength = beastsLength(pFile);
+    if(fileLength == 0 && strlen(name) != 0) {
+        newDragon.level = 1;        
+        newDragon.health = 10;
+        newDragon.age = 0;
+        newDragon.attack = 1;
+        newDragon.defense = 1;
+        newDragon.speed = 1;
+        strcpy(newDragon.name, name);
+        fwrite(&newDragon, sizeof(Dragon), 1, pFile);
+        rewind(pFile);
+        return newDragon;
+    }
+    else if(fileLength > 0) {
+        rewind(pFile);
+        fread(&newDragon, sizeof(Dragon), 1, pFile);
+        rewind(pFile);
+        return newDragon;
+    }
+}
 
 FILE * createBeastslistfile() {
     FILE *pFile = fopen("../files/beastsList.bin", "rb+");
@@ -88,17 +111,22 @@ FILE * createAccountslistfile() {
     return pFile;
 }
 
-int createAccountfile(char *username) {
+FILE * getAccountfile(char *username) {
     char accountName[200];
     sprintf(accountName, "../accounts/account_%s.bin", username);
-    FILE *pFile = fopen(accountName, "wb");
-    fwrite(username, sizeof(char), strlen(username), pFile);
-    fclose(pFile);
+    
+    FILE *pFile = fopen(accountName, "rb+");
+    if(!(pFile)) {
+        pFile = fopen(accountName, "ab+");
+    }
+    //fwrite(username, sizeof(char), strlen(username), pFile);
+    return pFile;
 }
 
 int addAccountinlist(Account *account) {
     FILE *pFile = fopen("../accounts/accountsList.bin", "ab");
     fwrite(account, sizeof(Account), 1, pFile);
+    rewind(pFile);
     return 0;
 }
 

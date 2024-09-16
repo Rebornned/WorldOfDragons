@@ -17,6 +17,120 @@
         <property name="can-focus">False</property>
         <property name="transition-type">crossfade</property>
         <child>
+          <object class="GtkFixed" id="fr5_bestiary">
+            <property name="name">fr5_bestiary</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr5_img">
+                    <property name="name">fr5_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_tittle_label">
+                <property name="name">fr5_tittle_label</property>
+                <property name="width-request">260</property>
+                <property name="height-request">58</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Bestiário</property>
+                <style>
+                  <class name="fr5_tittles"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">370</property>
+                <property name="y">22</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="fr5_stack">
+                <property name="name">fr5_stack</property>
+                <property name="width-request">1000</property>
+                <property name="height-request">512</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="y">88</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_test">
+                <property name="label" translatable="yes">.</property>
+                <property name="name">button_test</property>
+                <property name="width-request">13</property>
+                <property name="height-request">17</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="fr5_advancebutton"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">648</property>
+                <property name="y">46</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_test1">
+                <property name="label" translatable="yes">.</property>
+                <property name="name">button_test1</property>
+                <property name="width-request">0</property>
+                <property name="height-request">0</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="fr5_returnbutton"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">317</property>
+                <property name="y">46</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="width-request">100</property>
+                <property name="height-request">10</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">dsa</property>
+                <property name="single-line-mode">True</property>
+                <style>
+                  <class name="fr5_levelbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">828</property>
+                <property name="y">43</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">bestiary_page</property>
+            <property name="title" translatable="yes">bestiary_page</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkFixed" id="fr1_start">
             <property name="name">fr1_start</property>
             <property name="visible">True</property>
@@ -79,6 +193,7 @@
           <packing>
             <property name="name">start_page</property>
             <property name="title" translatable="yes">start_page</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -271,7 +386,7 @@
           <packing>
             <property name="name">login_page</property>
             <property name="title" translatable="yes">login_page</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -510,7 +625,7 @@
           <packing>
             <property name="name">account_page</property>
             <property name="title" translatable="yes">account_page</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -898,7 +1013,7 @@ seu email para recuperação.</property>
           <packing>
             <property name="name">recover_page</property>
             <property name="title" translatable="yes">recover_page</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

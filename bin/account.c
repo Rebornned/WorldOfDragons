@@ -22,6 +22,11 @@ int main() {
     char string[] = "sim";
     char inputStr[600];
     int inputInt;
+    FILE *playerFile = getAccountfile("Saleh");
+    Dragon playerDragon = getplayerDragon(playerFile, "Drogon");
+    //printf("Name: %s | Attack: %d\n", playerDragon.name, playerDragon.attack);
+    //Dragon *newvector = readBeastvector(beastsFile);
+    //printfDragonvector(newvector, beastsLength(beastsFile));
     /*
     while(strcmp(string, "sim") == 0) {
         scanf("%s", inputStr);
@@ -45,16 +50,15 @@ int main() {
         newDragon.health = inputInt;
         addBeastinlist(&newDragon);
         scanf("%s", string);
-    }
-    */
+    }*/
     
+    /*
     Dragon *newvector = readBeastvector(beastsFile);
     printfDragonvector(newvector, beastsLength(beastsFile));
-    newvector = bubbleSort(5, newvector, beastsLength(beastsFile));
+    newvector = bubbleSort(1, newvector, beastsLength(beastsFile));
     printf("\nBUBBLED\n\n");
     printfDragonvector(newvector, beastsLength(beastsFile));
-    
-
+    */
     //readBeastvector(beastsFile);
     //printf("%d\n", delBeastinlist(beastsFile, "Meraxes"));
     //printf("%d | \n", newAccount(accountsFile, "Sarah", "Sah@gmail.com", "1234"));
@@ -81,7 +85,7 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     if(checkEmail(email) == 0) {
         if(overwriteAccount(pFile, email, user) == 0) {
             addAccountinlist(&account);
-            createAccountfile(user);
+            getAccountfile(user);
         }
         else {
             printf("Conta ja cadastrada.\n");

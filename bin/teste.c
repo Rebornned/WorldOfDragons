@@ -1,70 +1,48 @@
 #include <gtk/gtk.h>
 
-typedef struct {
-    int vida;
-    int ataque;
-    int defesa;
-    int velocidade;
-} Dragao;
-
-Dragao dragao1 = {100, 20, 10, 15};
-Dragao dragao2 = {100, 15, 15, 10};
-
-GtkWidget *vida1_label;
-GtkWidget *vida2_label;
-
-void atualizar_labels() {
-    char buffer[32];
-    sprintf(buffer, "Vida: %d", dragao1.vida);
-    gtk_label_set_text(GTK_LABEL(vida1_label), buffer);
-    sprintf(buffer, "Vida: %d", dragao2.vida);
-    gtk_label_set_text(GTK_LABEL(vida2_label), buffer);
+// Função de callback para restaurar a opacidade do botão
+gboolean restore_opacity(gpointer data) {
+    GtkWidget *button = GTK_WIDGET(data); // Converte o gpointer para GtkWidget*
+    gtk_widget_set_opacity(button, 1.0); // Restaura a opacidade
+    return G_SOURCE_REMOVE; // Remove o timeout
 }
 
-void atacar(Dragao *atacante, Dragao *defensor) {
-    int dano = atacante->ataque - defensor->defesa;
-    if (dano > 0) {
-        defensor->vida -= dano;
-    }
-}
-
-void on_atacar_clicked(GtkButton *button, gpointer data) {
-    atacar(&dragao1, &dragao2);
-    if (dragao2.vida > 0) {
-        atacar(&dragao2, &dragao1);
-    }
-    atualizar_labels();
+void on_button_clicked(GtkWidget *widget, gpointer data) {
+    g_print("Botão clicado!\n");
+    gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
+    
+    // Adiciona o timeout para restaurar a opacidade após 100 ms
+    g_timeout_add(100, restore_opacity, widget);
 }
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
 
+    // Cria uma nova janela
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Combate de Dragões");
-    gtk_window_set_default_size(GTK_WINDOW(window), 400, 200);
+    gtk_window_set_title(GTK_WINDOW(window), "Botão com Imagem");
+    gtk_window_set_default_size(GTK_WINDOW(window), 200, 200);
 
-    GtkWidget *grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    // Cria um botão
+    GtkWidget *button = gtk_button_new();
 
-    GtkWidget *label1 = gtk_label_new("Dragão 1");
-    gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
+    // Carrega uma imagem e a define no botão
+    GtkWidget *image = gtk_image_new_from_file("../assets/img_files/advance.png");
+    gtk_button_set_image(GTK_BUTTON(button), image);
+    gtk_button_set_always_show_image(GTK_BUTTON(button), TRUE); // Mostra sempre a imagem
 
-    vida1_label = gtk_label_new("Vida: 100");
-    gtk_grid_attach(GTK_GRID(grid), vida1_label, 0, 1, 1, 1);
+    // Conecta o sinal de clique do botão
+    g_signal_connect(button, "clicked", G_CALLBACK(on_button_clicked), NULL);
 
-    GtkWidget *label2 = gtk_label_new("Dragão 2");
-    gtk_grid_attach(GTK_GRID(grid), label2, 1, 0, 1, 1);
+    // Adiciona o botão à janela
+    gtk_container_add(GTK_CONTAINER(window), button);
 
-    vida2_label = gtk_label_new("Vida: 100");
-    gtk_grid_attach(GTK_GRID(grid), vida2_label, 1, 1, 1, 1);
-
-    GtkWidget *button = gtk_button_new_with_label("Atacar");
-    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 2, 1);
-
-    g_signal_connect(button, "clicked", G_CALLBACK(on_atacar_clicked), NULL);
+    // Conectar o sinal de destruir para fechar a aplicação
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+    // Exibir todos os widgets
     gtk_widget_show_all(window);
+
     gtk_main();
 
     return 0;

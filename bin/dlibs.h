@@ -28,6 +28,7 @@ int checkEmail(char *email);
 
 Account * readAccountvector(FILE *pFile);
 Dragon * readBeastvector(FILE *pFile);
+Dragon getplayerDragon(FILE *pFile, char *name);
 
 int addAccountinlist(Account *account);
 int delAccountinlist(FILE *pFile, char *username);
@@ -37,7 +38,7 @@ int addBeastinlist(Dragon *dragon);
 int delBeastinlist(FILE *pFile, char *name);
 
 int validateAccount(FILE *pFile, char *username, char *password);
-int createAccountfile(char *username);
+FILE * getAccountfile(char *username);
 int overwriteAccount(FILE * pFile, char *email, char *username);
 
 Dragon * bubbleSort(int type, Dragon * vector, int length);
