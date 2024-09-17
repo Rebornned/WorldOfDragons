@@ -12,7 +12,7 @@ typedef struct {
 
 typedef struct {
     char name[25];
-    char history[500];
+    char history[660];
     char img_path[300];
     int level;
     int age;

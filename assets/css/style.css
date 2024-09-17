@@ -97,8 +97,151 @@
 }
 
 .fr5_levelbar {
-    border-width: 2px;
+    border-width: 3px;
     border-color: #2D2822;
     border-style: solid;
     color: transparent;
+}
+
+.fr5_bar {
+    background-color: white;
+    box-shadow: 10px 6px 10px rgba(255, 255, 255, 0.2);
+    border-width: 2px;
+    border-color: #2D2822;
+    border-style: solid;
+}
+
+.fr5_exp_label {
+    font-family: 'MedievalSharp';
+    font-size: 13px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 
+        1px 1px 0px #000000,   /* Sombra preta no canto inferior direito */
+        -1px -1px 0px #000000, /* Sombra preta no canto superior esquerdo */
+        -1px 1px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
+        1px -1px 0px #000000,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+}
+
+.fr5_label_lvl_text {
+    font-family: 'MedievalSharp';
+    font-size: 24px;
+    color: #FFDFA3;
+    font-weight: bold;
+}
+
+.fr5_label_lvl {
+    font-family: 'MedievalSharp';
+    font-size: 32px;
+    color: white;  
+}
+
+.fr5_page_view {
+    box-shadow: none;
+    font-size: 0px;
+    outline: none;
+    border: none;
+    background-image: url('../img_files/bestiary_page1.png');
+    background-repeat: no-repeat;
+}
+
+.fr5_btn_sort {
+    box-shadow: none;
+    font-size: 0px;
+    outline: none;
+    border: none;
+    background-image: url('../img_files/sort_button.png');
+    background-repeat: no-repeat;
+}
+
+.fr5_text_sort {
+    font-family: 'MedievalSharp';
+    font-size: 24px;
+    color: white;
+}
+
+.fr5_dragon_label {
+    font-family: 'MedievalSharp';
+    font-size: 15px;
+    color: white; 
+    border-width: 1px;
+    border-color: #97978F;
+    border-style: solid;
+    border-radius: 20px;
+    font-weight: bold;
+
+    text-shadow: 
+        1px 1px 0px #97978F,   /* Sombra preta no canto inferior direito */
+        -1px -1px 0px #97978F, /* Sombra preta no canto superior esquerdo */
+        -1px 1px 0px #97978F,  /* Sombra preta no canto inferior esquerdo */
+        1px -1px 0px #97978F,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #666;   /* Sombra suave ao redor para efeito 3D */
+}
+
+.fr5_dragon_history {
+    font-family: 'MedievalSharp';
+    font-size: 14px;
+    color: white; 
+    font-weight: bold;
+}
+
+.fr5_dragon_history_border {
+    border-width: 1px;
+    border-color: #97978F;
+    border-style: solid;
+    border-radius: 20px;
+}
+
+.fr5_dragon_img {
+    box-shadow: none;
+    font-size: 0px;
+    outline: none;
+    border: none;
+    background-image: url('../img_files/drogon_img.png');
+    background-repeat: no-repeat;
+}
+
+.fr5_beast_list_border {
+    border-width: 2px;
+    border-color: #FFFEDD;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.fr5_beast_list_scroll {
+    border-style: none;
+}
+
+.fr5_btns_list {
+    font-family: 'MedievalSharp';
+    font-size: 24px;
+    color: #97978F; 
+    background-image: linear-gradient(transparent, transparent);
+    outline: none;
+    border-width: 2px;
+    border-color: #FFFEDD;
+    box-shadow: 2px 0px 5px rgba(255, 253, 212, 0.3);
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+scrollbar slider {
+    background-color: #555; 
+    border-radius: 10px; 
+    min-height: 20px; 
+}
+
+scrollbar {
+    background-color: transparent; /* Cor de fundo da trilha */
+    border-radius: 10px;
+    margin: 0px;
+    border: 0px solid #ccc; /* Bordas */
+}
+
+scrollbar slider:hover {
+    background-color: #555; /* Cor do thumb quando em hover */
 }

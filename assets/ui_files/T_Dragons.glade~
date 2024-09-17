@@ -17,8 +17,8 @@
         <property name="can-focus">False</property>
         <property name="transition-type">crossfade</property>
         <child>
-          <object class="GtkFixed" id="fr5_bestiary">
-            <property name="name">fr5_bestiary</property>
+          <object class="GtkFixed" id="fr5_beastiary">
+            <property name="name">fr5_beastiary</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
@@ -64,7 +64,692 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkFixed" id="fr5_beast">
+                    <property name="name">fr5_beast_page</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="fr5_page_view">
+                        <property name="name">fr5_page_view</property>
+                        <property name="width-request">73</property>
+                        <property name="height-request">34</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_page_view"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">462</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_btn_sort">
+                        <property name="name">fr5_btn_sort</property>
+                        <property name="width-request">35</property>
+                        <property name="height-request">34</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_btn_sort"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">144</property>
+                        <property name="y">30</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_text_sort">
+                        <property name="name">fr5_label_sort</property>
+                        <property name="width-request">88</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Atributo</property>
+                        <style>
+                          <class name="fr5_text_sort"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">52</property>
+                        <property name="y">36</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_label">
+                        <property name="name">fr5_dragon_label</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">26</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Drogon</property>
+                        <style>
+                          <class name="fr5_dragon_label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">732</property>
+                        <property name="y">71</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_history">
+                        <property name="name">fr5_dragon_history</property>
+                        <property name="width-request">235</property>
+                        <property name="height-request">320</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Drogon é o maior e mais feroz dos 
+três dragões de Daenerys Targaryen
+ na série Game of Thrones. Batizado 
+em homenagem a Khal Drogo, seu 
+falecido marido, Drogon possui 
+escamas negras e olhos vermelhos.
+ Entre os três dragões, ele é o mais 
+próximo de Daenerys, servindo 
+como sua montaria principal e arma
+ poderosa durante suas campanhas
+ de conquista. Ao longo da série,
+ Drogon demonstra uma ligação 
+forte com sua "mãe", protegendo-a
+ e lutando ao seu lado em várias 
+batalhas, incluindo a destruição de
+ King's Landing, onde seu poder 
+devastador é completamente 
+revelado. Ele é símbolo da força 
+e do renascimento da Casa 
+Targaryen.</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr5_dragon_history"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">736</property>
+                        <property name="y">115</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_history_border">
+                        <property name="name">fr5_dragon_history_border</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">360</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_dragon_history_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">729</property>
+                        <property name="y">106</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_dragon_img">
+                        <property name="name">fr5_dragon_img</property>
+                        <property name="width-request">426</property>
+                        <property name="height-request">408</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_dragon_img"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">292</property>
+                        <property name="y">71</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="fr5_beast_list_scroll">
+                        <property name="name">fr5_beast_list_scroll</property>
+                        <property name="width-request">230</property>
+                        <property name="height-request">408</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="shadow-type">in</property>
+                        <child>
+                          <object class="GtkViewport">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkFixed">
+                                <property name="width-request">230</property>
+                                <property name="height-request">450</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon1">
+                                    <property name="label" translatable="yes">Balerion</property>
+                                    <property name="name">fr5_btn_dragon1</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon2">
+                                    <property name="label" translatable="yes">Meraxes</property>
+                                    <property name="name">fr5_btn_dragon2</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">57</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon3">
+                                    <property name="label" translatable="yes">Vhagar</property>
+                                    <property name="name">fr5_btn_dragon3</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">113</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon4">
+                                    <property name="label" translatable="yes">Caraxes </property>
+                                    <property name="name">fr5_btn_dragon4</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">169</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon5">
+                                    <property name="label" translatable="yes">Syrax </property>
+                                    <property name="name">fr5_btn_dragon5</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">225</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon6">
+                                    <property name="label" translatable="yes">Sunfyre</property>
+                                    <property name="name">fr5_btn_dragon6</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">280</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon7">
+                                    <property name="label" translatable="yes">Vermax </property>
+                                    <property name="name">fr5_btn_dragon7</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">336</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon8">
+                                    <property name="label" translatable="yes">Arrax </property>
+                                    <property name="name">fr5_btn_dragon8</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">392</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon9">
+                                    <property name="label" translatable="yes">Tyraxes </property>
+                                    <property name="name">fr5_btn_dragon9</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">448</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon10">
+                                    <property name="label" translatable="yes">Meleys</property>
+                                    <property name="name">fr5_btn_dragon10</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">504</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon11">
+                                    <property name="label" translatable="yes">Tessarion</property>
+                                    <property name="name">fr5_btn_dragon11</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">560</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon12">
+                                    <property name="label" translatable="yes">Moondancer </property>
+                                    <property name="name">fr5_btn_dragon12</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">616</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon13">
+                                    <property name="label" translatable="yes">Dreamfyre </property>
+                                    <property name="name">fr5_btn_dragon13</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">672</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon14">
+                                    <property name="label" translatable="yes">Stormcloud </property>
+                                    <property name="name">fr5_btn_dragon14</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">728</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon15">
+                                    <property name="label" translatable="yes">Silverwing </property>
+                                    <property name="name">fr5_btn_dragon15</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">784</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon16">
+                                    <property name="label" translatable="yes">Seasmoke </property>
+                                    <property name="name">fr5_btn_dragon16</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">840</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon17">
+                                    <property name="label" translatable="yes">Vermithor </property>
+                                    <property name="name">fr5_btn_dragon17</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">896</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon18">
+                                    <property name="label" translatable="yes">Cannibal </property>
+                                    <property name="name">fr5_btn_dragon18</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">952</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon19">
+                                    <property name="label" translatable="yes">Grey Ghost</property>
+                                    <property name="name">fr5_btn_dragon19</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1008</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon20">
+                                    <property name="label" translatable="yes">Sheepstealer </property>
+                                    <property name="name">fr5_btn_dragon20</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1064</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon21">
+                                    <property name="label" translatable="yes">Drogon</property>
+                                    <property name="name">fr5_btn_dragon21</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1120</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon22">
+                                    <property name="label" translatable="yes">Rhaegal </property>
+                                    <property name="name">fr5_btn_dragon22</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1176</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon23">
+                                    <property name="label" translatable="yes">Viserion</property>
+                                    <property name="name">fr5_btn_dragon23</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1232</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon24">
+                                    <property name="label" translatable="yes">Quicksilver </property>
+                                    <property name="name">fr5_btn_dragon24</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1288</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon25">
+                                    <property name="label" translatable="yes">Shrykos </property>
+                                    <property name="name">fr5_btn_dragon25</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1344</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon26">
+                                    <property name="label" translatable="yes">Morghul </property>
+                                    <property name="name">fr5_btn_dragon26</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1400</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="fr5_btn_dragon27">
+                                    <property name="label" translatable="yes">Morning</property>
+                                    <property name="name">fr5_btn_dragon27</property>
+                                    <property name="width-request">206</property>
+                                    <property name="height-request">56</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <style>
+                                      <class name="fr5_btns_list"/>
+                                    </style>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
+                                    <property name="y">1456</property>
+                                  </packing>
+                                </child>
+                                <style>
+                                  <class name="fr5_beast_list_scroll"/>
+                                </style>
+                              </object>
+                            </child>
+                            <style>
+                              <class name="fr5_beast_list_scroll"/>
+                            </style>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="fr5_beast_list_scroll"/>
+                          <class name="scrollbar slider"/>
+                          <class name="scrollbar"/>
+                          <class name="scrollbar slider:hover"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">52</property>
+                        <property name="y">71</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_list_border">
+                        <property name="name">fr5_beast_list_border</property>
+                        <property name="width-request">210</property>
+                        <property name="height-request">408</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_beast_list_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">52</property>
+                        <property name="y">71</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">page0</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -73,7 +758,6 @@
             </child>
             <child>
               <object class="GtkButton" id="button_test">
-                <property name="label" translatable="yes">.</property>
                 <property name="name">button_test</property>
                 <property name="width-request">13</property>
                 <property name="height-request">17</property>
@@ -91,7 +775,6 @@
             </child>
             <child>
               <object class="GtkButton" id="button_test1">
-                <property name="label" translatable="yes">.</property>
                 <property name="name">button_test1</property>
                 <property name="width-request">0</property>
                 <property name="height-request">0</property>
@@ -108,19 +791,88 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="fr5_frame_bar">
+                <property name="name">fr5_frame_bar</property>
                 <property name="width-request">100</property>
                 <property name="height-request">10</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">dsa</property>
+                <property name="single-line-mode">True</property>
                 <style>
                   <class name="fr5_levelbar"/>
                 </style>
               </object>
               <packing>
                 <property name="x">828</property>
-                <property name="y">43</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_level_bar">
+                <property name="name">fr5_level_bar</property>
+                <property name="width-request">65</property>
+                <property name="height-request">10</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="single-line-mode">True</property>
+                <style>
+                  <class name="fr5_bar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">828</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_exp_label">
+                <property name="name">fr5_exp_label</property>
+                <property name="width-request">64</property>
+                <property name="height-request">16</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">522/1024</property>
+                <style>
+                  <class name="fr5_exp_label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">863</property>
+                <property name="y">66</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_label_lvl_text">
+                <property name="name">fr5_label_lvl_text</property>
+                <property name="width-request">55</property>
+                <property name="height-request">27</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Level</property>
+                <style>
+                  <class name="fr5_label_lvl_text"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">716</property>
+                <property name="y">34</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_label_lvl">
+                <property name="name">fr5_label_lvl</property>
+                <property name="width-request">35</property>
+                <property name="height-request">36</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">47</property>
+                <style>
+                  <class name="fr5_label_lvl"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">782</property>
+                <property name="y">30</property>
               </packing>
             </child>
           </object>

@@ -100,9 +100,10 @@ int main(int argc, char *argv[]) {
     fr4_stack = GTK_STACK(gtk_builder_get_object(builder, "fr4_stack"));
 
     // Frame 5 Principal
-    //GtkWidget *button_test = GTK_WIDGET(gtk_builder_get_object(builder, "button_test"));
-    //GtkWidget *image = gtk_image_new_from_file("../assets/img_files/advance.png");
-    //gtk_button_set_image(GTK_BUTTON(button_test), image);
+    // Imagem background
+    GtkWidget *fr5_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_img"));
+    gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
+
 
 
     // Registrando sinais de callback para botões executarem funções
@@ -206,6 +207,10 @@ void registerSignals(GtkBuilder *builder) {
     GObject *button_test1 = gtk_builder_get_object(builder, "button_test1");
     g_signal_connect(button_test1, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
     
+    GObject *fr5_btn_sort = gtk_builder_get_object(builder, "fr5_btn_sort");
+    g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+
+
     return;
 }
 
