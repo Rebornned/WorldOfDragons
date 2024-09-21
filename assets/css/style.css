@@ -163,20 +163,33 @@
 
 .fr5_dragon_label {
     font-family: 'MedievalSharp';
-    font-size: 15px;
-    color: white; 
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    background-image: linear-gradient(transparent, transparent);
     border-width: 1px;
     border-color: #97978F;
-    border-style: solid;
+    border-style: none;
     border-radius: 20px;
     font-weight: bold;
 
     text-shadow: 
-        1px 1px 0px #97978F,   /* Sombra preta no canto inferior direito */
-        -1px -1px 0px #97978F, /* Sombra preta no canto superior esquerdo */
-        -1px 1px 0px #97978F,  /* Sombra preta no canto inferior esquerdo */
-        1px -1px 0px #97978F,  /* Sombra preta no canto superior direito */
-        2px 2px 2px #666;   /* Sombra suave ao redor para efeito 3D */
+        2px 2px 0px #000000,   /* Sombra preta no canto inferior direito */
+        -2px -2px 0px #000000, /* Sombra preta no canto superior esquerdo */
+        -2px 2px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
+        2px -2px 0px #000000,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+}
+
+.fr5_dragon_age {
+    font-size: 13px;
+    border-style: solid;
+    color: white;
+    border-radius: 0px;
+}
+
+.fr5_dragon_age_border {
+    border-style: none;
 }
 
 .fr5_dragon_history {
@@ -190,16 +203,7 @@
     border-width: 1px;
     border-color: #97978F;
     border-style: solid;
-    border-radius: 20px;
-}
-
-.fr5_dragon_img {
-    box-shadow: none;
-    font-size: 0px;
-    outline: none;
-    border: none;
-    background-image: url('../img_files/drogon_img.png');
-    background-repeat: no-repeat;
+    border-radius: 10px;
 }
 
 .fr5_beast_list_border {
@@ -217,7 +221,7 @@
 .fr5_btns_list {
     font-family: 'MedievalSharp';
     font-size: 24px;
-    color: #97978F; 
+    color: #ffffff; 
     background-image: linear-gradient(transparent, transparent);
     outline: none;
     border-width: 2px;
@@ -227,6 +231,32 @@
     border-top: none;
     border-left: none;
     border-right: none;
+    text-shadow: 
+        2px 2px 0px #000000,   /* Sombra preta no canto inferior direito */
+        -2px -2px 0px #000000, /* Sombra preta no canto superior esquerdo */
+        -2px 2px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
+        2px -2px 0px #000000,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+}
+
+.fr5_btns_legendary {
+    color: red;
+}
+
+.fr5_btns_epic {
+    color: #7300FF;
+}
+
+.fr5_btns_rare {
+    color: #FE9D00;
+}
+
+.fr5_btn_marker {
+    border-width: 2px;
+    border-color: #FFE89D;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: transparent;
 }
 
 scrollbar slider {

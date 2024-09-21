@@ -14,8 +14,8 @@ FILE * getAccountfile(char *username);
 Dragon * readBeastvector(FILE *pFile);
 Account * readAccountvector(FILE *pFile);
 
-int addAccountinlist(Account *account);
-int addBeastinlist(Dragon *dragon);
+int addAccountinlist(Account *account, FILE *pFile);
+int addBeastinlist(Dragon *dragon, FILE *pFile);
 int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
 int delBeastinlist(FILE *pFile, char *name);
@@ -32,7 +32,7 @@ Dragon getplayerDragon(FILE *pFile, char *name) {
     if(fileLength == 0 && strlen(name) != 0) {
         newDragon.level = 1;        
         newDragon.health = 10;
-        newDragon.age = 0;
+        newDragon.abs_age = 0;
         newDragon.attack = 1;
         newDragon.defense = 1;
         newDragon.speed = 1;
@@ -58,8 +58,7 @@ FILE * createBeastslistfile() {
     return pFile;
 }
 
-int addBeastinlist(Dragon *dragon){
-    FILE *pFile = fopen("../files/beastsList.bin", "ab");
+int addBeastinlist(Dragon *dragon, FILE *pFile){
     fwrite(dragon, sizeof(Dragon), 1, pFile);
     return 0;
 }
@@ -123,8 +122,7 @@ FILE * getAccountfile(char *username) {
     return pFile;
 }
 
-int addAccountinlist(Account *account) {
-    FILE *pFile = fopen("../accounts/accountsList.bin", "ab");
+int addAccountinlist(Account *account, FILE *pFile) {
     fwrite(account, sizeof(Account), 1, pFile);
     rewind(pFile);
     return 0;

@@ -1,30 +1,297 @@
-Tyraxes
-valiria
-pathing
-1
-5
-3
-5
-3
-10
-sim
-Sunfyre
-westeros
-pathing
-1
-24
-9
-7
+Balerion
+Balerion, conhecido como o Terror Negro, foi o maior e mais temido dragão já visto em Westeros. Seu nome vinha da divindade valiriana do fogo, e ele era famoso por suas escamas negras como a noite e por cuspir chamas tão quentes que podiam derreter pedra. Balerion era o mais velho dos três dragões utilizados por Aegon, o Conquistador, durante a conquista de Westeros. Ele foi crucial na destruição de Harrenhal e na unificação dos Sete Reinos. Seu tamanho colossal era incomparável, e suas asas podiam cobrir cidades inteiras com sua sombra. Depois da morte de Aegon, Balerion viveu por várias décadas, sendo montado por outros Targaryens, como Maegor, o Cruel, e Viserys I. Sua presença imponente e o rastro de destruição que deixava por onde passava tornaram-no uma lenda viva. Quando Balerion morreu, sua idade estimada era de mais de 200 anos, e nenhum outro dragão chegou a igualar sua grandiosidade. Sua morte marcou o fim de uma era em Westeros.
+../assets/img_files/dragons/balerion.png
+90-110 metros
 100
-80
-sim
+200+ anos
+210
+200
+150
+250
+2000
+Cannibal
+Cannibal foi um dos dragões mais temidos e misteriosos de Westeros, conhecido por sua ferocidade e comportamento selvagem. Diferente dos dragões Targaryen, ele nunca foi montado ou controlado por humanos. Ele recebeu o nome "Cannibal" por seu hábito de devorar outros dragões, sejam mortos ou vivos, assim como ovos de dragão. Sua origem é incerta, mas acredita-se que ele já vivia em Pedra do Dragão antes mesmo da chegada dos Targaryen. Devido à sua agressividade, ninguém ousava se aproximar ou tentar domá-lo. Cannibal era descrito como sendo maior que muitos dos dragões que lutaram na Dança dos Dragões, mas seu tamanho exato nunca foi registrado. Suas escamas eram negras como carvão, o que aumentava ainda mais sua aparência assustadora. Durante a guerra civil entre os Targaryen, ele não se envolveu diretamente nos combates, mas continuou a ser uma presença temida nas proximidades de Pedra do Dragão. Sua natureza selvagem e sua lenda de canibalismo o destacam como um dos dragões mais aterrorizantes da história.
+../assets/img_files/dragons/cannibal.png
+90-100 metros
+96
+200+ anos
+220
+204
+149
+252
+1927
 Vhagar
-Conquista
-pathing
-1
-193
-17
+Vhagar foi um dos dragões mais antigos e poderosos do mundo, sobrevivendo desde a Conquista de Aegon até a Dança dos Dragões. Originalmente montada por Visenya Targaryen, Vhagar era o segundo maior dragão vivo durante a Dança, ficando atrás apenas de Balerion. Ela desempenhou um papel importante em várias batalhas ao longo dos anos, inclusive na unificação dos Sete Reinos. Durante a Dança dos Dragões, Vhagar foi montada por Aemond Targaryen, participando da famosa Batalha sobre o Olho de Deus contra Lucerys Velaryon e Arrax, onde saiu vitoriosa. Suas escamas tinham uma tonalidade esverdeada, e, à medida que envelhecia, Vhagar se tornava cada vez mais lenta, mas ainda era uma força devastadora. Em sua última batalha, enfrentou Caraxes, o dragão de Daemon Targaryen, em uma luta que resultou na morte de ambos. Vhagar era uma lenda viva, sendo uma arma temida que marcou várias gerações da Casa Targaryen.
+../assets/img_files/dragons/vhagar.png
+76-90 metros
+92
+181 anos
+181
+184 
+142 
+194
+1908
+Vermithor
+Vermithor, conhecido como a "Fúria de Bronze", era o terceiro maior dragão vivo durante a Dança dos Dragões, ficando atrás apenas de Balerion e Vhagar. Montado por Jaehaerys I Targaryen durante seu reinado pacífico, Vermithor era um dragão poderoso e imponente, com escamas bronzeadas e uma presença majestosa. Após a morte de Jaehaerys, ele ficou sem cavaleiro por algum tempo, até ser montado por Hugh Hammer durante a guerra civil. Vermithor desempenhou um papel importante na Dança dos Dragões, participando de batalhas decisivas, especialmente ao lado de outros dragões. Seu tamanho e força fizeram dele um dos dragões mais formidáveis da guerra, sendo responsável pela destruição de muitos inimigos no conflito. Com cerca de 64 metros de comprimento, ele era uma verdadeira força da natureza. No entanto, sua lealdade à causa foi breve, já que seu cavaleiro morreu durante o conflito, e Vermithor também encontrou seu fim em uma luta feroz contra outros dragões no fim da guerra.
+../assets/img_files/dragons/vermithor.png
+60-64 metros
+88
+95-100 anos
+100
+178 
+139 
+228 
+1769
+Caraxes
+Caraxes, também conhecido como o "Wyrm Sangrento", era um dos dragões mais temidos de Westeros durante a Dança dos Dragões. Montado por Daemon Targaryen, Caraxes era conhecido por sua ferocidade e agressividade em combate, e suas habilidades letais o tornaram um dos dragões mais notórios da guerra civil Targaryen. Seu corpo era longo e magro, com um pescoço incomumente comprido, o que lhe conferia uma aparência única entre os dragões. Além disso, suas escamas eram de um vermelho intenso, o que contribuiu para seu apelido. Antes de ser montado por Daemon, Caraxes foi inicialmente o dragão de Aemon Targaryen, o Príncipe de Dragonstone, que o treinou em combate. No entanto, foi com Daemon que Caraxes realmente atingiu seu auge. O dragão lutou em diversas batalhas ao lado de seu cavaleiro, sendo um dos principais adversários de Vhagar, o enorme dragão de Aemond Targaryen. Caraxes se destacou na batalha sobre Harrenhal e, por fim, encontrou seu destino na batalha de God’s Eye, onde lutou bravamente contra Vhagar até a morte de ambos.
+../assets/img_files/dragons/caraxes.png
+43-47 metros
+84
+58-60 anos
+59
+177
+127
+218
+1676
+Drogon
+Drogon é o maior e mais feroz dos três dragões de Daenerys Targaryen, nomeado em homenagem a seu falecido marido, Khal Drogo. Com escamas negras e olhos vermelhos, Drogon cresceu rapidamente, tornando-se um dos dragões mais temidos de Westeros e Essos. Ao longo de sua vida, Drogon lutou em várias batalhas, ajudando Daenerys a conquistar cidades como Meereen e Porto Real. Ele foi fundamental em garantir a vitória de Daenerys sobre os Filhos da Harpia e, mais tarde, na destruição de Porto Real, onde soltou fogo sobre a cidade, dizimando seus inimigos. Drogon também salvou Daenerys em várias ocasiões, mostrando uma conexão profunda com sua "mãe". Em tamanho, Drogon era frequentemente comparado a Balerion, o Terror Negro, sendo o maior dragão visto desde a morte de Balerion. Estima-se que ele tinha mais de 30 metros de comprimento ao final de sua vida. Após a morte de Daenerys, Drogon desapareceu, voando para o leste com o corpo dela, e seu destino final permanece desconhecido.
+../assets/img_files/dragons/drogon.png
+36-40 metros
+80
+7 anos
+7
+162
+120
+247
+1617
+Meraxes
+Meraxes foi um dos três grandes dragões que participaram da Conquista de Westeros, ao lado de Balerion e Vhagar. Montada por Rhaenys Targaryen, Meraxes tinha escamas prateadas e olhos dourados, sendo conhecida por seu poder destrutivo. Embora fosse o menor dos três dragões da Conquista, ela era devastadora em combate e teve um papel essencial na unificação dos Sete Reinos sob o domínio Targaryen. Meraxes foi fundamental na Batalha de Campo de Fogo e em outras campanhas, lançando fogo sobre os inimigos de Aegon. Sua habilidade de voo e força foram cruciais para o sucesso de muitas conquistas iniciais dos Targaryen. No entanto, seu fim trágico veio durante o cerco de Dorne, onde Meraxes foi atingida por um escorpião gigante, caindo em batalha junto com Rhaenys. A perda de Meraxes foi um golpe significativo para os Targaryen, mas sua lenda permaneceu como um dos dragões mais importantes e letais da história de Westeros, com uma envergadura estimada de mais de 50 metros.
+../assets/img_files/dragons/meraxes.png
+45-50 metros
+76
+94-100 anos
+94
+154
+112
+230
+1521
+Meleys
+Meleys, também conhecida como a "Rainha Vermelha", era uma dragão-fêmea imponente com escamas vermelho-brilhantes e asas rosadas, montada por Rhaenys Targaryen, a "Rainha que Nunca Foi". Considerada uma das dragões mais rápidos de sua época, Meleys havia crescido forte e ágil, sendo capaz de ultrapassar quase qualquer outro dragão em voo. Originalmente montada por Alyssa Targaryen, ela passou para Rhaenys após a morte de Alyssa. Durante a Dança dos Dragões, Meleys teve um papel significativo na luta pelo Trono de Ferro, ao lado de sua cavaleira Rhaenys. O momento mais marcante de Meleys ocorreu na batalha de Pouso de Gralhas, onde ela enfrentou os dragões Vhagar e Sunfyre. Apesar de sua agilidade e força, Meleys foi superada pela experiência de Vhagar, maior e mais velho. O confronto terminou com a morte de Meleys e Rhaenys, representando uma das grandes perdas para o lado dos Negros na guerra civil que destruiu a casa Targaryen.
+../assets/img_files/dragons/meleys.png
+45-50 metros
+72
+56-60 anos
+56
+156 
+108 
+226 
+1474
+Viserion
+Viserion era um dos três dragões criados por Daenerys Targaryen, nomeado em homenagem a seu irmão Viserys. Sua pele e escamas eram de um branco cremoso, e suas asas de um tom dourado pálido. Entre os três dragões de Daenerys, ele era frequentemente visto como o mais tranquilo. Durante a Batalha de Winterfell, Viserion foi morto e ressuscitado pelo Rei da Noite, tornando-se um dragão de gelo que cuspia fogo azul, capaz de derrubar as muralhas de Winterfell e até mesmo a Muralha em Atalaialeste. Sua transformação em dragão de gelo foi um dos momentos mais dramáticos da história, simbolizando a ascensão do Rei da Noite e a iminente ameaça à humanidade. Apesar de ter se tornado um instrumento do exército dos mortos, Viserion manteve uma presença imponente até sua segunda e definitiva morte, quando o Rei da Noite foi derrotado. Seu legado permanece marcado por sua transformação trágica.
+../assets/img_files/dragons/viseryon.png
+30-36 metros
+68
+7 anos
+7
+132
+109
+201
+1374
+Rhaegal
+Rhaegal, outro dos três dragões de Daenerys Targaryen, foi nomeado em homenagem a Rhaegar Targaryen, o irmão mais velho de Daenerys. Suas escamas eram verdes, e suas asas possuíam um tom de bronze. Rhaegal tinha uma personalidade forte e era visto como o mais selvagem dos dragões, sempre lutando para afirmar sua dominância. Ele era conhecido por sua lealdade inquestionável a Daenerys, voando ao lado de Drogon e Viserion em diversas batalhas importantes. Rhaegal desempenhou um papel crucial durante as campanhas de Daenerys em Essos e Westeros, ajudando-a a conquistar cidades e ganhar o apoio do povo. Sua morte foi trágica, ocorrendo durante um ataque surpresa da Frota de Ferro de Euron Greyjoy, onde foi perfurado por múltiplas lanças de escorpiões. O fim prematuro de Rhaegal abalou profundamente Daenerys, marcando o início de sua descida em um caminho mais sombrio rumo ao trono de ferro.
+../assets/img_files/dragons/rhaegal.png
+30-36 metros
+64
+7 anos
+7
+118
+98
+190
+1295
+Dreamfyre
+Dreamfyre era um dragão fêmea, conhecido por suas escamas de um azul prateado cintilante e por sua graciosidade no ar. Montada inicialmente pela princesa Rhaena Targaryen, Dreamfyre tornou-se um símbolo de majestade e força. Durante seu tempo como montaria de Rhaena, ela foi levada para muitas regiões de Westeros, ajudando a espalhar a influência Targaryen. Dreamfyre também é conhecida por seu papel no mistério envolvendo os ovos de dragão que mais tarde dariam origem a Drogon, Rhaegal e Viserion, já que os ovos foram supostamente roubados de sua ninhada. Embora não tenha participado diretamente na Dança dos Dragões, Dreamfyre ainda era uma presença formidável na época, representando a continuidade da linhagem dos grandes dragões Targaryen. Sua história é cercada por lendas e mistérios, sendo lembrada como um dos dragões mais belos e ágeis já vistos.
+../assets/img_files/dragons/dreamfyre.png
+45+ metros
+60
+100+ anos
+110
+125 
+92  
+183 
+1178
+Sheepstealer
+Sheepstealer era um dragão selvagem, famoso por sua preferência em caçar ovelhas, o que lhe rendeu seu nome. Diferente de muitos outros dragões ligados aos Targaryen, Sheepstealer não foi domesticado por um membro da Casa Targaryen, mas por uma jovem conhecida como Nettles. Durante a Dança dos Dragões, Nettles conseguiu domar Sheepstealer com um método simples: oferecer-lhe carne de ovelha regularmente até ganhar sua confiança. Esse dragão possuía uma aparência sombria, com escamas marrons avermelhadas e um temperamento feroz. Ele se envolveu nas batalhas da guerra civil Targaryen ao lado de Nettles, demonstrando sua lealdade a ela. Após o conflito, Sheepstealer desapareceu com sua montadora e foi visto pela última vez nas Montanhas de Pedra, desaparecendo da história. Seu destino final permanece um mistério, mas sua lenda continua a intrigar estudiosos e fãs da história dos dragões de Westeros.
+../assets/img_files/dragons/sheepstealer.png
+27-30 metros
+56
+100+ anos
+105
+120
+84
+167
+1122
+Silverwing
+Silverwing era um majestoso dragão com escamas prateadas brilhantes, que refletiam a luz do sol, fazendo com que parecesse uma nuvem cintilante no céu. Originalmente montada pela rainha Alysanne Targaryen, esposa do rei Jaehaerys I, Silverwing era conhecida por sua natureza gentil e leal. Ela acompanhou Alysanne em diversas viagens por Westeros, inclusive na famosa viagem à Muralha, onde o dragão relutou em sobrevoar as Terras Além da Muralha, o que muitos viram como um sinal dos poderes antigos e sombrios daquela região. Durante a Dança dos Dragões, Silverwing foi montada por Ulf, o Branco, um cavaleiro de origem humilde que lutou ao lado de Rhaenyra. Após o fim da guerra, Silverwing sobreviveu, tornando-se um dos últimos dragões da antiga era, vivendo no Bosque de Vilavelha, onde suas aparições se tornaram cada vez mais raras com o tempo.
+../assets/img_files/dragons/silverwing.png
+50-53 metros
+52
+100+ anos
+103
+98
+78
+161
+1046
+Seasmoke
+Seasmoke era um dragão de médio porte com escamas cinzentas, montado por Laenor Velaryon durante a Dança dos Dragões. Originalmente uma montaria selvagem, Seasmoke foi domado por Laenor, tornando-se seu parceiro leal em muitas batalhas. Durante a guerra civil Targaryen, Seasmoke desempenhou um papel crucial, lutando contra dragões como Vermithor e Tessarion. Sua maior batalha foi no campo de Golhadour, onde Seasmoke enfrentou Vermithor e foi gravemente ferido. Embora não fosse o maior ou mais forte dos dragões, Seasmoke era ágil e veloz, o que o tornava ideal para rápidas incursões aéreas. Após a morte de Laenor, Seasmoke permaneceu sem cavaleiro até ser montado por Addam Velaryon. Seasmoke foi um dos dragões que lutou até o amargo fim da guerra, deixando uma marca importante no conflito, e sua história é lembrada como um exemplo de lealdade e coragem.
+../assets/img_files/dragons/seasmoke.png
+34-36 metros
+48
+30-34 anos
+32
+91
+72
+147
+974
+Sunfyre
+Sunfyre, conhecido como o mais belo dos dragões, tinha escamas de um dourado radiante, que brilhavam intensamente à luz do sol, fazendo jus ao seu nome. Ele foi montado pelo rei Aegon II Targaryen e desempenhou um papel central na Dança dos Dragões. Sunfyre era poderoso, mas foi gravemente ferido durante a guerra, particularmente na batalha contra Meleys, a Rainha Vermelha. Apesar de suas feridas, Sunfyre sobreviveu e continuou lutando ao lado de Aegon, embora estivesse longe de sua antiga glória. Eventualmente, ele se tornou o último dragão de Aegon II, simbolizando a força e a resistência do rei durante a guerra civil. A morte de Sunfyre foi lenta e dolorosa, resultado das feridas que nunca cicatrizaram adequadamente. Sua majestade e beleza, no entanto, continuam a ser lembradas como uma das características mais marcantes da linhagem dos dragões Targaryen.
+../assets/img_files/dragons/sunfyre.png
+27-30 metros
+44
+20-25 anos
+24
+86
+63
+131
+885
+Quicksilver
+Quicksilver era um dragão de escamas prateadas com um temperamento dócil, montado por Aenys I Targaryen, filho de Aegon, o Conquistador. Aenys cavalgou Quicksilver durante sua breve e tumultuada vida, usando-o para reforçar a autoridade dos Targaryen em Westeros. Quicksilver, apesar de sua lealdade e beleza, encontrou seu fim de maneira trágica durante a Rebelião de Maegor, o Cruel. Durante um duelo aéreo, Quicksilver enfrentou Balerion, o Terror Negro, o maior e mais temido dos dragões Targaryen. Infelizmente, Quicksilver era muito menor e mais fraco que Balerion, e foi derrotado de forma rápida e brutal, assim como Aenys. Sua morte simbolizou o fim de uma era e o começo do reinado impiedoso de Maegor, deixando para trás uma história de beleza, fragilidade e lealdade.
+../assets/img_files/dragons/quicksilver.png
+18-24 metros
+40
+15-20 anos
+20
+82
+63
+120
+818
+Tessarion
+Tessarion, também conhecida como a Rainha Azul, era um dragão imponente com escamas de um azul metálico profundo, sendo a montaria do príncipe Daeron Targaryen, o irmão mais novo de Aegon II, durante a Dança dos Dragões. Com sua bela coloração e temperamento destemido, Tessarion era uma força formidável nos céus. Ela participou de várias batalhas, incluindo a famosa Batalha do Campina, onde lutou bravamente ao lado de Daeron. Tessarion, apesar de sua força, encontrou um fim trágico quando foi ferida mortalmente no campo de batalha. Mesmo ferida, ela continuou a lutar, demonstrando uma incrível lealdade ao seu cavaleiro. Sua morte foi um dos momentos mais tristes da guerra civil, e seu corpo foi deixado a apodrecer nos campos de batalha, um lembrete da destruição trazida pela luta pelo Trono de Ferro.
+../assets/img_files/dragons/tessarion.png
+15-18 metros
+36
+17-20 anos
+18
+76
+58
+106
+712
+Syrax
+Syrax era o imponente dragão montado por Rhaenyra Targaryen, a reivindicante ao Trono de Ferro durante a Dança dos Dragões. Seu nome era inspirado em uma antiga divindade valiriana, e suas escamas eram de um dourado vibrante. Syrax era um dragão de grande porte, mas, diferente de muitos outros, foi mantido enjaulado durante grande parte de sua vida, resultando em um temperamento mais dócil, exceto quando em batalha. Durante a guerra, Syrax serviu como montaria de Rhaenyra em várias ocasiões importantes. No entanto, apesar de sua força e tamanho, Syrax encontrou seu fim em Porto Real, quando foi atacada por uma multidão enfurecida durante a tomada da cidade pelos Verdes. Sua morte foi violenta e caótica, representando o fim trágico de um dos dragões mais majestosos da guerra.
+../assets/img_files/dragons/syrax.png
+27-30 metros
+32
+32-34 anos
+33
+63
+48
+98
+639
+GreyGhost
+Grey Ghost era um dragão selvagem que habitava as áreas próximas de Pedra do Dragão. Seu nome vem de sua capacidade de se misturar nas névoas e desaparecer rapidamente, o que fez com que ele fosse raramente visto. Suas escamas eram cinzentas, o que lhe dava uma aparência espectral, reforçando sua lenda como um "fantasma" entre os dragões. Ao contrário de outros, ele nunca foi montado ou domado, vivendo sua vida em isolamento, caçando nas ilhas próximas a Pedra do Dragão. Durante a Dança dos Dragões, Grey Ghost permaneceu à margem do conflito, mas acabou sendo morto por Sunfyre, o dragão de Aegon II, enquanto buscava comida perto de Pedra do Dragão. Sua morte foi silenciosa e rápida, encerrando a história de um dos dragões mais misteriosos de Westeros.
+../assets/img_files/dragons/greyghost.png
+20-24 metros
+28
+18-26 anos
+20
+46
+44
+88
+570
+Vermax
+Vermax era o dragão montado por Jacaerys Velaryon, o filho mais velho de Rhaenyra Targaryen. Treinado desde jovem, Vermax era um dragão formidável e leal ao seu cavaleiro. Ele desempenhou um papel importante durante a Dança dos Dragões, especialmente nas missões diplomáticas de Jacaerys para garantir alianças com o Norte e o Vale. Vermax, apesar de sua força, encontrou um destino trágico no Norte, durante uma tentativa de ataque a Ponta Tempestade. De acordo com relatos, Vermax foi ferido no combate e caiu no mar, onde tanto ele quanto Jacaerys desapareceram. O fim de Vermax marcou a perda de uma das maiores esperanças dos Negros, e sua morte ecoou como uma tragédia para os apoiadores de Rhaenyra
+../assets/img_files/dragons/vermax.png
+17-19 metros
+24
+20-24 anos
+23
+48
+34
+78
+477
+Moondancer
+Moondancer era um dragão pequeno e esbelto com escamas de um verde-claro pálido, montado por Baela Targaryen. Apesar de seu tamanho relativamente pequeno, Moondancer era incrivelmente ágil e rápida, tornando-a uma adversária formidável nos céus. Durante a Dança dos Dragões, Moondancer lutou bravamente ao lado de Baela na defesa de Pedra do Dragão contra as forças de Aegon II. No confronto final, Moondancer enfrentou Sunfyre, e, apesar de sua bravura, foi gravemente ferida. Embora Sunfyre tenha vencido o duelo, Moondancer conseguiu infligir feridas significativas a ele. Moondancer morreu logo após a batalha, mas sua coragem e destemor, especialmente em comparação ao tamanho de seu oponente, tornaram-na uma das dragões mais lembrados pela bravura.
+../assets/img_files/dragons/moondancer.png
+17-19 metros
+20
+20-22 anos
+22
+39
+31
+60
+409
+Arrax
+Arrax era o jovem dragão montado por Lucerys Velaryon, filho de Rhaenyra Targaryen, durante a Dança dos Dragões. Embora ainda não fosse totalmente crescido, Arrax era veloz e leal ao seu cavaleiro. Durante uma tempestade em Ponta Tempestade, Lucerys e Arrax foram enviados em uma missão diplomática para negociar com Borros Baratheon, mas a situação rapidamente se deteriorou quando Aemond Targaryen, montado em Vhagar, confrontou-os. Arrax, sendo muito menor e menos experiente, foi incapaz de escapar de Vhagar, e os dois foram tragicamente mortos no céu.
+../assets/img_files/dragons/arrax.png
+9-11 metros
 16
-90
-140
-não
+13-14 anos
+14
+30
+24
+52
+342
+Tyraxes
+Tyraxes era um jovem dragão montado por Joffrey Velaryon, o terceiro filho de Rhaenyra Targaryen. Comparado a outros dragões maiores e mais experientes, Tyraxes ainda estava crescendo durante a Dança dos Dragões, o que limitava seu papel nas batalhas. Ele era mantido enjaulado em Pedra do Dragão, e sua relativa juventude o tornava inadequado para os combates intensos que ocorreram durante a guerra civil. Apesar de sua inatividade nas maiores batalhas, Tyraxes representava a esperança da casa Velaryon de que, no futuro, ele poderia se tornar um dragão poderoso. O destino de Tyraxes é incerto após o fim da guerra, mas é provável que tenha perecido, como muitos dos outros dragões, durante ou após os eventos da Dança.
+../assets/img_files/dragons/tyraxes.png
+3-5 metros
+12
+5-8 anos
+7
+23
+19
+36
+252
+Stormcloud
+Stormcloud era o jovem dragão montado por Aegon III Targaryen, que mais tarde se tornaria o rei de Westeros. Ainda em fase de crescimento, Stormcloud não era grande ou forte o suficiente para participar de batalhas significativas. No entanto, ele teve um papel crucial ao salvar a vida de Aegon III durante o ataque a Porto Real pelos Verdes. Durante a fuga de Aegon, Stormcloud foi gravemente ferido pelos inimigos, mas conseguiu levar o jovem príncipe para um local seguro antes de morrer devido aos ferimentos. A morte de Stormcloud foi um evento traumático para Aegon III, que, mais tarde em sua vida, ficou conhecido como "Aegon, o Desolado", em parte por causa de sua aversão a dragões após a perda de sua montaria.
+../assets/img_files/dragons/stormcloud.png
+2-3 metros
+8
+4-5 anos
+5
+17
+12
+23
+169
+Morning
+Morning foi o último dragão a nascer antes do fim da Dança dos Dragões e foi montado por Rhaena Targaryen, a filha de Daemon e Laena Velaryon. Morning ainda era jovem e pequeno durante os eventos finais da guerra, o que a impediu de participar das grandes batalhas. Sua coloração era descrita como rosada, com asas de um branco perolado, uma visão rara e delicada em comparação com outros dragões mais ferozes e maiores. Após o fim da Dança, Morning foi um dos poucos dragões sobreviventes e representou o futuro incerto da linhagem de dragões Targaryen. Embora ela tenha sobrevivido à guerra, Morning desapareceu dos relatos históricos, possivelmente sendo um dos últimos dragões a viver antes do declínio final da espécie em Westeros.
+../assets/img_files/dragons/morning.png
+Unknown
+4
+Unknown
+4
+7
+6
+12
+82
+Shrykos
+Shrykos era um jovem dragão montado pelo príncipe Jaehaerys Targaryen, o filho mais novo de Aegon II. Assim como muitos outros dragões jovens durante a Dança dos Dragões, Shrykos não estava totalmente crescido e, por isso, teve uma participação limitada nos eventos principais da guerra. Shrykos estava presente em Porto Real durante os eventos da guerra e foi morto quando a cidade foi tomada pelos Negros. Apesar de ser um dragão jovem, sua morte foi simbólica do fim trágico que recaiu sobre muitos dos membros da casa Targaryen e seus dragões durante a Dança. A curta vida de Shrykos reflete o destino dos muitos dragões que pereceram durante este conflito sangrento pelo Trono de Ferro.
+../assets/img_files/dragons/shrykos.png
+Unknown
+2
+Unknown
+2
+6
+4
+5
+49
+Lyrax
+Lyrax era um jovem dragão de apenas um metro de comprimento, nascido em Pedra do Dragão. Suas escamas azul-metálico brilhavam sob o sol, e ele era conhecido por seu temperamento curioso e tranquilo. Apesar de pequeno, Lyrax já mostrava sinais de que seria um dragão belo e majestoso. Porém, sua vida seria tragicamente curta. Certo dia, durante uma tempestade violenta, Lyrax, inexperiente e ainda frágil, tentou voar de volta para seu ninho. O vento o desorientou, e, sem forças para lutar contra a tempestade, ele foi lançado contra as rochas abaixo de um penhasco. Seus cuidadores encontraram seu corpo entre as pedras no dia seguinte. A morte prematura de Lyrax foi um lembrete triste de como até mesmo os dragões, criaturas imponentes, podem ser vulneráveis na juventude.
+../assets/img_files/dragons/lyrax.png
+Unknown
+1
+Unknown
+1
+2
+3
+3
+30

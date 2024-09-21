@@ -5,10 +5,12 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <direct.h>
+#include <math.h>
+#include "dlibs.h"
 
 // Compilação necessária para funcionar
-// gcc -o main main.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
-// Sem terminal: gcc -o main.exe main.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+// gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
 // =====================================================================================================
 
 // Ponteiros globais
@@ -27,6 +29,19 @@ GtkEntry *fr2_inp_pass;
 // Frame 4
 GtkStack *fr4_stack;
 
+// Frame 5
+Dragon * pBeastVector;
+int totalBeasts;
+// Beastiary
+GtkWidget *fr5_history_container;
+GtkWidget *fr5_dragon_img;
+GtkLabel *fr5_label_dragon_history;
+GtkLabel *fr5_dragon_age;
+GtkLabel *fr5_text_sort;
+GtkLabel *fr5_btn_marker;
+GtkFixed *fr5_btns_container;
+
+
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
 // Registro de funções referentes a tela
@@ -38,6 +53,8 @@ void labeltextModifier(GtkLabel *label, const gchar *text);
 static void set_cursor_window(GtkWidget *widget, gpointer data);
 gboolean btn_animation_rest_opacity(gpointer data);
 void btn_animation_clicked(GtkWidget *widget, gpointer data);
+void set_dragon_in_beastiary(GtkButton *btn, gpointer data);
+void sort_dragons_in_beastiary(GtkButton *btn, gpointer data);
 
 // ********************************************************************************************************
 
@@ -104,7 +121,24 @@ int main(int argc, char *argv[]) {
     GtkWidget *fr5_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_img"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
 
+    // Bestiário
+    GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
+    fr5_history_container = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_history_container"));
+    fr5_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_dragon_img"));
+    fr5_label_dragon_history = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_history"));
+    fr5_dragon_age = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_age"));
+    fr5_text_sort = GTK_LABEL(gtk_builder_get_object(builder, "fr5_text_sort"));
+    fr5_btn_marker = GTK_LABEL(gtk_builder_get_object(builder, "fr5_btn_marker"));
+    fr5_btns_container = GTK_FIXED(gtk_builder_get_object(builder, "fr5_btns_container"));
 
+    FILE * beastsFile = createBeastslistfile();
+    totalBeasts = beastsLength(beastsFile);
+    pBeastVector = readBeastvector(beastsFile);
+
+    sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
+    set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+
+    //printfDragonvector(pBeastVector, totalBeasts);
 
     // Registrando sinais de callback para botões executarem funções
     registerSignals(builder);
@@ -191,7 +225,7 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr3_btn_back = gtk_builder_get_object(builder, "fr3_btn_back");
     g_signal_connect(fr3_btn_back, "clicked", G_CALLBACK(switchPage), main_stack);
 
-    // Frame 4 Botoões
+    // Frame 4 Botões
     GObject *fr4_btn_back = gtk_builder_get_object(builder, "fr4_btn_back");
     g_signal_connect(fr4_btn_back, "clicked", G_CALLBACK(switchPage), main_stack);
 
@@ -201,6 +235,8 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr4_btn_advance = gtk_builder_get_object(builder, "fr4_btn_advance");
     g_signal_connect(fr4_btn_advance, "clicked", G_CALLBACK(switchPage), main_stack);
 
+    // Frame 5 Botões
+
     GObject *button_test = gtk_builder_get_object(builder, "button_test");
     g_signal_connect(button_test, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
 
@@ -208,8 +244,14 @@ void registerSignals(GtkBuilder *builder) {
     g_signal_connect(button_test1, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
     
     GObject *fr5_btn_sort = gtk_builder_get_object(builder, "fr5_btn_sort");
-    g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(sort_dragons_in_beastiary), NULL);
 
+    for(int i=0; i < totalBeasts; i++) {
+        char actBtnName[100];
+        sprintf(actBtnName, "fr5_btn_dragon%d", i+1);
+        GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
+        g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_dragon_in_beastiary), GINT_TO_POINTER(i));
+    }
 
     return;
 }
@@ -255,4 +297,78 @@ gboolean btn_animation_rest_opacity(gpointer data) {
 void btn_animation_clicked(GtkWidget *widget, gpointer data) {
     gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
     g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
+}
+
+void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
+    btn_animation_clicked(GTK_WIDGET(btn), NULL);
+    int beastIndex = GPOINTER_TO_INT(data);
+    char dragonAge[200];
+    gtk_fixed_move(fr5_btns_container, GTK_WIDGET(fr5_btn_marker), 6, 5 + (beastIndex+1) * 56 - 56);
+    Dragon actualBeast = pBeastVector[beastIndex];
+    sprintf(dragonAge, "Idade: %s\nTamanho: %s", actualBeast.age, actualBeast.length);
+    int actualHeight = ceil(strlen(actualBeast.history) / 1.75) - 15;
+    gtk_widget_set_size_request(fr5_history_container, 257, actualHeight);
+    labeltextModifier(fr5_dragon_age, dragonAge);
+
+    for(int i=0; i < 4; i++) {
+        char actLbName[100];
+        sprintf(actLbName, "fr5_dragon_label%d", i+1);
+        GtkLabel *actual_label = GTK_LABEL(gtk_builder_get_object(builder, actLbName));
+        labeltextModifier(actual_label, "");
+        if(beastIndex <= 2 && i == 1)
+            labeltextModifier(actual_label, actualBeast.name);
+
+        if(8 > beastIndex && beastIndex > 2 && i == 2) 
+            labeltextModifier(actual_label, actualBeast.name);
+
+        if(( 16 > beastIndex && beastIndex > 7 ) && i == 3) 
+            labeltextModifier(actual_label, actualBeast.name);
+        
+        if(beastIndex > 15 && i == 0) 
+            labeltextModifier(actual_label, actualBeast.name);
+    }
+    
+    labeltextModifier(fr5_label_dragon_history, actualBeast.history);
+    gtk_image_set_from_file(GTK_IMAGE(fr5_dragon_img), actualBeast.img_path);
+}
+
+void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
+    btn_animation_clicked(GTK_WIDGET(btn), NULL);
+    int typeSort = 1;
+
+    const gchar *sortText = gtk_label_get_text(fr5_text_sort);
+    if(strcmp(sortText, "Atributo") == 0) {
+        typeSort = 2;
+        labeltextModifier(fr5_text_sort, "Idade");
+    }
+    else if(strcmp(sortText, "Idade") == 0) {
+        typeSort = 3;
+        labeltextModifier(fr5_text_sort, "Ataque");
+    }
+    else if(strcmp(sortText, "Ataque") == 0) {
+        typeSort = 4;
+        labeltextModifier(fr5_text_sort, "Defesa");
+    }
+    else if(strcmp(sortText, "Defesa") == 0) {
+        typeSort = 5;
+        labeltextModifier(fr5_text_sort, "Velocidade");
+    }
+    else if(strcmp(sortText, "Velocidade") == 0) {
+        typeSort = 6;
+        labeltextModifier(fr5_text_sort, "Vida");
+    }
+    else if(strcmp(sortText, "Vida") == 0) {
+        typeSort = 1;
+        labeltextModifier(fr5_text_sort, "Atributo");
+    }
+
+    pBeastVector = bubbleSort(typeSort, pBeastVector, totalBeasts);
+    for(int i=0; i < totalBeasts; i++) {
+        char actBtnName[100];
+        sprintf(actBtnName, "fr5_btn_dragon%d", i+1);
+        GtkButton *actual_btn = GTK_BUTTON(gtk_builder_get_object(builder, actBtnName));
+        gtk_button_set_label(GTK_BUTTON(actual_btn), pBeastVector[i].name);
+    }
+    GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
+    set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
 }

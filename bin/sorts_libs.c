@@ -17,13 +17,13 @@ Dragon * bubbleSort(int type, Dragon * vector, int length) {
             switch (type)
             {
             case 1:
-                sortbyAttribute1 = ent1.level + ent1.age + ent1.attack + ent1.defense + ent1.health + ent1.speed;
-                sortbyAttribute2 = ent2.level + ent2.age + ent2.attack + ent2.defense + ent2.health + ent2.speed;
+                sortbyAttribute1 = ent1.level + ent1.abs_age + ent1.attack + ent1.defense + ent1.health + ent1.speed;
+                sortbyAttribute2 = ent2.level + ent2.abs_age + ent2.attack + ent2.defense + ent2.health + ent2.speed;
                 break;
             
             case 2:
-                sortbyAttribute1 = ent1.age;
-                sortbyAttribute2 = ent2.age;
+                sortbyAttribute1 = ent1.abs_age;
+                sortbyAttribute2 = ent2.abs_age;
                 break;
             
             case 3:
@@ -47,12 +47,12 @@ Dragon * bubbleSort(int type, Dragon * vector, int length) {
                 break;
 
             default:
-                sortbyAttribute1 = ent1.level + ent1.age + ent1.attack + ent1.defense + ent1.health + ent1.speed;
-                sortbyAttribute2 = ent2.level + ent2.age + ent2.attack + ent2.defense + ent2.health + ent2.speed;
+                sortbyAttribute1 = ent1.level + ent1.abs_age + ent1.attack + ent1.defense + ent1.health + ent1.speed;
+                sortbyAttribute2 = ent2.level + ent2.abs_age + ent2.attack + ent2.defense + ent2.health + ent2.speed;
                 break;
             }
             
-            if(sortbyAttribute1 > sortbyAttribute2) {
+            if(sortbyAttribute1 < sortbyAttribute2) {
                 ordened = 1;
                 dragonAux = vector[i];
                 vector[i] = vector[i+1];
@@ -70,7 +70,7 @@ int printfDragonvector(Dragon * vector, int length) {
 
     for(int i=0; i < length; i++) {
         printf("Nome: %s | Historia: %s | Caminho: %s\n", vector[i].name, vector[i].history, vector[i].img_path);
-        printf("Level: %d | Idade: %d | Ataque: %d\n", vector[i].level, vector[i].age, vector[i].attack);
+        printf("Level: %d | Idade: %d | Ataque: %d\n", vector[i].level, vector[i].abs_age, vector[i].attack);
         printf("Defesa: %d | Velocidade: %d | Vida: %d\n", vector[i].defense, vector[i].speed, vector[i].health);
         printf("=============================================\n");
     }

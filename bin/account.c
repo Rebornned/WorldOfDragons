@@ -14,51 +14,76 @@ int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int containSpecialchar(char *email);
 
+/*
 int main() {
     FILE *accountsFile = createAccountslistfile();
     FILE *beastsFile = createBeastslistfile();
     
     Dragon newDragon;
     char string[] = "sim";
-    char inputStr[600];
+    char inputStr[1500];
     int inputInt;
     FILE *playerFile = getAccountfile("Saleh");
-    Dragon playerDragon = getplayerDragon(playerFile, "Drogon");
+    
+    //Dragon playerDragon = getplayerDragon(playerFile, "Drogon");
     //printf("Name: %s | Attack: %d\n", playerDragon.name, playerDragon.attack);
-    //Dragon *newvector = readBeastvector(beastsFile);
     //printfDragonvector(newvector, beastsLength(beastsFile));
-    /*
-    while(strcmp(string, "sim") == 0) {
+    
+    for(int i=0; i < 27; i++) {
         scanf("%s", inputStr);
         strcpy(newDragon.name, inputStr);
-        scanf("%s", inputStr);
+        scanf(" %[^\n]" ,inputStr);
         strcpy(newDragon.history, inputStr);
+        getchar();
+
         scanf("%s", inputStr);
         strcpy(newDragon.img_path, inputStr);
+        getchar();
 
+        scanf("%[^\n]", inputStr);
+        strcpy(newDragon.length, inputStr);
+        getchar();
+        
         scanf("%d", &inputInt);
         newDragon.level = inputInt;
+        getchar();
+
+        scanf("%[^\n]", inputStr);
+        strcpy(newDragon.age, inputStr);
+        getchar();
+
+
         scanf("%d", &inputInt);
-        newDragon.age = inputInt;
+        newDragon.abs_age = inputInt;
+        getchar();
+
         scanf("%d", &inputInt);
         newDragon.attack = inputInt;
+        getchar();
+
         scanf("%d", &inputInt);
         newDragon.defense = inputInt;
+        getchar();
+
         scanf("%d", &inputInt);
         newDragon.speed = inputInt;
+        getchar();
+
         scanf("%d", &inputInt);
         newDragon.health = inputInt;
-        addBeastinlist(&newDragon);
-        scanf("%s", string);
-    }*/
-    
-    /*
+        getchar();
+
+        addBeastinlist(&newDragon, beastsFile);
+    }
+
     Dragon *newvector = readBeastvector(beastsFile);
     printfDragonvector(newvector, beastsLength(beastsFile));
+    } */ 
+/*    
     newvector = bubbleSort(1, newvector, beastsLength(beastsFile));
     printf("\nBUBBLED\n\n");
     printfDragonvector(newvector, beastsLength(beastsFile));
-    */
+    
     //readBeastvector(beastsFile);
     //printf("%d\n", delBeastinlist(beastsFile, "Meraxes"));
     //printf("%d | \n", newAccount(accountsFile, "Sarah", "Sah@gmail.com", "1234"));
@@ -74,7 +99,7 @@ int main() {
     //printf("%d\n", delAccountinlist("Sa"));
     //reinsFile(accountsFile);
     return 0;
-}
+}*/
 
 int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     Account account;
@@ -84,7 +109,7 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass) {
 
     if(checkEmail(email) == 0) {
         if(overwriteAccount(pFile, email, user) == 0) {
-            addAccountinlist(&account);
+            addAccountinlist(&account, pFile);
             getAccountfile(user);
         }
         else {

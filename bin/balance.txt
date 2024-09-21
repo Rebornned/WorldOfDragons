@@ -1,0 +1,62 @@
+Name
+History
+Pathing
+Length
+Level
+Age char
+Age int
+Attack
+Defense
+Speed
+Health
+
+Balerion balance:
+Health: 2000
+Attack: 200
+Defense: 150
+Speed: 250
+
+Level 1
+Health: 10
+Attack: 1
+Defense: 1
+Speed: 1
+
+Per level
+Health: 17-23 +
+Attack: 1-3 +
+Defense 1-2 +
+Speed: 1-4+
+
+Best ranking
+1- Balerion - 100
+2- Cannibal - 96
+3- Vhagar - 92
+4- Vermithor - 88
+5- Caraxes - 84
+6- Drogon - 80
+7- Meraxes - 76
+8- Meleys - 72
+9- Viserion - 68
+10- Rhaegal - 64
+11- Dreamfyre - 60
+12 - Sheepstealer - 56
+13- Silverwing - 52
+14- Seasmoke - 48
+15- Sunfyre - 44
+16- Quicksilver - 40
+17- Tessarion - 36
+18- Syrax - 32
+19- Grey Ghost - 28
+20- Vermax - 24
+21- Moondancer - 20
+22- Arrax - 16
+23- Tyraxes - 12
+24- Stormcloud - 8
+25- Morning - 4
+26- Shrykos - 2
+27- Lyrax - 1
+
+
+
+TESTE: 
