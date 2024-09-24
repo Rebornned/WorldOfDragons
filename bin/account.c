@@ -13,6 +13,7 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int containSpecialchar(char *email);
+int random_choice(int min, int max);
 
 /*
 int main() {
@@ -20,89 +21,54 @@ int main() {
     FILE *beastsFile = createBeastslistfile();
     
     Dragon newDragon;
+    Player newPlayer;
+
     char string[] = "sim";
     char inputStr[1500];
     int inputInt;
-    FILE *playerFile = getAccountfile("Saleh");
-    
+    //FILE *playerFile = getAccountfile("Saleh");
+    srand(time(NULL));
     //Dragon playerDragon = getplayerDragon(playerFile, "Drogon");
     //printf("Name: %s | Attack: %d\n", playerDragon.name, playerDragon.attack);
     //printfDragonvector(newvector, beastsLength(beastsFile));
-    
-    for(int i=0; i < 27; i++) {
-        scanf("%s", inputStr);
-        strcpy(newDragon.name, inputStr);
-        scanf(" %[^\n]" ,inputStr);
-        strcpy(newDragon.history, inputStr);
-        getchar();
-
-        scanf("%s", inputStr);
-        strcpy(newDragon.img_path, inputStr);
-        getchar();
-
-        scanf("%[^\n]", inputStr);
-        strcpy(newDragon.length, inputStr);
-        getchar();
-        
-        scanf("%d", &inputInt);
-        newDragon.level = inputInt;
-        getchar();
-
-        scanf("%[^\n]", inputStr);
-        strcpy(newDragon.age, inputStr);
-        getchar();
-
-
-        scanf("%d", &inputInt);
-        newDragon.abs_age = inputInt;
-        getchar();
-
-        scanf("%d", &inputInt);
-        newDragon.attack = inputInt;
-        getchar();
-
-        scanf("%d", &inputInt);
-        newDragon.defense = inputInt;
-        getchar();
-
-        scanf("%d", &inputInt);
-        newDragon.speed = inputInt;
-        getchar();
-
-        scanf("%d", &inputInt);
-        newDragon.health = inputInt;
-        getchar();
-
-        addBeastinlist(&newDragon, beastsFile);
-    }
-
-    Dragon *newvector = readBeastvector(beastsFile);
-    printfDragonvector(newvector, beastsLength(beastsFile));
-    } */ 
-/*    
-    newvector = bubbleSort(1, newvector, beastsLength(beastsFile));
-    printf("\nBUBBLED\n\n");
-    printfDragonvector(newvector, beastsLength(beastsFile));
-    
-    //readBeastvector(beastsFile);
-    //printf("%d\n", delBeastinlist(beastsFile, "Meraxes"));
-    //printf("%d | \n", newAccount(accountsFile, "Sarah", "Sah@gmail.com", "1234"));
-    //printf("%d | \n", newAccount(accountsFile, "Saleh", "Saleh@gmail.com", "1234"));
-    //printf("%d\n", delAccountinlist(accountsFile ,"Sarah"));
     //printf("%d\n", delAccountinlist(accountsFile, "Saleh"));
+    //printf("%d | \n", newAccount(accountsFile, "Sarah", "Sah@gmail.com", "1234"));
 
-    //printf("%d\n", validateAccount(accountsFile, "Saleh", "1234"));
-    //printf("%d\n", validateAccount(accountsFile, "Sa", "12345"));
-    //printf("%d | \n", changePassword(accountsFile ,"Sah@gmail.com", "123456781", "123456781"));
+    printf("%d\n", newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234"));
+    FILE *accountFile = getAccountfile("Rambo");
+    initPlayer(accountFile, &newPlayer);
+
+    printf("%d\n", validateAccount(accountsFile, "Rambo", "1234"));
+    Player actP = getPlayer(accountFile);
+    printf("\nPlayer status \nlevel: %d\nactualXp: %d\nrequiredXp: %d\nprogress: %d\npoints: %d\n", 
+    actP.level, actP.actualExp, actP.requiredExp, actP.progress, actP.trainPoints);
+
+    printf("exp: %d\n", addExperiencetoPlayer(accountFile, 250000));
+    actP = getPlayer(accountFile);
+    printf("\nPlayer status \nlevel: %d\nactualXp: %d\nrequiredXp: %d\nprogress: %d\npoints: %d\n", 
+    actP.level, actP.actualExp, actP.requiredExp, actP.progress, actP.trainPoints);
+
+    //printf("%d\n", changePlayerStatus(playerFile, 10, 175, 150, 2, NULL));
+    //newDragon = getplayerDragon(accountFile, "Meraxes");
+    //newDragon = trainplayerDragon(newDragon, 8);
+    //printf("%d\n", changePlayerStatus(accountFile, 10, 175, 150, 2, &newDragon));
+    //printf("Lvl: %d | Health: %d | Attack: %d | Defense: %d | Speed: %d\n", newDragon.level, newDragon.health,
+    //newDragon.attack, newDragon.defense, newDragon.speed);
+    //actP = getPlayer(playerFile);
+    //printf("\nPlayer status \nlevel: %d\nactualXp: %d\nrequiredXp: %d\nprogress: %d\n", 
+    //actP.level, actP.actualExp, actP.requiredExp, actP.progress);
+    //printf("%d\n", changePassword(accountsFile ,"rahs@gmail.com", "123456781", "123456781"));
+    //printf("%d\n", validateAccount(accountsFile, "Rambo", "1234"));
     //printf("%d | \n", changePassword(accountsFile ,"Saleh@gmail.com", "12345678", "12345678"));
     //readAccountvector(accountsFile);
     //printf("%d\n", delAccountinlist("Sa"));
     //reinsFile(accountsFile);
     return 0;
-}*/
-
+}
+*/
 int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     Account account;
+    Player newPlayer;
     strcpy(account.username, user);
     strcpy(account.email, email);
     strcpy(account.password, pass);
@@ -110,10 +76,8 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     if(checkEmail(email) == 0) {
         if(overwriteAccount(pFile, email, user) == 0) {
             addAccountinlist(&account, pFile);
-            getAccountfile(user);
         }
         else {
-            printf("Conta ja cadastrada.\n");
             return -1;
         }
     }
@@ -194,4 +158,8 @@ int containSpecialchar(char *email) {
             return 1;
     }
     return 0;
+}
+
+int random_choice(int min, int max) {
+    return rand() % (max - min + 1) + min;
 }

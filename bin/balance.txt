@@ -58,5 +58,5 @@ Best ranking
 27- Lyrax - 1
 
 
-
-TESTE: 
+Max level 100
+required xp to level 100 - 10000 

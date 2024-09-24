@@ -9,8 +9,9 @@
 #include "dlibs.h"
 
 // Compilação necessária para funcionar
+// cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 // gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
-// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c account.c player_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
 // =====================================================================================================
 
 // Ponteiros globais
@@ -32,6 +33,21 @@ GtkStack *fr4_stack;
 // Frame 5
 Dragon * pBeastVector;
 int totalBeasts;
+GtkFixed *fr5_beastiary;
+GtkWidget *fr5_page_view;
+
+// Player variables
+FILE *playerFile;
+Player player;
+
+// XP Bar
+GtkLabel *fr5_label_lvl;
+GtkLabel *fr5_exp_text;
+GtkWidget *fr5_level_bar;
+GtkWidget * fr5_levelup_text;
+
+// 
+
 // Beastiary
 GtkWidget *fr5_history_container;
 GtkWidget *fr5_dragon_img;
@@ -55,9 +71,11 @@ gboolean btn_animation_rest_opacity(gpointer data);
 void btn_animation_clicked(GtkWidget *widget, gpointer data);
 void set_dragon_in_beastiary(GtkButton *btn, gpointer data);
 void sort_dragons_in_beastiary(GtkButton *btn, gpointer data);
+void updatelvlBar(GtkWidget *widget, gpointer data);
+gboolean updateBarAnimation(gpointer data);
+gboolean levelUpAnimation(gpointer data);
 
 // ********************************************************************************************************
-
 
 int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "en_US.utf8");
@@ -121,7 +139,19 @@ int main(int argc, char *argv[]) {
     GtkWidget *fr5_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_img"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
 
+    // Gtk Fixed
+    fr5_beastiary = GTK_FIXED(gtk_builder_get_object(builder, "fr5_beastiary"));
+
+    // Barra de experiência
+    fr5_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_levelup_text"));
+    fr5_label_lvl = GTK_LABEL(gtk_builder_get_object(builder, "fr5_label_lvl"));
+    fr5_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr5_exp_text"));;
+    fr5_level_bar = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_level_bar"));;
+
     // Bestiário
+    fr5_page_view = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view"));
+    gtk_image_set_from_file(GTK_IMAGE(fr5_page_view), "../assets/img_files/beastiary_page1.png");
+
     GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
     fr5_history_container = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_history_container"));
     fr5_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_dragon_img"));
@@ -131,14 +161,22 @@ int main(int argc, char *argv[]) {
     fr5_btn_marker = GTK_LABEL(gtk_builder_get_object(builder, "fr5_btn_marker"));
     fr5_btns_container = GTK_FIXED(gtk_builder_get_object(builder, "fr5_btns_container"));
 
+    // Inicializar variáveis globais
+    // Inicializar bestiário
     FILE * beastsFile = createBeastslistfile();
     totalBeasts = beastsLength(beastsFile);
     pBeastVector = readBeastvector(beastsFile);
 
+    // Inicializar player
+    srand(time(NULL));
+    playerFile = getAccountfile("Rambo");
+
+    initPlayer(playerFile, &player);
+    changePlayerStatus(playerFile, 0, 0, 0, 1, 0, NULL);
+    player = getPlayer(playerFile);
+    // Inicializar ações na tela 5
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
     set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
-
-    //printfDragonvector(pBeastVector, totalBeasts);
 
     // Registrando sinais de callback para botões executarem funções
     registerSignals(builder);
@@ -237,14 +275,17 @@ void registerSignals(GtkBuilder *builder) {
 
     // Frame 5 Botões
 
-    GObject *button_test = gtk_builder_get_object(builder, "button_test");
-    g_signal_connect(button_test, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    GObject *fr5_btn_next = gtk_builder_get_object(builder, "fr5_btn_next");
+    g_signal_connect(fr5_btn_next, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
 
-    GObject *button_test1 = gtk_builder_get_object(builder, "button_test1");
-    g_signal_connect(button_test1, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    GObject *fr5_btn_previous = gtk_builder_get_object(builder, "fr5_btn_previous");
+    g_signal_connect(fr5_btn_previous, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
     
     GObject *fr5_btn_sort = gtk_builder_get_object(builder, "fr5_btn_sort");
     g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(sort_dragons_in_beastiary), NULL);
+
+    GObject *fr5_add_xp = gtk_builder_get_object(builder, "fr5_add_experience");
+    g_signal_connect(fr5_add_xp, "clicked", G_CALLBACK(updatelvlBar), GINT_TO_POINTER(50000));    
 
     for(int i=0; i < totalBeasts; i++) {
         char actBtnName[100];
@@ -252,7 +293,6 @@ void registerSignals(GtkBuilder *builder) {
         GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
         g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_dragon_in_beastiary), GINT_TO_POINTER(i));
     }
-
     return;
 }
 
@@ -297,6 +337,61 @@ gboolean btn_animation_rest_opacity(gpointer data) {
 void btn_animation_clicked(GtkWidget *widget, gpointer data) {
     gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
     g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
+}
+
+gboolean levelUpAnimation(gpointer data) {
+    int actualHeight = GPOINTER_TO_INT(data);
+    gtk_fixed_move(fr5_beastiary, GTK_WIDGET(fr5_levelup_text), 846, actualHeight+6);
+    gtk_widget_set_opacity(fr5_levelup_text, actualHeight*0.05);
+    return G_SOURCE_REMOVE;
+}
+
+gboolean updateBarAnimation(gpointer data) {
+    int actualWidth = GPOINTER_TO_INT(data);
+    gtk_widget_set_size_request(fr5_level_bar, actualWidth, 10);
+    return G_SOURCE_REMOVE;
+}
+
+void updatelvlBar(GtkWidget *widget, gpointer data) {
+    int lvlUp, actualWidth, exp = GPOINTER_TO_INT(data), lblWidth, lblHeight, barintervalIncrement, beforeWidth;
+    char cLvl[5], cProgressLvl[50];
+    player = getPlayer(playerFile);
+    beforeWidth = (int) (player.actualExp * (100.0 / player.requiredExp));
+    lvlUp = addExperiencetoPlayer(playerFile, exp);
+    player = getPlayer(playerFile);
+    actualWidth = (int) (player.actualExp * (100.0 / player.requiredExp));
+    sprintf(cLvl, "%d", player.level);
+    if(player.actualExp != -2 && player.requiredExp != -2)
+        sprintf(cProgressLvl, "%d/%d", player.actualExp, player.requiredExp);    
+    else
+        sprintf(cProgressLvl, "");
+
+    labeltextModifier(fr5_label_lvl, cLvl);
+    labeltextModifier(fr5_exp_text, cProgressLvl);
+    gtk_widget_get_size_request(fr5_level_bar, &lblWidth, &lblHeight);
+
+    if(lvlUp > 0) {
+        gtk_fixed_move(fr5_beastiary, GTK_WIDGET(fr5_levelup_text), 846, 26);
+        gtk_widget_set_opacity(fr5_levelup_text, 1.0);
+        char levelUpMessage[100];
+        sprintf(levelUpMessage, "Level up +%d", lvlUp);
+        labeltextModifier(GTK_LABEL(fr5_levelup_text), levelUpMessage);
+        for(int i=20, k=0; 0 <= i; i--, k++) {
+            g_timeout_add(60*(k+1), levelUpAnimation, GINT_TO_POINTER(i));
+        }
+    }
+
+    if(player.actualExp != -2 && player.requiredExp != -2) {
+        if(beforeWidth > actualWidth) 
+            beforeWidth = 0;
+        
+        barintervalIncrement = 400.0 / (actualWidth-beforeWidth);
+        for(int i=beforeWidth, j=0; i <= actualWidth; i++, j++) {
+            g_timeout_add(barintervalIncrement*j, updateBarAnimation, GINT_TO_POINTER(i));
+        }
+    }
+    else
+        gtk_widget_set_size_request(fr5_level_bar, 100, 10);
 }
 
 void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {

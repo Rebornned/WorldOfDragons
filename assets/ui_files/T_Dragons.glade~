@@ -958,7 +958,7 @@ Tamanho: 100-120 metros</property>
             <child>
               <object class="GtkLabel" id="fr5_level_bar">
                 <property name="name">fr5_level_bar</property>
-                <property name="width-request">65</property>
+                <property name="width-request">1</property>
                 <property name="height-request">10</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -973,19 +973,20 @@ Tamanho: 100-120 metros</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="fr5_exp_label">
-                <property name="name">fr5_exp_label</property>
-                <property name="width-request">64</property>
+              <object class="GtkLabel" id="fr5_exp_text">
+                <property name="name">fr5_exp_text</property>
+                <property name="width-request">85</property>
                 <property name="height-request">16</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">522/1024</property>
+                <property name="label" translatable="yes">0/1</property>
+                <property name="justify">right</property>
                 <style>
                   <class name="fr5_exp_label"/>
                 </style>
               </object>
               <packing>
-                <property name="x">863</property>
+                <property name="x">844</property>
                 <property name="y">66</property>
               </packing>
             </child>
@@ -1002,7 +1003,7 @@ Tamanho: 100-120 metros</property>
                 </style>
               </object>
               <packing>
-                <property name="x">716</property>
+                <property name="x">700</property>
                 <property name="y">34</property>
               </packing>
             </child>
@@ -1013,14 +1014,46 @@ Tamanho: 100-120 metros</property>
                 <property name="height-request">36</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">47</property>
+                <property name="label" translatable="yes">0</property>
                 <style>
                   <class name="fr5_label_lvl"/>
                 </style>
               </object>
               <packing>
-                <property name="x">782</property>
+                <property name="x">766</property>
                 <property name="y">30</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="fr5_add_experience">
+                <property name="label" translatable="yes">Add Xp</property>
+                <property name="name">fr5_add_experience</property>
+                <property name="width-request">73</property>
+                <property name="height-request">39</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="x">210</property>
+                <property name="y">39</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr5_levelup_text">
+                <property name="name">fr5_levelup_text</property>
+                <property name="width-request">64</property>
+                <property name="height-request">15</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="justify">right</property>
+                <style>
+                  <class name="fr5_exp_label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">846</property>
+                <property name="y">26</property>
               </packing>
             </child>
           </object>

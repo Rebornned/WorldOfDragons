@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <ctype.h>
 
 typedef struct {
     char username[50];
@@ -25,13 +26,24 @@ typedef struct {
 } Dragon;
 
 typedef struct {
-    Account account;
+    int level;
+    int actualExp;
+    int requiredExp;
+    int trainPoints;
+    int progress;
     Dragon dragon;
 } Player;
 
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
+int random_choice(int min, int max);
+
+int initPlayer(FILE *pFile, Player *newPlayer);
+Player getPlayer(FILE *pFile);
+int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progress, Dragon *dragon);
+Dragon trainplayerDragon(Dragon dragon, int lvls);
+int addExperiencetoPlayer(FILE *pFile, int exp);
 
 Account * readAccountvector(FILE *pFile);
 Dragon * readBeastvector(FILE *pFile);
