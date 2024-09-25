@@ -6,6 +6,13 @@
 #include <ctype.h>
 
 typedef struct {
+    char name[150];
+    char description[600];
+    float multiplicator;
+    int precision;
+} Attack;
+
+typedef struct {
     char username[50];
     char email[50];
     char password[30];
