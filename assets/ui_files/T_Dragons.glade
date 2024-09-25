@@ -69,8 +69,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImage" id="fr5_page_view">
-                        <property name="name">fr5_page_view</property>
+                      <object class="GtkImage" id="fr5_page_view1">
+                        <property name="name">fr5_page_view1</property>
                         <property name="width-request">73</property>
                         <property name="height-request">34</property>
                         <property name="visible">True</property>
@@ -895,8 +895,62 @@ Tamanho: 100-120 metros</property>
                     </child>
                   </object>
                   <packing>
-                    <property name="name">page0</property>
-                    <property name="title" translatable="yes">page0</property>
+                    <property name="name">fr5_beast</property>
+                    <property name="title" translatable="yes">fr5_beast</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed" id="fr5_cave">
+                    <property name="name">fr5_cave</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="fr5_page_view2">
+                        <property name="name">fr5_page_view1</property>
+                        <property name="width-request">73</property>
+                        <property name="height-request">34</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_page_view"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">462</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">fr5_cave</property>
+                    <property name="title" translatable="yes">fr5_cave</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed" id="fr5_coliseum">
+                    <property name="name">fr5_coliseum</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="fr5_page_view3">
+                        <property name="name">fr5_page_view1</property>
+                        <property name="width-request">73</property>
+                        <property name="height-request">34</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_page_view"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">462</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">fr5_coliseum</property>
+                    <property name="title" translatable="yes">fr5_coliseum</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>

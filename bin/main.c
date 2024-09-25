@@ -32,9 +32,11 @@ GtkStack *fr4_stack;
 
 // Frame 5
 Dragon * pBeastVector;
-int totalBeasts;
+GtkStack *fr5_stack;
 GtkFixed *fr5_beastiary;
-GtkWidget *fr5_page_view;
+GtkLabel *fr5_tittle_label;
+int fr5_actual_page;
+int totalBeasts;
 
 // Player variables
 FILE *playerFile;
@@ -44,9 +46,7 @@ Player player;
 GtkLabel *fr5_label_lvl;
 GtkLabel *fr5_exp_text;
 GtkWidget *fr5_level_bar;
-GtkWidget * fr5_levelup_text;
-
-// 
+GtkWidget *fr5_levelup_text;
 
 // Beastiary
 GtkWidget *fr5_history_container;
@@ -139,18 +139,21 @@ int main(int argc, char *argv[]) {
     GtkWidget *fr5_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_img"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
 
-    // Gtk Fixed
+    // Gtk Fixed e Gtk Stack
+    fr5_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_stack"));
     fr5_beastiary = GTK_FIXED(gtk_builder_get_object(builder, "fr5_beastiary"));
+    fr5_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_tittle_label"));
 
     // Barra de experiência
+    fr5_actual_page = 1;
     fr5_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_levelup_text"));
     fr5_label_lvl = GTK_LABEL(gtk_builder_get_object(builder, "fr5_label_lvl"));
-    fr5_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr5_exp_text"));;
-    fr5_level_bar = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_level_bar"));;
+    fr5_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr5_exp_text"));
+    fr5_level_bar = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_level_bar"));
 
     // Bestiário
-    fr5_page_view = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view"));
-    gtk_image_set_from_file(GTK_IMAGE(fr5_page_view), "../assets/img_files/beastiary_page1.png");
+    GtkWidget *fr5_page_view1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view1"));
+    gtk_image_set_from_file(GTK_IMAGE(fr5_page_view1), "../assets/img_files/beastiary_page1.png");
 
     GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
     fr5_history_container = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_history_container"));
@@ -166,6 +169,14 @@ int main(int argc, char *argv[]) {
     FILE * beastsFile = createBeastslistfile();
     totalBeasts = beastsLength(beastsFile);
     pBeastVector = readBeastvector(beastsFile);
+
+    // Caverna do dragão
+    GtkWidget *fr5_page_view2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view2"));
+    gtk_image_set_from_file(GTK_IMAGE(fr5_page_view2), "../assets/img_files/beastiary_page2.png");
+
+    // Colíseu
+    GtkWidget *fr5_page_view3 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view3"));
+    gtk_image_set_from_file(GTK_IMAGE(fr5_page_view3), "../assets/img_files/beastiary_page3.png");    
 
     // Inicializar player
     srand(time(NULL));
@@ -238,6 +249,36 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         gtk_stack_set_visible_child_name(fr4_stack, "fr4_change");
     }
 
+    // Frame 5 Main
+    if (g_strcmp0(button_name, "fr5_btn_next") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        if(fr5_actual_page == 1) {
+            gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+            labeltextModifier(fr5_tittle_label, "Caverna");
+            fr5_actual_page++;
+        }
+        else if(fr5_actual_page == 2) {
+            gtk_stack_set_visible_child_name(fr5_stack, "fr5_coliseum");
+            labeltextModifier(fr5_tittle_label, "Colíseu");
+            fr5_actual_page++;
+        }
+    }
+    
+    if (g_strcmp0(button_name, "fr5_btn_previous") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        if(fr5_actual_page == 3) {
+            gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+            labeltextModifier(fr5_tittle_label, "Caverna");
+            fr5_actual_page--;
+        }
+        else if(fr5_actual_page == 2) {
+            gtk_stack_set_visible_child_name(fr5_stack, "fr5_beast");
+            labeltextModifier(fr5_tittle_label, "Bestiário");
+            fr5_actual_page--;
+        }
+        
+    }
+
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
     GtkWidget *dummy = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_dummy"));
@@ -276,10 +317,10 @@ void registerSignals(GtkBuilder *builder) {
     // Frame 5 Botões
 
     GObject *fr5_btn_next = gtk_builder_get_object(builder, "fr5_btn_next");
-    g_signal_connect(fr5_btn_next, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    g_signal_connect(fr5_btn_next, "clicked", G_CALLBACK(switchPage), fr5_stack);
 
     GObject *fr5_btn_previous = gtk_builder_get_object(builder, "fr5_btn_previous");
-    g_signal_connect(fr5_btn_previous, "clicked", G_CALLBACK(btn_animation_clicked), NULL);
+    g_signal_connect(fr5_btn_previous, "clicked", G_CALLBACK(switchPage), fr5_stack);
     
     GObject *fr5_btn_sort = gtk_builder_get_object(builder, "fr5_btn_sort");
     g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(sort_dragons_in_beastiary), NULL);
