@@ -2,12 +2,47 @@
 
 #define True 0
 #define False 1
-typedef int bool;
 
-int causeDamage(int damage, int multiplicator, int precision, Dragon *enemy) {
-    int randomVector[100], choiceVector[precision], bool canHit = True;
+int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
+int binarySearch(int item, int vec[], int length);
+
+int main() {
+    Dragon newdragon;
+    newdragon;
+    causeDamage(150, 1.5, 100, NULL);
+}
+
+int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
+    int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;
     srand(time(NULL));
     
-    //for(int i)
+    for(int j=0; j < precision; j++) {
+        choiceVector[j] = j;
+        //printf("%d ", j);
+    }
+    randomNumber = random_choice(0, 99);
+    if(binarySearch(randomNumber, choiceVector, precision) == False)
+        canHit = False;
 
+    if(canHit == True) {
+        totalDamage = damage * multiplicator - enemy->defense*0.3;
+    }
+    printf("Totaldamage: %d\n", totalDamage);
+}
+
+int binarySearch(int item, int vec[], int length) {
+    int start = 0, end = length-1, center = (start+end) / 2;
+    while(end > start) {
+        if(vec[center] == item) 
+            return True;
+        if(item > vec[center]) {
+            start = center+1;
+            center = (start+end) / 2;
+        }
+        else {
+            end = center;
+            center = (start+end) / 2;
+        }
+    }
+    return False;
 }
