@@ -9,15 +9,19 @@
 FILE * createAccountslistfile();
 FILE * createBeastslistfile();
 FILE * createBeastslistfile();
+FILE * createAttackslistfile();
 FILE * getAccountfile(char *username);
 
 Dragon * readBeastvector(FILE *pFile);
 Account * readAccountvector(FILE *pFile);
+Attack * readAttackvector(FILE *pFile);
 
 int addAccountinlist(Account *account, FILE *pFile);
 int addBeastinlist(Dragon *dragon, FILE *pFile);
+int addAttackinlist(Attack *attack, FILE *pFile);
 int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
+int attacksLength(FILE *pFile);
 int delBeastinlist(FILE *pFile, char *name);
 int delAccountinlist(FILE *pFile, char *username);
 
@@ -158,6 +162,43 @@ Account * readAccountvector(FILE *pFile) {
 int accountsLength(FILE *pFile) {
     fseek(pFile, 0, SEEK_END);
     return ftell(pFile) / sizeof(Account);
+}
+
+FILE * createAttackslistfile() {
+    FILE *pFile = fopen("../files/attacksList.bin", "rb+");
+
+    if(!(pFile)) {
+        pFile = fopen("../files/attacksList.bin", "ab+");
+    }
+    return pFile;
+}
+
+int addAttackinlist(Attack *attack, FILE *pFile) {
+    fwrite(attack, sizeof(Attack), 1, pFile);
+    rewind(pFile);
+    return 0;
+}
+
+Attack * readAttackvector(FILE *pFile) {
+    int length = attacksLength(pFile);
+    Attack *vector = (Attack *) malloc(sizeof(Attack) * length);
+
+    if(vector == NULL)
+        return NULL;
+    
+    Attack attack;
+    rewind(pFile);
+    int count = 0;
+    while(fread(&attack, sizeof(Attack), 1, pFile) != 0) {
+        vector[count++] = attack;
+    }
+    rewind(pFile);
+    return vector;
+}
+
+int attacksLength(FILE *pFile) {
+    fseek(pFile, 0, SEEK_END);
+    return ftell(pFile) / sizeof(Attack);
 }
 
 int overwriteAccount(FILE *pFile, char *email, char *username) {

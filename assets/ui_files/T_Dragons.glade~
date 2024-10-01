@@ -63,6 +63,8 @@
                 <property name="height-request">512</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="transition-duration">600</property>
+                <property name="transition-type">slide-left</property>
                 <child>
                   <object class="GtkFixed" id="fr5_beast">
                     <property name="name">fr5_beast_page</property>
@@ -804,8 +806,6 @@ Tamanho: 100-120 metros</property>
                                     <property name="can-focus">False</property>
                                     <property name="halign">start</property>
                                     <property name="valign">start</property>
-                                    <property name="label" translatable="yes">Balerion, conhecido como o Terror Negro, foi o maior e mais temido dragão já visto em Westeros. Seu nome vinha da divindade valiriana do fogo, e ele era famoso por suas escamas negras como a noite e por cuspir chamas tão quentes que podiam derreter pedra. Balerion era o mais velho dos três dragões utilizados por Aegon, o Conquistador, durante a conquista de Westeros. Ele foi crucial na destruição de Harrenhal e na unificação dos Sete Reinos. Seu tamanho colossal era incomparável, e suas asas podiam cobrir cidades inteiras com sua sombra. Depois da morte de Aegon, Balerion viveu por várias décadas, sendo montado por outros Targaryens, como Maegor, o Cruel, e Viserys I. Sua presença imponente e o rastro de destruição que deixava por onde passava tornaram-no uma lenda viva. Quando Balerion morreu, sua idade estimada era de mais de 200 anos, e nenhum outro dragão chegou a igualar sua grandiosidade. Sua morte marcou o fim de uma era em Westeros.
-</property>
                                     <property name="justify">center</property>
                                     <property name="wrap">True</property>
                                     <style>
@@ -815,6 +815,18 @@ Tamanho: 100-120 metros</property>
                                   <packing>
                                     <property name="x">12</property>
                                     <property name="y">10</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkImage" id="fr5_unknown_history">
+                                    <property name="name">fr5_unknown_history</property>
+                                    <property name="width-request">100</property>
+                                    <property name="height-request">327</property>
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x">2</property>
                                   </packing>
                                 </child>
                                 <style>
@@ -917,6 +929,747 @@ Tamanho: 100-120 metros</property>
                       </object>
                       <packing>
                         <property name="x">462</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_lvl_label">
+                        <property name="name">fr5_cave_lvl_label</property>
+                        <property name="width-request">120</property>
+                        <property name="height-request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Lvl.??</property>
+                        <property name="justify">right</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_lvl"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">55</property>
+                        <property name="y">60</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_name_label">
+                        <property name="name">fr5_cave_name_label</property>
+                        <property name="width-request">40</property>
+                        <property name="height-request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">???</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_name"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">175</property>
+                        <property name="y">60</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="fr5_cave_stack">
+                        <property name="name">fr5_cave_stack</property>
+                        <property name="width-request">300</property>
+                        <property name="height-request">286</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="transition-duration">400</property>
+                        <property name="transition-type">crossfade</property>
+                        <child>
+                          <object class="GtkFixed" id="fr5_cave_newdragon">
+                            <property name="name">fr5_cave_newdragon</property>
+                            <property name="width-request">292</property>
+                            <property name="height-request">282</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_newdragon">
+                                <property name="label" translatable="yes">.</property>
+                                <property name="name">fr5_cave_btn_newdragon</property>
+                                <property name="width-request">292</property>
+                                <property name="height-request">282</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr5_page_view"/>
+                                  <class name="fr5_btn_newdragon"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr5_cave_newdragon</property>
+                            <property name="title" translatable="yes">fr5_cave_newdragon</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr5_cave_confirm">
+                            <property name="name">fr5_cave_confirm</property>
+                            <property name="width-request">292</property>
+                            <property name="height-request">282</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr5_cave_dragon_name">
+                                <property name="name">fr5_cave_dragon_name</property>
+                                <property name="width-request">181</property>
+                                <property name="height-request">24</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Nome do dragão</property>
+                                <property name="wrap">True</property>
+                                <style>
+                                  <class name="fr5_cave_font"/>
+                                  <class name="fr5_cave_points"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">59</property>
+                                <property name="y">72</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_confirm">
+                                <property name="label" translatable="yes">Confirmar</property>
+                                <property name="name">fr5_cave_btn_confirm</property>
+                                <property name="width-request">124</property>
+                                <property name="height-request">42</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr5_btn_train"/>
+                                  <class name="fr5_btn_confirm_new"/>
+                                  <class name="fr5_btn_confirm"/>
+                                  <class name="fr5_drop_shadow"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">88</property>
+                                <property name="y">167</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_back">
+                                <property name="label" translatable="yes">Cancelar</property>
+                                <property name="name">fr5_cave_btn_back</property>
+                                <property name="width-request">104</property>
+                                <property name="height-request">32</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr5_btn_train"/>
+                                  <class name="fr5_btn_confirm"/>
+                                  <class name="fr5_drop_shadow"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">9</property>
+                                <property name="y">236</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="fr5_cave_inp_name">
+                                <property name="name">fr5_cave_inp_name</property>
+                                <property name="width-request">248</property>
+                                <property name="height-request">44</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="max-length">30</property>
+                                <property name="max-width-chars">30</property>
+                                <property name="xalign">0.019999999552965164</property>
+                                <style>
+                                  <class name="fr5_btn_train"/>
+                                  <class name="fr2_entry"/>
+                                  <class name="fr5_drop_shadow"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">26</property>
+                                <property name="y">107</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr5_cave_dragon_name_error">
+                                <property name="name">fr5_cave_dragon_name_error</property>
+                                <property name="width-request">221</property>
+                                <property name="height-request">29</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="wrap">True</property>
+                                <style>
+                                  <class name="fr5_cave_font"/>
+                                  <class name="fr5_btn_error"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">35</property>
+                                <property name="y">33</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr5_cave_confirm</property>
+                            <property name="title" translatable="yes">fr5_cave_confirm</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr5_cave_actualdragon">
+                            <property name="name">fr5_cave_actualdragon</property>
+                            <property name="width-request">32</property>
+                            <property name="height-request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkImage" id="fr5_cave_dragon_img">
+                                <property name="name">fr5_cave_dragon_img</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\dragons\egg_wyvern_1.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr5_cave_actualdragon</property>
+                            <property name="title" translatable="yes">fr5_cave_actualdragon</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">103</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border">
+                        <property name="name">fr5_cave_border</property>
+                        <property name="width-request">682</property>
+                        <property name="height-request">363</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">103</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border2">
+                        <property name="name">fr5_cave_border2</property>
+                        <property name="width-request">384</property>
+                        <property name="height-request">90</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">299</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_cave_btn_attack1">
+                        <property name="label" translatable="yes">Mordida</property>
+                        <property name="name">fr5_cave_btn_attack1</property>
+                        <property name="width-request">133</property>
+                        <property name="height-request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_btn_attacks"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">35</property>
+                        <property name="y">404</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_cave_btn_attack2">
+                        <property name="label" translatable="yes">Arranhão</property>
+                        <property name="name">fr5_cave_btn_attack1</property>
+                        <property name="width-request">133</property>
+                        <property name="height-request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_btn_attacks"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">196</property>
+                        <property name="y">404</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_cave_btn_attack3">
+                        <property name="label" translatable="yes">Rugido</property>
+                        <property name="name">fr5_cave_btn_attack1</property>
+                        <property name="width-request">133</property>
+                        <property name="height-request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_btn_attacks"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">355</property>
+                        <property name="y">404</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_cave_btn_attack4">
+                        <property name="label" translatable="yes">Sopro de fogo</property>
+                        <property name="name">fr5_cave_btn_attack1</property>
+                        <property name="width-request">133</property>
+                        <property name="height-request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_btn_attacks"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">517</property>
+                        <property name="y">404</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr5_cave_btn_train">
+                        <property name="label" translatable="yes">Treinar</property>
+                        <property name="name">fr5_cave_btn_train</property>
+                        <property name="width-request">194</property>
+                        <property name="height-request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_btn_train"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">410</property>
+                        <property name="y">320</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border3">
+                        <property name="name">fr5_cave_border3</property>
+                        <property name="width-request">385</property>
+                        <property name="height-request">46</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">103</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border4">
+                        <property name="name">fr5_cave_border4</property>
+                        <property name="width-request">385</property>
+                        <property name="height-request">39</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">146</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border5">
+                        <property name="name">fr5_cave_border5</property>
+                        <property name="width-request">385</property>
+                        <property name="height-request">42</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">183</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border6">
+                        <property name="name">fr5_cave_border6</property>
+                        <property name="width-request">385</property>
+                        <property name="height-request">38</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">223</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border7">
+                        <property name="name">fr5_cave_border7</property>
+                        <property name="width-request">385</property>
+                        <property name="height-request">42</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_cave_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">315</property>
+                        <property name="y">259</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border8">
+                        <property name="name">fr5_cave_border8</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">363</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_attack_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">719</property>
+                        <property name="y">103</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_attack_details">
+                        <property name="name">fr5_cave_attack_details</property>
+                        <property name="width-request">142</property>
+                        <property name="height-request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Dano: (Ataque x 1.2 )
+Taxa de acerto: 90%
+Tempo de recarga: 1 turno(s)</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_attack_details"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">733</property>
+                        <property name="y">403</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_description">
+                        <property name="name">fr5_cave_description</property>
+                        <property name="width-request">235</property>
+                        <property name="height-request">221</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">O dragão avança ferozmente contra o inimigo, abrindo suas enormes mandíbulas e cravando os dentes na carne do adversário. A mordida é um ataque simples, mas brutal, causando dano direto sem efeitos extras. O som dos ossos estalando e a força da mordida demonstram o poder devastador do atacante, que não dá chances de recuperação ao oponente.
+</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_attack_description"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">729</property>
+                        <property name="y">158</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_attack_name">
+                        <property name="name">fr5_cave_attack_name</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">18</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Mordida</property>
+                        <property name="justify">center</property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_attack_tittle"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">719</property>
+                        <property name="y">114</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_health">
+                        <property name="name">fr5_cave_health</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes">Vida: ???                        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_health"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">335</property>
+                        <property name="y">154</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_attack">
+                        <property name="name">fr5_cave_attack</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Ataque: ???                        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_attack"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">335</property>
+                        <property name="y">193</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_defense">
+                        <property name="name">fr5_cave_defense</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Defesa: ???                        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_defense"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">335</property>
+                        <property name="y">230</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_speed">
+                        <property name="name">fr5_cave_speed</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Velocidade: ???                        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_speed"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">335</property>
+                        <property name="y">270</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_points">
+                        <property name="name">fr5_cave_points</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">23</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Pontos restantes: 0</property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">376</property>
+                        <property name="y">114</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border9">
+                        <property name="name">fr5_cave_border9</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">45</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_attack_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">719</property>
+                        <property name="y">103</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_border10">
+                        <property name="name">fr5_cave_border9</property>
+                        <property name="width-request">257</property>
+                        <property name="height-request">76</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_attack_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">719</property>
+                        <property name="y">390</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_btn_cave_marker">
+                        <property name="name">fr5_btn_cave_marker</property>
+                        <property name="width-request">118</property>
+                        <property name="height-request">36</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_btn_marker"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">42</property>
+                        <property name="y">410</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_health_up">
+                        <property name="name">fr5_cave_health_up</property>
+                        <property name="width-request">35</property>
+                        <property name="height-request">18</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="opacity">0</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes">+5        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_health"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">470</property>
+                        <property name="y">154</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_attack_up">
+                        <property name="name">fr5_cave_attack_up</property>
+                        <property name="width-request">35</property>
+                        <property name="height-request">18</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="opacity">0</property>
+                        <property name="label" translatable="yes">+5        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_attack"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">480</property>
+                        <property name="y">192</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_defense_up">
+                        <property name="name">fr5_cave_defense_up</property>
+                        <property name="width-request">35</property>
+                        <property name="height-request">18</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="opacity">0</property>
+                        <property name="label" translatable="yes">+5        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_defense"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">471</property>
+                        <property name="y">231</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_cave_speed_up">
+                        <property name="name">fr5_cave_speed_up</property>
+                        <property name="width-request">35</property>
+                        <property name="height-request">18</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="opacity">0</property>
+                        <property name="label" translatable="yes">+5        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="fr5_cave_font"/>
+                          <class name="fr5_cave_points"/>
+                          <class name="fr5_cave_speed"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">510</property>
+                        <property name="y">268</property>
                       </packing>
                     </child>
                   </object>

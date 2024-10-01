@@ -266,12 +266,133 @@ scrollbar slider {
 }
 
 scrollbar {
-    background-color: transparent; /* Cor de fundo da trilha */
+    background-color: transparent; 
     border-radius: 10px;
     margin: 0px;
-    border: 0px solid #ccc; /* Bordas */
+    border: 0px solid #ccc; 
 }
 
 scrollbar slider:hover {
-    background-color: #555; /* Cor do thumb quando em hover */
+    background-color: #555; 
+}
+
+.fr5_cave_font {
+    font-family: 'MedievalSharp'; 
+    background-image: linear-gradient(transparent, transparent);
+    text-shadow: 
+        2px 2px 0px #000000,   /* Sombra preta no canto inferior direito */
+        -2px -2px 0px #000000, /* Sombra preta no canto superior esquerdo */
+        -2px 2px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
+        2px -2px 0px #000000,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+}
+
+.fr5_cave_lvl {
+    color: red;
+    font-size: 32px;
+}
+
+.fr5_cave_name {
+    color: #FFFDD0;
+    font-size: 32px;
+}
+
+.fr5_cave_border {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #FFFEDD;
+    box-shadow: 2px 2px 2px rgba(255, 253, 212, 0.3);
+    background-image: linear-gradient(transparent, transparent);
+}
+
+.fr5_cave_points {
+    color: #FFFFFF;
+    font-size: 24px;
+}
+
+.fr5_cave_health {
+    color: #51FF00;
+}
+
+.fr5_cave_attack {
+    color: #ff0000;
+    font-size: 24px;
+}
+
+.fr5_cave_defense {
+    color: #FFF600;
+}
+
+.fr5_cave_speed {
+    color: #008CFF;
+}
+
+.fr5_btn_train {
+    font-size: 24px;
+    color: white;
+    border-style: solid;
+    outline: none;
+    box-shadow: none;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: #FFE89D;
+    background-image: linear-gradient(transparent, transparent);
+}
+
+.fr5_btn_attacks {
+    color: #FFDDA6;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: none;
+    border-color: #FFBA7E;
+    border-width: 2px;
+    font-size: 20px;
+}
+
+.fr5_attack_border {
+    border-color: #97978F;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.fr5_attack_tittle {
+    color: #FFCA75;
+    font-size: 20px;
+}
+
+.fr5_attack_description {
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.fr5_attack_details {
+    color: #FFCA75;
+    font-size: 15px;
+}
+
+.fr5_btn_newdragon {
+    background-image: url('../img_files/newdragon.png');
+}
+
+.fr5_btn_confirm {
+    font-family: "MedievalSharp";
+    font-size: 20px;
+    border-radius: 20px;
+    background-image: linear-gradient(transparent, transparent);
+    background-color: transparent;
+}
+
+.fr5_btn_confirm_new {
+    color: #D19275;
+}
+
+.fr5_drop_shadow {
+    box-shadow: 2px 0px 5px rgba(255, 253, 212, 0.3);
+}
+
+.fr5_btn_error {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
 }

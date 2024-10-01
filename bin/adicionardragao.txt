@@ -297,12 +297,10 @@ Unknown
 30
 
 
-Dragon newDragon;
-    char string[] = "sim";
-    char inputStr[1500];
-    int inputInt;
 
-    for(int i=0; i < 27; i++) {
+
+
+ for(int i=0; i < 27; i++) {
         scanf("%s", inputStr);
         strcpy(newDragon.name, inputStr);
         scanf(" %[^\n]" ,inputStr);
@@ -345,10 +343,10 @@ Dragon newDragon;
         scanf("%d", &inputInt);
         newDragon.health = inputInt;
         getchar();
-
+        newDragon.unlock_id = i;
         addBeastinlist(&newDragon, beastsFile);
     }
 
     Dragon *newvector = readBeastvector(beastsFile);
     printfDragonvector(newvector, beastsLength(beastsFile)); 
-    
+}

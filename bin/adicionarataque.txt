@@ -1,0 +1,53 @@
+Mordida
+O dragão avança ferozmente contra o inimigo, abrindo suas enormes mandíbulas e cravando os dentes na carne do adversário. A mordida é um ataque simples, mas brutal, causando dano direto sem efeitos extras. O som dos ossos estalando e a força da mordida demonstram o poder devastador do atacante, que não dá chances de recuperação ao oponente.
+1.2
+90
+1
+Arranhão
+Com um salto ágil, o dragão se aproxima do inimigo e desfere um golpe rápido com suas garras afiadas. O arranhão atinge diretamente o alvo, causando apenas dano físico, sem efeitos adicionais. No entanto, o impacto das garras rasga as escamas do oponente, deixando cicatrizes profundas e mostrando a força física do atacante.
+1.0
+80
+0
+Rugido
+Com um rugido ensurdecedor, o dragão faz o solo tremer. O som ecoa pela arena, atingindo o dragão inimigo e abalando sua confiança. O rugido não causa dano direto, mas reduz o ataque atual do oponente em 20% por 3 turnos. O poder desse grito ancestral faz o inimigo hesitar, deixando-o temporariamente mais fraco e vulnerável.
+0
+100
+5
+Sopro de fogo
+O dragão reúne o ar quente em seus pulmões, liberando um jato de chamas que envolve o dragão inimigo. O fogo consome o oponente, causando dano bruto com uma taxa de acerto mediana. As chamas corroem as escamas do inimigo, reduzindo sua armadura em 20% por 2 turnos. O calor intenso transforma o campo de batalha em uma fornalha devastadora.
+2.0
+55
+2
+
+Attack newAttack;
+    char string[] = "sim";
+    char inputStr[1500];
+    int inputInt;
+    float inputFloat;
+
+    for(int i=0; i < 4; i++) {
+        scanf("%[^\n]", inputStr);
+        strcpy(newAttack.name, inputStr);
+        scanf(" %[^\n]" ,inputStr);
+        strcpy(newAttack.description, inputStr);
+        getchar();
+        scanf("%f", &inputFloat);
+        newAttack.multiplicator = inputFloat;
+        getchar();
+        scanf("%d", &inputInt);
+        newAttack.precision = inputInt;
+        getchar();
+        scanf("%d", &inputInt);
+        newAttack.cooldownAttack = inputInt;
+        getchar();
+        newAttack.recharge = 0;
+
+        addAttackinlist(&newAttack, attacksFile);
+    }
+
+    Attack *newvector = readAttackvector(attacksFile);
+    
+    for(int i=0; i < 4; i++) {
+        printf("Nome: %s\nDescrição: %s\n Multiplicador: %f\n Precisão: %d\n Cooldown: %d\n", newvector[i].name, 
+        newvector[i].description, newvector[i].multiplicator, newvector[i].precision, newvector[i].cooldownAttack);
+    }

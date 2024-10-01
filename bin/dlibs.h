@@ -9,6 +9,8 @@ typedef struct {
     char name[150];
     char description[600];
     float multiplicator;
+    int cooldownAttack;
+    int recharge;
     int precision;
 } Attack;
 
@@ -24,6 +26,7 @@ typedef struct {
     char img_path[400];
     char length[150];
     char age[150];
+    int unlock_id;
     int abs_age;
     int level;
     int attack;
@@ -54,6 +57,7 @@ int addExperiencetoPlayer(FILE *pFile, int exp);
 
 Account * readAccountvector(FILE *pFile);
 Dragon * readBeastvector(FILE *pFile);
+Attack * readAttackvector(FILE *pFile);
 Dragon getplayerDragon(FILE *pFile, char *name);
 
 int addAccountinlist(Account *account, FILE *pFile);
@@ -62,6 +66,8 @@ int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
 
 int addBeastinlist(Dragon *dragon, FILE *pFile);
 int delBeastinlist(FILE *pFile, char *name);
+
+int addAttackinlist(Attack *attack, FILE *pFile);
 
 int validateAccount(FILE *pFile, char *username, char *password);
 FILE * getAccountfile(char *username);
@@ -72,8 +78,10 @@ int printfDragonvector(Dragon * vector, int length);
 
 FILE * createAccountslistfile();
 FILE * createBeastslistfile();
+FILE * createAttackslistfile();
 void reinsFile(FILE *pFile);
 int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
+int attacksLength(FILE *pFile);
 
 

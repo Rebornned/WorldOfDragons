@@ -98,13 +98,19 @@ Dragon trainplayerDragon(Dragon dragon, int lvls) {
 
 Dragon getplayerDragon(FILE *pFile, char *name) {
     Dragon newDragon;
-    newDragon.level = 0;        
-    newDragon.health = 20;
-    newDragon.abs_age = 0;
-    newDragon.attack = 4;
-    newDragon.defense = 4;
-    newDragon.speed = 4;
-    strcpy(newDragon.name, name);
-    changePlayerStatus(pFile, 0, 0, 0, 0, 0, &newDragon);
+    Player player = getPlayer(pFile);
+    if(strlen(player.dragon.name) == 0) {
+        newDragon.level = 0;        
+        newDragon.health = 20;
+        newDragon.abs_age = 0;
+        newDragon.attack = 4;
+        newDragon.defense = 4;
+        newDragon.speed = 4;
+        strcpy(newDragon.name, name);
+        changePlayerStatus(pFile, -1, -1, -1, -1, -1, &newDragon);
+    }
+    else
+        newDragon = player.dragon;
+
     return newDragon;
 }
