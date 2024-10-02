@@ -9,10 +9,21 @@
 #include "dlibs.h"
 
 // Compilação necessária para funcionar
+// cd C:/Users/Amage/Desktop/Prog/Projects/WorldOfDragons/bin/
 // cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 // gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
 // Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c account.c player_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
 // =====================================================================================================
+// Estrutura de dados GTK
+typedef struct {
+    GtkWidget * widgetSingle;
+    GtkWidget * widgetVector;[100];
+    int intSingle;
+    float floatSingle;
+    int intVector[100];
+    float floatVector[200];
+}
+
 
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
@@ -217,7 +228,7 @@ int main(int argc, char *argv[]) {
     playerFile = getAccountfile("Rambo");
 
     initPlayer(playerFile, &player);
-    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, NULL);
+    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
@@ -516,10 +527,10 @@ void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
     Dragon actualBeast = pBeastVector[beastIndex];
     int actualHeight = ceil(strlen(actualBeast.history) / 1.75) - 15;
 
-    gtk_fixed_move(fr5_btns_container, GTK_WIDGET(fr5_btn_marker), 6, 5 + (beastIndex+1) * 56 - 56);
     gtk_widget_set_size_request(fr5_history_container, 257, actualHeight);
-
-    if(((pBeastVector[beastIndex].unlock_id-27) * -1) <= player.progress) {
+    gtk_fixed_move(fr5_btns_container, GTK_WIDGET(fr5_btn_marker), 6, 5 + (beastIndex+1) * 56 - 56);
+    
+    if(((pBeastVector[beastIndex].unlock_id-27) * -1) <= player.actualProgress) {
         strcpy(dragonName, actualBeast.name);
         sprintf(dragonAge, "Idade: %s\nTamanho: %s", actualBeast.age, actualBeast.length);
         labeltextModifier(fr5_dragon_age, dragonAge);
@@ -591,7 +602,7 @@ void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
         char actBtnName[100];
         sprintf(actBtnName, "fr5_btn_dragon%d", i+1);
         GtkButton *actual_btn = GTK_BUTTON(gtk_builder_get_object(builder, actBtnName));
-        if(((pBeastVector[i].unlock_id-27) * -1) <= player.progress) {
+        if(((pBeastVector[i].unlock_id-27) * -1) <= player.actualProgress) {
             gtk_button_set_label(GTK_BUTTON(actual_btn), pBeastVector[i].name);
             gtk_widget_set_sensitive(GTK_WIDGET(actual_btn), TRUE);
         }
@@ -648,7 +659,7 @@ void updatelvlDragon(GtkButton *btn, gpointer data) {
             g_timeout_add((800.0/10) * i, atributeUpAnimation, GINT_TO_POINTER(i));
         }
 
-        changePlayerStatus(playerFile, -1, player.trainPoints-1, -1, -1, -1, &player.dragon);
+        changePlayerStatus(playerFile, -1, player.trainPoints-1, -1, -1, -1, -1, &player.dragon);
         player = getPlayer(playerFile);
         updateDataCave();
     }

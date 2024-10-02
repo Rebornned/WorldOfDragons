@@ -8,6 +8,7 @@
         "time.h": "c",
         "mlibs.h": "c",
         "unistd.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "math.h": "c"
     }
 }

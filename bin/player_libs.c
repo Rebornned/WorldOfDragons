@@ -6,7 +6,7 @@ Dragon trainplayerDragon(Dragon dragon, int lvls);
 int random_choice(int min, int max);
 
 int initPlayer(FILE *pFile, Player *newPlayer);
-int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progress, Dragon *dragon);
+int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon);
 int addExperiencetoPlayer(FILE *pFile, int exp);
 
 int initPlayer(FILE *pFile, Player *newPlayer) {
@@ -17,7 +17,8 @@ int initPlayer(FILE *pFile, Player *newPlayer) {
     fclose(experienceFile);
 
     newPlayer->level = 0;
-    newPlayer->progress = 0;
+    newPlayer->actualProgress = 0;
+    newPlayer->progressPoints = 0;
     newPlayer->actualExp = 0;
     newPlayer->requiredExp = reqExp;
     newPlayer->trainPoints = 0;
@@ -27,7 +28,7 @@ int initPlayer(FILE *pFile, Player *newPlayer) {
     return 0;
 }
 
-int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progress, Dragon *dragon) {
+int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon) {
     Player player = getPlayer(pFile);
     if(level != -1)
         player.level = level;
@@ -37,8 +38,10 @@ int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int re
         player.actualExp = actualExp;
     if(requiredExp != -1)
         player.requiredExp = requiredExp;
-    if(progress != -1)
-        player.progress = progress;
+    if(progressPoints != -1)
+        player.progressPoints = progressPoints;
+    if(actualProgress != -1)
+        player.actualProgress = actualProgress;
     if(dragon != NULL)
         player.dragon = *dragon;
     
@@ -73,7 +76,7 @@ int addExperiencetoPlayer(FILE *pFile, int exp) {
         player.requiredExp = -2;
         player.actualExp = -2;
     }
-    changePlayerStatus(pFile, player.level, player.trainPoints, player.actualExp, player.requiredExp, -1, NULL);
+    changePlayerStatus(pFile, player.level, player.trainPoints, player.actualExp, player.requiredExp, -1, -1, NULL);
     return lvlUp;
 }
 
@@ -107,7 +110,7 @@ Dragon getplayerDragon(FILE *pFile, char *name) {
         newDragon.defense = 4;
         newDragon.speed = 4;
         strcpy(newDragon.name, name);
-        changePlayerStatus(pFile, -1, -1, -1, -1, -1, &newDragon);
+        changePlayerStatus(pFile, -1, -1, -1, -1, -1, -1, &newDragon);
     }
     else
         newDragon = player.dragon;

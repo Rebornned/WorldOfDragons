@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <ctype.h>
+#include <unistd.h>
 
 typedef struct {
     char name[150];
@@ -40,9 +41,12 @@ typedef struct {
     int actualExp;
     int requiredExp;
     int trainPoints;
-    int progress;
+    int progressPoints;
+    int actualProgress;
     Dragon dragon;
 } Player;
+
+
 
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
@@ -51,7 +55,7 @@ int random_choice(int min, int max);
 
 int initPlayer(FILE *pFile, Player *newPlayer);
 Player getPlayer(FILE *pFile);
-int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progress, Dragon *dragon);
+int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon);
 Dragon trainplayerDragon(Dragon dragon, int lvls);
 int addExperiencetoPlayer(FILE *pFile, int exp);
 
