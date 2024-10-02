@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
     playerFile = getAccountfile("Rambo");
 
     initPlayer(playerFile, &player);
-    changePlayerStatus(playerFile, 0, 0, 0, 1, 15, NULL);
+    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, NULL);
 
     // Inicializar ações na tela 5
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
