@@ -46,6 +46,14 @@ void iniciar_tremor(GtkWindow *window) {
     g_timeout_add(50, tremor_callback, tremor);
 }
 
+// Handler para eventos de pressionamento de tecla
+gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data) {
+    g_print("Tecla pressionada: %s\n", gdk_keyval_name(event->keyval));
+    // Adicione aqui o processamento adicional conforme necessário
+    return FALSE; // Retorna FALSE para permitir que outros handlers processem o evento
+}
+
+
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
 
@@ -57,34 +65,11 @@ int main(int argc, char *argv[]) {
 
     // Por exemplo, iniciar o tremor após 1 segundo
     g_timeout_add_seconds(1, (GSourceFunc)iniciar_tremor, window);
+    gtk_widget_add_events(window, GDK_KEY_PRESS_MASK);
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), NULL);
 
     gtk_widget_show_all(window);
     gtk_main();
-
-    while (1) {
-        if (GetAsyncKeyState(VK_UP)) {
-            g_print("Tecla UP pressionada!\n");
-            Sleep(200);  // Pequena pausa para evitar múltiplas detecções consecutivas
-        }
-        if (GetAsyncKeyState(VK_DOWN)) {
-            g_print("Tecla DOWN pressionada!\n");
-            Sleep(200);
-        }
-        if (GetAsyncKeyState(VK_LEFT)) {
-            g_print("Tecla LEFT pressionada!\n");
-            Sleep(200);
-        }
-        if (GetAsyncKeyState(VK_RIGHT)) {
-            g_print("Tecla RIGHT pressionada!\n");
-            Sleep(200);
-        }
-        if (GetAsyncKeyState(VK_ESCAPE)) {
-            g_print("Saindo do jogo...\n");
-            break;  // Sai do loop se a tecla ESC for pressionada
-        }
-
-        Sleep(50);  // Pequena pausa para não sobrecarregar o processador
-    }
 
     return 0;
 }

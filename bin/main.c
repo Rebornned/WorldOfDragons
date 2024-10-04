@@ -17,12 +17,12 @@
 // Estrutura de dados GTK
 typedef struct {
     GtkWidget * widgetSingle;
-    GtkWidget * widgetVector;[100];
+    GtkWidget * widgetVector[100];
     int intSingle;
     float floatSingle;
     int intVector[100];
     float floatVector[200];
-}
+} gtkData;
 
 
 // Ponteiros globais
@@ -79,6 +79,9 @@ GtkWidget *fr5_cave_attack_up;
 GtkWidget *fr5_cave_defense_up;
 GtkWidget *fr5_cave_speed_up;
 
+// Coliseum
+GtkStack *fr5_coliseum_stack;
+int fr5_actual_dragon_index;
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
@@ -222,6 +225,10 @@ int main(int argc, char *argv[]) {
     // Colíseu
     GtkWidget *fr5_page_view3 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view3"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view3), "../assets/img_files/beastiary_page3.png");    
+    
+    // Gtk Stack
+    fr5_coliseum_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_coliseum_stack"));
+    fr5_actual_dragon_index = 0;
 
     // Inicializar player
     srand(time(NULL));
@@ -358,6 +365,35 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         
     }
 
+    // Frame 5 Colíseu
+    if (g_strcmp0(button_name, "fr5_btn_coliseum_next") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        g_print("index do next: %d\n", fr5_actual_dragon_index);
+
+        if(fr5_actual_dragon_index < 27) {
+            g_print("Nome do next: %s\n", gtk_stack_get_visible_child_name(fr5_coliseum_stack));
+            if(g_strcmp0(gtk_stack_get_visible_child_name(fr5_coliseum_stack), "0") == 0) {
+                fr5_actual_dragon_index++;
+                gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT);
+                gtk_stack_set_visible_child_name(fr5_coliseum_stack, "1");
+            }
+        }
+    }
+
+    if (g_strcmp0(button_name, "fr5_btn_coliseum_return") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        g_print("index do return: %d\n", fr5_actual_dragon_index);
+
+        if(fr5_actual_dragon_index < 27) {
+            g_print("Nome do return: %s\n", gtk_stack_get_visible_child_name(fr5_coliseum_stack));
+            if(g_strcmp0(gtk_stack_get_visible_child_name(fr5_coliseum_stack), "1") == 0) {
+                fr5_actual_dragon_index--;
+                gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT);
+                gtk_stack_set_visible_child_name(fr5_coliseum_stack, "0");
+            }
+        }
+    }
+
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
     GtkWidget *dummy = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_dummy"));
@@ -427,6 +463,13 @@ void registerSignals(GtkBuilder *builder) {
         GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
         g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_attack_in_cave), GINT_TO_POINTER(j));
     }
+    
+    // Coliseu
+    GObject *fr5_btn_coliseum_next = gtk_builder_get_object(builder, "fr5_btn_coliseum_next");
+    g_signal_connect(fr5_btn_coliseum_next, "clicked", G_CALLBACK(switchPage), NULL);
+
+    GObject *fr5_btn_coliseum_return = gtk_builder_get_object(builder, "fr5_btn_coliseum_return");
+    g_signal_connect(fr5_btn_coliseum_return, "clicked", G_CALLBACK(switchPage), NULL);
 
     for(int i=0; i < totalBeasts; i++) {
         char actBtnName[100];
