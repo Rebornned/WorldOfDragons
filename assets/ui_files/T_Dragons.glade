@@ -86,30 +86,27 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkOverlay">
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="x">-68</property>
-                        <property name="y">91</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage">
+                      <object class="GtkImage" id="fr5_coliseum_bg">
+                        <property name="name">fr5_coliseum_recommended</property>
                         <property name="width-request">1000</property>
                         <property name="height-request">483</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\battle\balerion_bg.png</property>
                         <style>
                           <class name="fr5_coliseum_bg_img"/>
                         </style>
+                      </object>
+                      <packing>
+                        <property name="y">29</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_coliseum_dragon_aura">
+                        <property name="name">fr5_coliseum_dragon_aura</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">483</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
                       </object>
                       <packing>
                         <property name="y">29</property>
@@ -163,7 +160,7 @@
                         </style>
                       </object>
                       <packing>
-                        <property name="x">260</property>
+                        <property name="x">265</property>
                         <property name="y">460</property>
                       </packing>
                     </child>
@@ -203,13 +200,12 @@ Dificuldade: </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_coliseum_recommended">
-                        <property name="name">fr5_coliseum_recommended</property>
-                        <property name="width-request">48</property>
+                      <object class="GtkLabel" id="fr5_coliseum_rec_infernal">
+                        <property name="name">fr5_coliseum_rec_infernal</property>
+                        <property name="width-request">34</property>
                         <property name="height-request">27</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">( 100 )</property>
                         <style>
                           <class name="fr5_coliseum_defeat"/>
                           <class name="fr5_coliseum_font"/>
@@ -222,13 +218,12 @@ Dificuldade: </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_coliseum_difficulty">
-                        <property name="name">fr5_coliseum_difficulty</property>
-                        <property name="width-request">100</property>
+                      <object class="GtkLabel" id="fr5_coliseum_difficulty_infernal">
+                        <property name="name">fr5_coliseum_difficulty_infernal</property>
+                        <property name="width-request">40</property>
                         <property name="height-request">27</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Infernal</property>
                         <style>
                           <class name="fr5_coliseum_defeat"/>
                           <class name="fr5_coliseum_font"/>
@@ -278,37 +273,34 @@ Dificuldade: </property>
                     <child>
                       <object class="GtkLabel" id="fr5_coliseum_dragon_border">
                         <property name="name">fr5_coliseum_dragon_border</property>
-                        <property name="width-request">250</property>
-                        <property name="height-request">318</property>
+                        <property name="width-request">262</property>
+                        <property name="height-request">328</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="opacity">0</property>
                         <style>
                           <class name="fr5_coliseum_blur"/>
                           <class name="fr5_dragon_border"/>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">378</property>
-                        <property name="y">147</property>
+                        <property name="x">373</property>
+                        <property name="y">148</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkStack" id="fr5_coliseum_stack">
                         <property name="name">fr5_coliseum_stack</property>
                         <property name="width-request">228</property>
-                        <property name="height-request">294</property>
+                        <property name="height-request">295</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="transition-duration">400</property>
                         <child>
-                          <object class="GtkImage">
+                          <object class="GtkImage" id="fr5_coliseum_img0">
+                            <property name="name">fr5_coliseum_img0</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="pixbuf">../img_files\dragons\battle_balerion.png</property>
-                            <style>
-                              <class name="fr5_dragon_border"/>
-                            </style>
                           </object>
                           <packing>
                             <property name="name">0</property>
@@ -316,13 +308,11 @@ Dificuldade: </property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkImage">
+                          <object class="GtkImage" id="fr5_coliseum_img1">
+                            <property name="name">fr5_coliseum_img1</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="pixbuf">../img_files\dragons\battle_cannibal.png</property>
-                            <style>
-                              <class name="fr5_dragon_border"/>
-                            </style>
                           </object>
                           <packing>
                             <property name="name">1</property>
@@ -335,25 +325,24 @@ Dificuldade: </property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">389</property>
+                        <property name="x">384</property>
                         <property name="y">159</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_dragon_name">
-                        <property name="name">fr5_dragon_name</property>
+                      <object class="GtkLabel" id="fr5_dragon_name_legendary">
+                        <property name="name">fr5_dragon_name_legendary</property>
                         <property name="width-request">1000</property>
                         <property name="height-request">80</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion - O terror negro </property>
                         <style>
                           <class name="fr5_coliseum_font"/>
                           <class name="fr5_coliseum_dragon_name"/>
                         </style>
                       </object>
                       <packing>
-                        <property name="y">60</property>
+                        <property name="y">56</property>
                       </packing>
                     </child>
                     <child>
@@ -388,8 +377,173 @@ Dificuldade: </property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">336</property>
+                        <property name="x">315</property>
                         <property name="y">289</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_name_epic">
+                        <property name="name">fr5_dragon_name_epic</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_coliseum_dragon_name"/>
+                          <class name="fr5_dragon_name_epic"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">56</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_name_rare">
+                        <property name="name">fr5_dragon_name_rare</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_coliseum_dragon_name"/>
+                          <class name="fr5_dragon_name_rare"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">56</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_dragon_name_common">
+                        <property name="name">fr5_dragon_name_common</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_coliseum_dragon_name"/>
+                          <class name="fr5_dragon_name_common"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">56</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_difficulty_easy">
+                        <property name="name">fr5_coliseum_difficulty_easy</property>
+                        <property name="width-request">40</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_easy"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">820</property>
+                        <property name="y">386</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_difficulty_medium">
+                        <property name="name">fr5_coliseum_difficulty_medium</property>
+                        <property name="width-request">40</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_medium"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">820</property>
+                        <property name="y">386</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_difficulty_hard">
+                        <property name="name">fr5_coliseum_difficulty_hard</property>
+                        <property name="width-request">40</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_hard"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">820</property>
+                        <property name="y">386</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_rec_easy">
+                        <property name="name">fr5_coliseum_rec_easy</property>
+                        <property name="width-request">34</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_easy"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">900</property>
+                        <property name="y">357</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_rec_medium">
+                        <property name="name">fr5_coliseum_rec_medium</property>
+                        <property name="width-request">34</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_medium"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">900</property>
+                        <property name="y">357</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_rec_hard">
+                        <property name="name">fr5_coliseum_rec_hard</property>
+                        <property name="width-request">34</property>
+                        <property name="height-request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                          <class name="fr5_difficulty_tier_hard"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">900</property>
+                        <property name="y">357</property>
                       </packing>
                     </child>
                   </object>
@@ -1314,16 +1468,16 @@ Tamanho: 100-120 metros</property>
                         <child>
                           <object class="GtkFixed" id="fr5_cave_newdragon">
                             <property name="name">fr5_cave_newdragon</property>
-                            <property name="width-request">292</property>
-                            <property name="height-request">282</property>
+                            <property name="width-request">293</property>
+                            <property name="height-request">281</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
                               <object class="GtkButton" id="fr5_cave_btn_newdragon">
                                 <property name="label" translatable="yes">.</property>
                                 <property name="name">fr5_cave_btn_newdragon</property>
-                                <property name="width-request">292</property>
-                                <property name="height-request">282</property>
+                                <property name="width-request">293</property>
+                                <property name="height-request">281</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
@@ -1342,8 +1496,8 @@ Tamanho: 100-120 metros</property>
                         <child>
                           <object class="GtkFixed" id="fr5_cave_confirm">
                             <property name="name">fr5_cave_confirm</property>
-                            <property name="width-request">292</property>
-                            <property name="height-request">282</property>
+                            <property name="width-request">293</property>
+                            <property name="height-request">281</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>

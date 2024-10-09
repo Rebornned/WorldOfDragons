@@ -27,6 +27,61 @@ int main() {
     char inputStr[1500];
     int inputInt;
 
+     for(int i=0; i < 27; i++) {
+        scanf("%s", inputStr);
+        strcpy(newDragon.name, inputStr);
+
+        scanf(" %[^\n]" ,inputStr);
+        strcpy(newDragon.history, inputStr);
+        getchar();
+
+        scanf("%s", inputStr);
+        strcpy(newDragon.img_path, inputStr);
+        getchar();
+
+        scanf(" %[^\n]" ,inputStr);
+        strcpy(newDragon.tittle, inputStr);
+        getchar();
+
+        scanf("%[^\n]", inputStr);
+        strcpy(newDragon.length, inputStr);
+        getchar();
+        
+        scanf("%d", &inputInt);
+        newDragon.level = inputInt;
+        getchar();
+
+        scanf("%[^\n]", inputStr);
+        strcpy(newDragon.age, inputStr);
+        getchar();
+
+
+        scanf("%d", &inputInt);
+        newDragon.abs_age = inputInt;
+        getchar();
+
+        scanf("%d", &inputInt);
+        newDragon.attack = inputInt;
+        getchar();
+
+        scanf("%d", &inputInt);
+        newDragon.defense = inputInt;
+        getchar();
+
+        scanf("%d", &inputInt);
+        newDragon.speed = inputInt;
+        getchar();
+
+        scanf("%d", &inputInt);
+        newDragon.health = inputInt;
+        getchar();
+        newDragon.unlock_id = i;
+        addBeastinlist(&newDragon, beastsFile);
+    }
+
+    Dragon *newvector = readBeastvector(beastsFile);
+    printfDragonvector(newvector, beastsLength(beastsFile)); 
+
 }
 */
     //FILE *playerFile = getAccountfile("Saleh");

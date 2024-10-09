@@ -23,6 +23,7 @@ typedef struct {
 
 typedef struct {
     char name[50];
+    char tittle[150];
     char history[1500];
     char img_path[400];
     char length[150];
@@ -46,7 +47,20 @@ typedef struct {
     Dragon dragon;
 } Player;
 
+typedef struct {
+    Dragon entDragon;
+    char *entityDebuffs[100];
+    char *entityBuffs[100];
+    int skillsCooldown[4];
+} Entity;
 
+typedef struct {
+    Entity EntityOne;
+    Entity EntityTwo;
+    int actualTurn;
+    char winnerEnt[100];
+    int expReward;
+} Battle;
 
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);

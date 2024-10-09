@@ -22,6 +22,7 @@ typedef struct {
     float floatSingle;
     int intVector[100];
     float floatVector[200];
+    char string[2000];
 } gtkData;
 
 
@@ -101,9 +102,13 @@ gboolean updateBarAnimation(gpointer data);
 gboolean levelUpAnimation(gpointer data);
 gboolean atributeUpAnimation(gpointer data);
 void updateDataCave();
+void updateColiseum();
 void updatelvlDragon(GtkButton *btn, gpointer data);
+void labelTextAnimation(GtkLabel *label, char *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
 gboolean turnOnButton(gpointer data);
+gboolean timedLabelModifier(gpointer data);
+gboolean timedgFree(gpointer data);
 
 // ********************************************************************************************************
 
@@ -228,7 +233,7 @@ int main(int argc, char *argv[]) {
     
     // Gtk Stack
     fr5_coliseum_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_coliseum_stack"));
-    fr5_actual_dragon_index = 0;
+    fr5_actual_dragon_index = 26;
 
     // Inicializar player
     srand(time(NULL));
@@ -241,6 +246,7 @@ int main(int argc, char *argv[]) {
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
     set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
     updateDataCave();
+    updateColiseum();
     
     // Registrando sinais de callback para botões executarem funções
     registerSignals(builder);
@@ -318,6 +324,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         else if(fr5_actual_page == 2) {
             gtk_stack_set_visible_child_name(fr5_stack, "fr5_coliseum");
             labeltextModifier(fr5_tittle_label, "Colíseu");
+            updateColiseum();
             fr5_actual_page++;
         }
     }
@@ -368,36 +375,44 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     // Frame 5 Colíseu
     if (g_strcmp0(button_name, "fr5_btn_coliseum_next") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
-        g_print("index do next: %d\n", fr5_actual_dragon_index);
 
-        if(fr5_actual_dragon_index < 27) {
-            g_print("Nome do next: %s\n", gtk_stack_get_visible_child_name(fr5_coliseum_stack));
+        if(fr5_actual_dragon_index > 0) {
+            fr5_actual_dragon_index--;
+            //g_print("Actual index: %d\n", fr5_actual_dragon_index);
             if(g_strcmp0(gtk_stack_get_visible_child_name(fr5_coliseum_stack), "0") == 0) {
-                fr5_actual_dragon_index++;
                 gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT);
                 gtk_stack_set_visible_child_name(fr5_coliseum_stack, "1");
             }
+            else {
+                gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT);
+                gtk_stack_set_visible_child_name(fr5_coliseum_stack, "0");
+            }
+            updateColiseum();
+            // Atualiza a página com novo index...
         }
     }
 
     if (g_strcmp0(button_name, "fr5_btn_coliseum_return") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
-        g_print("index do return: %d\n", fr5_actual_dragon_index);
 
-        if(fr5_actual_dragon_index < 27) {
-            g_print("Nome do return: %s\n", gtk_stack_get_visible_child_name(fr5_coliseum_stack));
+        if(fr5_actual_dragon_index < 26) {
+            fr5_actual_dragon_index++;
             if(g_strcmp0(gtk_stack_get_visible_child_name(fr5_coliseum_stack), "1") == 0) {
-                fr5_actual_dragon_index--;
                 gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT);
                 gtk_stack_set_visible_child_name(fr5_coliseum_stack, "0");
             }
+            else {
+                gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT);
+                gtk_stack_set_visible_child_name(fr5_coliseum_stack, "1");
+            }
+            updateColiseum();
         }
     }
 
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
     GtkWidget *dummy = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_dummy"));
-    gtk_widget_grab_focus(dummy); // Define o foco no dummy
+    gtk_widget_grab_focus(dummy); 
 }
 
 void registerSignals(GtkBuilder *builder) {
@@ -441,7 +456,7 @@ void registerSignals(GtkBuilder *builder) {
     g_signal_connect(fr5_btn_sort, "clicked", G_CALLBACK(sort_dragons_in_beastiary), NULL);
 
     GObject *fr5_add_xp = gtk_builder_get_object(builder, "fr5_add_experience");
-    g_signal_connect(fr5_add_xp, "clicked", G_CALLBACK(updatelvlBar), GINT_TO_POINTER(50000));
+    g_signal_connect(fr5_add_xp, "clicked", G_CALLBACK(updatelvlBar), GINT_TO_POINTER(20000));
 
     // Caverna
 
@@ -522,6 +537,10 @@ void updatelvlBar(GtkWidget *widget, gpointer data) {
     char cLvl[5], cProgressLvl[50];
     player = getPlayer(playerFile);
     beforeWidth = (int) (player.actualExp * (100.0 / player.requiredExp));
+
+    if(exp == -13579)
+        exp = player.requiredExp - player.actualExp;
+
     lvlUp = addExperiencetoPlayer(playerFile, exp);
     player = getPlayer(playerFile);
     actualWidth = (int) (player.actualExp * (100.0 / player.requiredExp));
@@ -684,6 +703,9 @@ void updatelvlDragon(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
     gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
     g_timeout_add(900, turnOnButton, GTK_WIDGET(btn));
+    
+    if(strlen(player.dragon.name) == 0)
+        return;
 
     if(player.trainPoints > 0) {
         Dragon preTrainDragon = player.dragon;
@@ -773,6 +795,110 @@ void updateDataCave() {
     }
     else
         g_print("Player não tem dragão.\n");
+}
+
+void updateColiseum() {
+    int dragonIndex = fr5_actual_dragon_index;
+    player = getPlayer(playerFile);
+    GtkLabel * fr5_dragon_name_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_legendary"));
+    GtkLabel * fr5_dragon_name_epic = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_epic"));
+    GtkLabel * fr5_dragon_name_rare = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_rare"));
+    GtkLabel * fr5_dragon_name_common = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_common"));
+    GtkLabel * fr5_coliseum_defeat_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_defeat_label"));
+
+    GtkLabel * fr5_coliseum_difficulty_infernal = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_difficulty_infernal"));
+    GtkLabel * fr5_coliseum_difficulty_hard = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_difficulty_hard"));
+    GtkLabel * fr5_coliseum_difficulty_medium = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_difficulty_medium"));
+    GtkLabel * fr5_coliseum_difficulty_easy = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_difficulty_easy"));
+    
+    GtkLabel * fr5_coliseum_rec_easy = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_rec_easy"));
+    GtkLabel * fr5_coliseum_rec_medium = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_rec_medium"));
+    GtkLabel * fr5_coliseum_rec_hard = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_rec_hard"));
+    GtkLabel * fr5_coliseum_rec_infernal = GTK_LABEL(gtk_builder_get_object(builder, "fr5_coliseum_rec_infernal"));
+
+    GtkImage * fr5_coliseum_bg = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_coliseum_bg"));
+    
+    gchar * battlePathing = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", pOriginalBeastVector[dragonIndex].name);
+    gchar * backgroundPathing = g_strdup_printf("../assets/img_files/battle/%s_bg.png", pOriginalBeastVector[dragonIndex].name);
+    gchar * widgetPathing = g_strdup_printf("fr5_coliseum_img%s", gtk_stack_get_visible_child_name(fr5_coliseum_stack));
+    gchar * lvlReq = g_strdup_printf("( %d )", pOriginalBeastVector[dragonIndex].level);
+    gchar *defeatDragons = g_strdup_printf("%d", player.actualProgress);
+
+    GtkWidget *actualImage = GTK_WIDGET(gtk_builder_get_object(builder, widgetPathing));
+    gtk_image_set_from_file(GTK_IMAGE(actualImage), battlePathing);
+    gtk_image_set_from_file(fr5_coliseum_bg, backgroundPathing);
+    labeltextModifier(fr5_coliseum_defeat_label, defeatDragons);
+    
+    labeltextModifier(fr5_dragon_name_legendary, "");
+    labeltextModifier(fr5_dragon_name_epic, "");
+    labeltextModifier(fr5_dragon_name_rare, "");
+    labeltextModifier(fr5_dragon_name_common, "");
+
+    labeltextModifier(fr5_coliseum_difficulty_infernal, "");
+    labeltextModifier(fr5_coliseum_difficulty_hard, "");
+    labeltextModifier(fr5_coliseum_difficulty_medium, "");
+    labeltextModifier(fr5_coliseum_difficulty_easy, "");
+
+    if (dragonIndex < 3) {
+        labeltextModifier(fr5_dragon_name_legendary, pOriginalBeastVector[dragonIndex].tittle);
+        labeltextModifier(fr5_coliseum_difficulty_infernal, "Infernal");
+    }
+    else if (dragonIndex > 2  && dragonIndex < 8) {
+        labeltextModifier(fr5_dragon_name_epic, pOriginalBeastVector[dragonIndex].tittle);
+        labeltextModifier(fr5_coliseum_difficulty_hard, "Difícil");
+
+    }
+    else if (dragonIndex > 7  && dragonIndex < 16) {
+        labeltextModifier(fr5_dragon_name_rare, pOriginalBeastVector[dragonIndex].tittle);
+        labeltextModifier(fr5_coliseum_difficulty_medium, "Média");
+    }
+    else if (dragonIndex > 15) {
+        labeltextModifier(fr5_dragon_name_common, pOriginalBeastVector[dragonIndex].tittle);
+        labeltextModifier(fr5_coliseum_difficulty_easy, "Fácil");
+    }
+    
+    int levelDiff = pOriginalBeastVector[dragonIndex].level - player.dragon.level;
+    
+    labeltextModifier(fr5_coliseum_rec_infernal, "");
+    labeltextModifier(fr5_coliseum_rec_hard, "");
+    labeltextModifier(fr5_coliseum_rec_medium, "");
+    labeltextModifier(fr5_coliseum_rec_easy, "");
+
+    if(levelDiff > 14) 
+        labeltextModifier(fr5_coliseum_rec_infernal, lvlReq);
+    else if(levelDiff < 15 && levelDiff >= 7)
+        labeltextModifier(fr5_coliseum_rec_hard, lvlReq);
+    else if(levelDiff < 7 && levelDiff >= 0)
+        labeltextModifier(fr5_coliseum_rec_medium, lvlReq);
+    else if(levelDiff < 0)
+        labeltextModifier(fr5_coliseum_rec_easy, lvlReq);    
+}
+
+void labelTextAnimation(GtkLabel *label, char *text, int timer) {
+    int totalChars = strlen(text);
+    char completeText[strlen(text)];
+    memset(completeText, '\0', sizeof(completeText));
+
+    for(int i=0; i < totalChars; i++) {
+        gtkData *labelData = g_malloc(sizeof(gtkData)*1); 
+        labelData->widgetSingle = GTK_WIDGET(label);
+        strncat(completeText, &text[i], 1);
+        strcpy(labelData->string, completeText);
+        g_timeout_add(timer/totalChars*i, timedLabelModifier, labelData);
+        g_timeout_add(timer/totalChars*i, timedgFree, labelData);
+    }
+}
+
+
+gboolean timedgFree(gpointer data) {
+    g_free(data);
+    return G_SOURCE_REMOVE;
+}
+
+gboolean timedLabelModifier(gpointer data) {
+    gtkData *labelData = (gtkData*) data;
+    labeltextModifier(GTK_LABEL(labelData->widgetSingle), labelData->string);
+    return G_SOURCE_REMOVE;
 }
 
 gboolean turnOnButton(gpointer data) {
