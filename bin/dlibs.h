@@ -47,10 +47,23 @@ typedef struct {
     Dragon dragon;
 } Player;
 
+
+
+typedef struct {
+    char type[100];
+    int turns;
+} Debuff;
+
+typedef struct {
+    char type[100];
+    int turns;
+} Buff;
+
 typedef struct {
     Dragon entDragon;
-    char *entityDebuffs[100];
-    char *entityBuffs[100];
+    Dragon fixedDragon;
+    Buff entityBuffs[10];
+    Debuff entityDebuffs[10];
     int skillsCooldown[4];
 } Entity;
 

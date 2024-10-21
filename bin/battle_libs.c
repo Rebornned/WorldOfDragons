@@ -5,6 +5,8 @@
 
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int binarySearch(int item, int vec[], int length);
+int startTurn(Battle *battleInstance);
+int debuffTick(Debuff *debuff, Entity *entity);
 
 int main() {
     Dragon newdragon;
@@ -14,6 +16,63 @@ int main() {
         causeDamage(150, 2.0, 55, &newdragon);
         sleep(1);
     }
+
+}
+
+void startBattle(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
+    int cooldownsVector[4] = {0, 0, 0, 0};
+    battleInstance->actualTurn = 1;
+    if(playerEnt.level > enemyEnt.level)
+        if(playerEnt.level - enemyEnt.level > 1)
+            battleInstance->expReward = player.requiredExp * 0.5;
+        if(playerEnt.level - enemyEnt.level >= 4)
+            battleInstance->expReward = player.requiredExp * 0.25;
+        if(playerEnt.level - enemyEnt.level >= 10)
+            battleInstance->expReward = player.requiredExp * 0.1;
+    else
+        battleInstance->expReward = player.requiredExp * 4 + 200;
+        
+    battleInstance->EntityOne.entDragon = playerEnt;
+    battleInstance->EntityOne.fixedDragon = playerEnt;
+    memset(battleInstance->EntityOne.skillsCooldown, 0, sizeof(battleInstance->EntityOne.skillsCooldown));
+    
+    battleInstance->EntityTwo.entDragon = enemyEnt;
+    battleInstance->EntityTwo.fixedDragon = enemyEnt;
+    memset(battleInstance->EntityTwo.skillsCooldown, 0, sizeof(battleInstance->EntityTwo.skillsCooldown));
+
+
+    for(int i=0; i<10; i++)  {
+        strcpy(battleInstance->EntityOne.entityBuffs[i].type, "");
+        battleInstance->EntityOne.entityBuffs[i].turns = 0;
+        strcpy(battleInstance->EntityOne.entityDebuffs[i].type, "");
+        battleInstance->EntityOne.entityDebuffs[i].turns = 0;
+
+        strcpy(battleInstance->EntityTwo.entityBuffs[i].type, "");
+        battleInstance->EntityTwo.entityBuffs[i].turns = 0;
+        strcpy(battleInstance->EntityTwo.entityDebuffs[i].type, "");
+        battleInstance->EntityTwo.entityDebuffs[i].turns = 0;
+    }
+}
+
+int startTurn(Battle *battleInstance) {
+    Battle *bI = battleInstance;
+
+    // Atualizando tempo de recarga dos ataques
+    for(int i=0; i < 4; i++) {
+        if(bI->EntityOne.skillsCooldown[i] > 0)
+            bI->EntityOne.skillsCooldown[i]--;
+        if(bI->EntityTwo.skillsCooldown[i] > 0)
+            bI->EntityOne.skillsCooldown[i]--;
+    }
+
+    // Aplicando Efeitos de debuff e atualizando recarga
+    for(int i; i < 10; i++) {
+        debuffTick(&bI->EntityOne.entityDebuffs[i], &bI->EntityOne);
+        debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo);
+    }
+    // Aplicando Efeitos de buff e atualizando recarga...
+    // Em andamento
+
 
 }
 
@@ -33,6 +92,26 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     }
     printf("Totaldamage: %d\n", totalDamage);
     return totalDamage;
+}
+
+int debuffTick(Debuff *debuff, Entity *entity) {
+    if(strlen(debuff->type) == 0) 
+        return 1;
+
+    if(strcmp(debuff->type, "Bleeding") == 0)
+        entity->entDragon.health -= (entity->entDragon.health*0.05);
+
+    debuff->turns -= 1;
+    if(debuff->turns == 0) {
+        if(strcmp(debuff->type, "Carbonized") == 0)
+            entity->entDragon.defense = entity->fixedDragon.defense;
+        
+        if(strcmp(debuff->type, "Terrified") == 0)
+            entity->entDragon.attack = entity->fixedDragon.attack;
+
+        strcpy(debuff->type, "");
+    }
+    return 0;
 }
 
 int binarySearch(int item, int vec[], int length) {
