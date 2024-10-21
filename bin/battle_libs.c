@@ -21,19 +21,18 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;
     for(int j=0; j < precision; j++) {
         choiceVector[j] = j;
-        //printf("%d ", j);
     }
     randomNumber = random_choice(0, 99);
     if(binarySearch(randomNumber, choiceVector, precision) == False) {
         canHit = False;
         printf("MISS!!!\n");
-        return 1;
+        return -1;
     }
     if(canHit == True) {
         totalDamage = damage * multiplicator - enemy->defense*0.3;
     }
     printf("Totaldamage: %d\n", totalDamage);
-    return 0;
+    return totalDamage;
 }
 
 int binarySearch(int item, int vec[], int length) {

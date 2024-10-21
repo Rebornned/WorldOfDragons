@@ -51,6 +51,7 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     g_print("Tecla pressionada: %s\n", gdk_keyval_name(event->keyval));
     // Adicione aqui o processamento adicional conforme necessário
     return FALSE; // Retorna FALSE para permitir que outros handlers processem o evento
+
 }
 
 
