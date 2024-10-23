@@ -3,7 +3,6 @@
 Dragon getplayerDragon(FILE *pFile, char *name);
 Player getPlayer(FILE *pFile);
 Dragon trainplayerDragon(Dragon dragon, int lvls);
-int random_choice(int min, int max);
 
 int initPlayer(FILE *pFile, Player *newPlayer);
 int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon);
