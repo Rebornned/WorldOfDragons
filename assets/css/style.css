@@ -421,13 +421,6 @@ Frame 5 - Colíseu
         2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
 }
 
-.fr5_dragons_defeat {
-    color: red;
-}
-
-.fr5_difficulty_hard {
-    color: #7300FF;
-}
 
 .fr5_difficulty_medium {
     color: #FFE100;
@@ -441,28 +434,20 @@ Frame 5 - Colíseu
     color: #FF6A00;
 }
 
+.fr5_difficulty_hard {
+    color: #7300FF;
+}
+
 .fr5_coliseum_dragon_name {
     color: red;
     font-size: 64px;
     
     text-shadow: 
-        3px 3px 3px #000000,   /* Sombra preta no canto inferior direito */
-        -3px -3px 3px #000000, /* Sombra preta no canto superior esquerdo */
-        -3px 3px 3px #000000,  /* Sombra preta no canto inferior esquerdo */
-        3px -3px 3px #000000,  /* Sombra preta no canto superior direito */
-        3px 3px 3px #000000;   /* Sombra suave ao redor para efeito 3D */
-}
-
-.fr5_dragon_name_epic {
-    color: #7300FF;
-}
-
-.fr5_dragon_name_rare {
-    color: #FEAE00;
-}
-
-.fr5_dragon_name_common {
-    color: white;
+        3px 3px 3px #000000,   
+        -3px -3px 3px #000000, 
+        -3px 3px 3px #000000, 
+        3px -3px 3px #000000,  
+        3px 3px 3px #000000;  
 }
 
 .fr5_btn_battle {
@@ -486,3 +471,61 @@ Frame 5 - Colíseu
 .fr5_btn_return_dragon {
     background-image: url('../img_files/return_dragon.png');
 }
+
+.fr6_stared_font_size {
+    font-size: 48px;
+}
+
+.fr6_label_vs_font_size {
+    font-size: 64px;
+}
+
+/* Frame 7, Resultado, vitória ou derrota */
+.fr7_btn_continue {
+    border: transparent;
+    box-shadow: none;
+}
+
+.fr7_btn_continue_img {
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(186, 186, 186, 0.42);
+}
+
+.fr7_result_log_border {
+    background: rgba(0, 0, 0, 0.75);
+    border: 3px solid #383838;
+    box-shadow: 0px 4px 4px rgba(186, 186, 186, 0.42);
+    border-radius: 10px;
+}
+
+.fr7_result_text_font {
+    font-family: "MedievalSharp";
+    font-size: 20px;
+    color: #FFE9AD;
+
+    text-shadow: 
+        2px 2px 2px #000000,   
+        -2px -2px 2px #000000, 
+        -2px 2px 2px #000000, 
+        2px -2px 2px #000000,  
+        2px 2px 2px #000000;  
+
+}
+
+/* Colors */
+.fr5_dragon_name_epic {
+    color: #7300FF;
+}
+
+.fr5_dragon_name_rare {
+    color: #FEAE00;
+}
+
+.fr5_dragon_name_common {
+    color: white;
+}
+
+.fr5_dragons_defeat {
+    color: red;
+}
+
