@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <gtk/gtk.h>
+#include <glib.h>
 
 typedef struct {
     char name[150];
@@ -70,6 +72,8 @@ typedef struct {
 typedef struct {
     Entity EntityOne;
     Entity EntityTwo;
+    int entityTurn;
+    gboolean turnPlayed;
     int actualTurn;
     char winnerEnt[100];
     int expReward;
@@ -115,4 +119,7 @@ int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
 int attacksLength(FILE *pFile);
 
-
+void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player);
+int startTurn(Battle *battleInstance);
+int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
+int debuffTick(Debuff *debuff, Entity *entity);

@@ -9,6 +9,7 @@
         "mlibs.h": "c",
         "unistd.h": "c",
         "stdlib.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "string.h": "c"
     }
 }

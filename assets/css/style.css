@@ -421,23 +421,6 @@ Frame 5 - Colíseu
         2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
 }
 
-
-.fr5_difficulty_medium {
-    color: #FFE100;
-}
-
-.fr5_difficulty_easy {
-    color: #00FF1E;
-}
-
-.fr5_difficulty_tier_hard {
-    color: #FF6A00;
-}
-
-.fr5_difficulty_hard {
-    color: #7300FF;
-}
-
 .fr5_coliseum_dragon_name {
     color: red;
     font-size: 64px;
@@ -480,6 +463,14 @@ Frame 5 - Colíseu
     font-size: 64px;
 }
 
+.fr6_dragon_status_frame {
+    background: #121212;
+    border: 3px solid #7D7D7D;
+    box-shadow: 0px 4px 4px rgba(186, 186, 186, 0.25);
+    border-radius: 10px;
+    color: white;
+}
+
 /* Frame 7, Resultado, vitória ou derrota */
 .fr7_btn_continue {
     border: transparent;
@@ -509,7 +500,24 @@ Frame 5 - Colíseu
         -2px 2px 2px #000000, 
         2px -2px 2px #000000,  
         2px 2px 2px #000000;  
+}
 
+.fr6_combat_frame_font_size {
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.fr6_combat_frame_font_hp {
+    font-size: 24px;
+}
+
+.fr6_framelifebar {
+    background-color: transparent;
+    border: 5px solid #383838;
+}
+
+.fr6_lifebar_green {
+    background-image: linear-gradient(0deg, #00FF2F 0%, #00991C 100%);
 }
 
 /* Colors */
@@ -529,3 +537,18 @@ Frame 5 - Colíseu
     color: red;
 }
 
+.fr5_difficulty_medium {
+    color: #FFE100;
+}
+
+.fr5_difficulty_easy {
+    color: #00FF1E;
+}
+
+.fr5_difficulty_tier_hard {
+    color: #FF6A00;
+}
+
+.fr5_difficulty_hard {
+    color: #7300FF;
+}

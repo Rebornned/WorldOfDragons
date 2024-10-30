@@ -25,6 +25,11 @@ typedef struct {
     char string[2000];
 } gtkData;
 
+typedef struct {
+    GtkWidget * widgetBar;
+    gint totalLoops;
+    gboolean isActive;
+} gtkAnimationData;
 
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
@@ -106,6 +111,8 @@ void updateColiseum();
 void updatelvlDragon(GtkButton *btn, gpointer data);
 void labelTextAnimation(GtkLabel *label, char *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
+void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
+gboolean retroBarAnimationLoop(gpointer data);
 gboolean turnOnButton(gpointer data);
 gboolean timedLabelModifier(gpointer data);
 gboolean timedgFree(gpointer data);
@@ -235,6 +242,10 @@ int main(int argc, char *argv[]) {
     fr5_coliseum_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_coliseum_stack"));
     fr5_actual_dragon_index = 26;
 
+
+    GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
+    retroBarAnimationStart(1000 ,fr6_life_bar_ent1, 2046, 1200);
+    
     // Inicializar player
     srand(time(NULL));
     playerFile = getAccountfile("Rambo");
@@ -889,6 +900,33 @@ void labelTextAnimation(GtkLabel *label, char *text, int timer) {
     }
 }
 
+void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue) {
+    gint barSize;
+    gtkAnimationData *barData = g_malloc(sizeof(gtkAnimationData) * 1);
+    gtk_widget_get_size_request(GTK_WIDGET(widget), &barSize, NULL);
+    barData->widgetBar = widget;
+    barData->totalLoops = (gint) ((gfloat) barSize - barSize * ((gfloat) newValue/actualValue));
+    g_timeout_add(timer/barData->totalLoops, retroBarAnimationLoop, barData);
+}
+
+gboolean retroBarAnimationLoop(gpointer data) {
+    gtkAnimationData *barData = (gtkAnimationData*) data;
+    if(barData->totalLoops > -1) 
+        barData->isActive = TRUE;
+    else
+        barData->isActive = FALSE;
+
+    if(barData->isActive == TRUE) {
+        gint actualWidth, actualHeight;
+        gtk_widget_get_size_request(GTK_WIDGET(barData->widgetBar), &actualWidth, &actualHeight);
+        gtk_widget_set_size_request(GTK_WIDGET(barData->widgetBar), actualWidth-1, actualHeight);
+        barData->totalLoops--;
+        return TRUE;
+    }
+    
+    g_free(barData);    
+    return FALSE;
+}
 
 gboolean timedgFree(gpointer data) {
     g_free(data);
@@ -944,3 +982,4 @@ gboolean atributeUpAnimation(gpointer data) {
     gtk_widget_set_opacity(fr5_cave_speed_up, 1.0 - actualHeight*0.1);
     return G_SOURCE_REMOVE;
 }
+

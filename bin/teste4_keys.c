@@ -10,7 +10,7 @@ GtkWidget *newlabel;
 gboolean timer_reduces(gpointer data);
 void random_vector();
 
-int random_choice(int min, int max) {
+gint random_choice(gint min, gint max) {
     return rand() % (max - min + 1) + min;
 }
 
@@ -79,7 +79,7 @@ gboolean timer_reduces(gpointer data) {
 void random_vector() {
     gchar letters[] = "AWDS";
     g_print("\nNovo vetor de setas: ");
-    for(int i=0; i<12; i++) {
+    for(gint i=0; i<12; i++) {
         arrowVector[i] = random_choice(0, 3);
         g_print("%c ", letters[arrowVector[i]]);
     }
@@ -87,7 +87,7 @@ void random_vector() {
 
 }
 
-int main(int argc, char *argv[]) {
+gint main(gint argc, gchar *argv[]) {
     GtkWidget *window;
     GtkWidget *label;
     GtkWidget *boxContainer;

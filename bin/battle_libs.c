@@ -19,9 +19,12 @@ int main() {
 
 }
 
-void startBattle(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
+void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
     int cooldownsVector[4] = {0, 0, 0, 0};
     battleInstance->actualTurn = 1;
+    battleInstance->turnPlayed = FALSE;
+
+    // Verifica a quantidade de xp recebida de acordo com o balanceamento
     if(playerEnt.level > enemyEnt.level)
         if(playerEnt.level - enemyEnt.level > 1)
             battleInstance->expReward = player.requiredExp * 0.5;
@@ -31,7 +34,8 @@ void startBattle(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Play
             battleInstance->expReward = player.requiredExp * 0.1;
     else
         battleInstance->expReward = player.requiredExp * 4 + 200;
-        
+    
+    // Seta os cooldowns de todos os ataques para 0 inicialmente 
     battleInstance->EntityOne.entDragon = playerEnt;
     battleInstance->EntityOne.fixedDragon = playerEnt;
     memset(battleInstance->EntityOne.skillsCooldown, 0, sizeof(battleInstance->EntityOne.skillsCooldown));
@@ -40,7 +44,12 @@ void startBattle(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Play
     battleInstance->EntityTwo.fixedDragon = enemyEnt;
     memset(battleInstance->EntityTwo.skillsCooldown, 0, sizeof(battleInstance->EntityTwo.skillsCooldown));
 
+    // Decide quem vai atacar primeiro
+    if(playerEnt.speed > enemyEnt.speed) battleInstance->entityTurn = 1;
+    else if(enemyEnt.speed > playerEnt.speed) battleInstance->entityTurn = 2;
+    else if(playerEnt.speed == enemyEnt.speed) battleInstance->entityTurn = random_choice(1, 2);
 
+    // Zera os buffs e debbufs de ambas as entidades
     for(int i=0; i<10; i++)  {
         strcpy(battleInstance->EntityOne.entityBuffs[i].type, "");
         battleInstance->EntityOne.entityBuffs[i].turns = 0;
@@ -56,7 +65,8 @@ void startBattle(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Play
 
 int startTurn(Battle *battleInstance) {
     Battle *bI = battleInstance;
-
+    bI->turnPlayed = FALSE;
+    
     // Atualizando tempo de recarga dos ataques
     for(int i=0; i < 4; i++) {
         if(bI->EntityOne.skillsCooldown[i] > 0)

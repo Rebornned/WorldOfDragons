@@ -22,24 +22,6 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkOverlay">
-                <property name="width-request">1000</property>
-                <property name="height-request">600</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <child>
-                  <object class="GtkImage" id="fr5_img1">
-                    <property name="name">fr5_img</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="index">-1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child>
               <object class="GtkLabel" id="fr6_tittle_label">
                 <property name="name">fr6_tittle_label</property>
                 <property name="width-request">260</property>
@@ -65,6 +47,678 @@
                 <property name="can-focus">False</property>
                 <property name="transition-duration">600</property>
                 <property name="transition-type">slide-left</property>
+                <child>
+                  <object class="GtkFixed" id="fr6_combat">
+                    <property name="name">fr6_combat</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="fr6_stared_bg1">
+                        <property name="name">fr6_stared_bg</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">483</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\battle\Balerion_bg.png</property>
+                        <style>
+                          <class name="fr5_coliseum_bg_img"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">29</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr6_stared_dragon_aura1">
+                        <property name="name">fr6_stared_dragon_aura</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">483</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="y">29</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr6_stared_dragon_border1">
+                        <property name="name">fr6_stared_dragon_border</property>
+                        <property name="width-request">254</property>
+                        <property name="height-request">320</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_blur"/>
+                          <class name="fr5_dragon_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">688</property>
+                        <property name="y">169</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr6_stared_dragon_border3">
+                        <property name="name">fr6_stared_dragon_border2</property>
+                        <property name="width-request">254</property>
+                        <property name="height-request">320</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr5_coliseum_blur"/>
+                          <class name="fr5_dragon_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">41</property>
+                        <property name="y">169</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr6_stared_player_dragon1">
+                        <property name="name">fr6_stared_player_dragon</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\dragons\battle_titan_wyvern_1.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">54</property>
+                        <property name="y">183</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr6_stared_enemy_dragon1">
+                        <property name="name">fr6_stared_enemy_dragon</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\dragons\battle_balerion.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">700</property>
+                        <property name="y">183</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed" id="fr6_dragon_status_frame">
+                        <property name="name">fr6_dragon_status_frame</property>
+                        <property name="width-request">324</property>
+                        <property name="height-request">127</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="fr6_dg_status_bg">
+                            <property name="name">fr6_dg_status_bg</property>
+                            <property name="width-request">324</property>
+                            <property name="height-request">122</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <style>
+                              <class name="fr6_dragon_status_frame"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_lvl_ent1">
+                            <property name="name">fr6_lvl_ent1</property>
+                            <property name="width-request">30</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Lvl.</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_size"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">10</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_hp_text_ent1">
+                            <property name="name">fr6_hp_text_ent1</property>
+                            <property name="width-request">35</property>
+                            <property name="height-request">23</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">HP</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_hp"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">8</property>
+                            <property name="y">58</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_frame_bar_ent1">
+                            <property name="name">fr6_frame_bar_ent1</property>
+                            <property name="width-request">254</property>
+                            <property name="height-request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="single-line-mode">True</property>
+                            <style>
+                              <class name="fr6_framelifebar"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">47</property>
+                            <property name="y">54</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_life_bar_ent1">
+                            <property name="name">fr6_life_bar_ent1</property>
+                            <property name="width-request">248</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="single-line-mode">True</property>
+                            <style>
+                              <class name="fr6_lifebar_green"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">57</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_life_value_ent1">
+                            <property name="name">fr6_life_value_ent1</property>
+                            <property name="width-request">127</property>
+                            <property name="height-request">27</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">2046/2046</property>
+                            <property name="justify">right</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_hp"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">165</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_playerdragon_debuff1">
+                            <property name="name">fr6_playerdragon_debuff1</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\broken_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_playerdragon_debuff2">
+                            <property name="name">fr6_playerdragon_debuff1</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\burned_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">77</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_playerdragon_debuff3">
+                            <property name="name">fr6_playerdragon_debuff1</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\terrifier_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">104</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_playerdragon_debuff4">
+                            <property name="name">fr6_playerdragon_debuff1</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\bleeding_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">131</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_lvl_name_ent1">
+                            <property name="name">fr6_lvl_name_ent1</property>
+                            <property name="width-request">70</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">100 Lycturosziruli</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_size"/>
+                              <class name="fr5_dragons_defeat"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">56</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">17</property>
+                        <property name="y">39</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr6_dragon_first_border">
+                        <property name="name">fr6_dragon_first_border</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\dragon_attack_border.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">17</property>
+                        <property name="y">165</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed" id="fr6_enemy_status_frame">
+                        <property name="name">fr6_enemy_status_frame</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="fr6_dg_status_bg2">
+                            <property name="name">fr6_dg_status_bg2</property>
+                            <property name="width-request">324</property>
+                            <property name="height-request">122</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <style>
+                              <class name="fr6_dragon_status_frame"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_lvl_ent2">
+                            <property name="name">fr6_lvl_ent2</property>
+                            <property name="width-request">30</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Lvl.</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_size"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">10</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_hp_text_ent2">
+                            <property name="name">fr6_hp_text_ent2</property>
+                            <property name="width-request">35</property>
+                            <property name="height-request">23</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">HP</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_hp"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">8</property>
+                            <property name="y">58</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_frame_bar_ent2">
+                            <property name="name">fr6_frame_bar_ent2</property>
+                            <property name="width-request">254</property>
+                            <property name="height-request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="single-line-mode">True</property>
+                            <style>
+                              <class name="fr6_framelifebar"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">47</property>
+                            <property name="y">54</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_life_bar_ent2">
+                            <property name="name">fr6_life_bar_ent2</property>
+                            <property name="width-request">248</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="single-line-mode">True</property>
+                            <style>
+                              <class name="fr6_lifebar_green"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">57</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_enemydragon_debuff1">
+                            <property name="name">fr6_enemydragon_debuff1</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\broken_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_enemydragon_debuff2">
+                            <property name="name">fr6_enemydragon_debuff2</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\burned_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">77</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_enemydragon_debuff3">
+                            <property name="name">fr6_enemydragon_debuff3</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\terrifier_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">104</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_enemydragon_debuff4">
+                            <property name="name">fr6_enemydragon_debuff4</property>
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\bleeding_status.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">131</property>
+                            <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr6_lvl_name_ent2">
+                            <property name="name">fr6_lvl_name_ent2</property>
+                            <property name="width-request">70</property>
+                            <property name="height-request">26</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">100 Balerion</property>
+                            <style>
+                              <class name="fr7_result_text_font"/>
+                              <class name="fr5_dragon_name_common"/>
+                              <class name="fr6_combat_frame_font_size"/>
+                              <class name="fr5_dragons_defeat"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="x">56</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">662</property>
+                        <property name="y">39</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr6_btn_reduce_life">
+                        <property name="label" translatable="yes">Diminuir vida</property>
+                        <property name="name">fr6_btn_reduce_life</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">20</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">400</property>
+                        <property name="y">50</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="fr6_battle_stack">
+                        <property name="name">fr6_battle_stack</property>
+                        <property name="width-request">304</property>
+                        <property name="height-request">192</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkFixed" id="fr6_battle_buttons">
+                            <property name="name">fr6_battle_buttons</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr6_btn_attack1">
+                                <property name="label" translatable="yes">attack1</property>
+                                <property name="name">fr6_btn_attack1</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">20</property>
+                                <property name="y">20</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr6_btn_attack2">
+                                <property name="label" translatable="yes">attack2</property>
+                                <property name="name">fr6_btn_attack2</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">180</property>
+                                <property name="y">20</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr6_btn_attack3">
+                                <property name="label" translatable="yes">attack3</property>
+                                <property name="name">fr6_btn_attack3</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">20</property>
+                                <property name="y">80</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr6_btn_attack4">
+                                <property name="label" translatable="yes">attack4</property>
+                                <property name="name">fr6_btn_attack4</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">180</property>
+                                <property name="y">80</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr6_btn_run">
+                                <property name="label" translatable="yes">run</property>
+                                <property name="name">fr6_btn_run</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">100</property>
+                                <property name="y">135</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr6_battle_buttons</property>
+                            <property name="title" translatable="yes">fr6_battle_buttons</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr6_battle_chat">
+                            <property name="name">fr6_battle_chat</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="y">122</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr6_battle_chat</property>
+                            <property name="title" translatable="yes">fr6_battle_chat</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr6_battle_arrows">
+                            <property name="name">fr6_battle_arrows</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkImage" id="fr6_img_arrow1">
+                                <property name="name">fr6_img_arrow1</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\return_dragon.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">27</property>
+                                <property name="y">55</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_img_arrow2">
+                                <property name="name">fr6_img_arrow2</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\return_dragon.png</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_img_arrow3">
+                                <property name="name">fr6_img_arrow3</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\return_dragon.png</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr6_battle_arrows</property>
+                            <property name="title" translatable="yes">fr6_battle_arrows</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">348</property>
+                        <property name="y">290</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">page0</property>
+                    <property name="title" translatable="yes">page0</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkFixed" id="fr6_stared">
                     <property name="name">fr6_stared</property>
@@ -224,28 +878,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr6_dragon_name">
-                        <property name="name">fr6_dragon_name</property>
-                        <property name="width-request">361</property>
-                        <property name="height-request">99</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Tyranus ( Titã )</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr5_dragon_name_common"/>
-                          <class name="fr6_stared_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">35</property>
-                        <property name="y">47</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel" id="fr6_stared_dragon_border2">
                         <property name="name">fr6_stared_dragon_border2</property>
                         <property name="width-request">254</property>
@@ -290,172 +922,8 @@
                         <property name="y">179</property>
                       </packing>
                     </child>
-                  </object>
-                  <packing>
-                    <property name="name">fr5_coliseum</property>
-                    <property name="title" translatable="yes">fr5_coliseum</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFixed" id="fr6_combat">
-                    <property name="name">fr6_combat</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImage" id="fr6_stared_bg1">
-                        <property name="name">fr6_stared_bg</property>
-                        <property name="width-request">1000</property>
-                        <property name="height-request">483</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\battle\Balerion_bg.png</property>
-                        <style>
-                          <class name="fr5_coliseum_bg_img"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="y">29</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr6_stared_dragon_aura1">
-                        <property name="name">fr6_stared_dragon_aura</property>
-                        <property name="width-request">1000</property>
-                        <property name="height-request">483</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="y">29</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_stared_dragon_border1">
-                        <property name="name">fr6_stared_dragon_border</property>
-                        <property name="width-request">254</property>
-                        <property name="height-request">320</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <style>
-                          <class name="fr5_coliseum_blur"/>
-                          <class name="fr5_dragon_border"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">688</property>
-                        <property name="y">166</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_enemy_name_legendary1">
-                        <property name="name">fr6_enemy_name_legendary</property>
-                        <property name="width-request">279</property>
-                        <property name="height-request">99</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion, O terror negro</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr6_stared_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">675</property>
-                        <property name="y">47</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_enemy_name_epic1">
-                        <property name="name">fr6_enemy_name_epic</property>
-                        <property name="width-request">279</property>
-                        <property name="height-request">99</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion, O terror negro</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr5_dragon_name_epic"/>
-                          <class name="fr6_stared_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">675</property>
-                        <property name="y">47</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_enemy_name_rare1">
-                        <property name="name">fr6_enemy_name_rare</property>
-                        <property name="width-request">279</property>
-                        <property name="height-request">99</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion, O terror negro</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr5_dragon_name_rare"/>
-                          <class name="fr6_stared_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">675</property>
-                        <property name="y">47</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_enemy_name_common1">
-                        <property name="name">fr6_enemy_name_common</property>
-                        <property name="width-request">279</property>
-                        <property name="height-request">99</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion, O terror negro</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr5_dragon_name_common"/>
-                          <class name="fr6_stared_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">675</property>
-                        <property name="y">47</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_label_vs_text1">
-                        <property name="name">fr6_label_vs_text</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">VS</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr5_coliseum_font"/>
-                          <class name="fr5_coliseum_dragon_name"/>
-                          <class name="fr6_label_vs_font_size"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">459</property>
-                        <property name="y">271</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_dragon_name1">
+                      <object class="GtkLabel" id="fr6_dragon_name">
                         <property name="name">fr6_dragon_name</property>
                         <property name="width-request">361</property>
                         <property name="height-request">99</property>
@@ -476,55 +944,10 @@
                         <property name="y">47</property>
                       </packing>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="fr6_stared_dragon_border3">
-                        <property name="name">fr6_stared_dragon_border2</property>
-                        <property name="width-request">254</property>
-                        <property name="height-request">320</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <style>
-                          <class name="fr5_coliseum_blur"/>
-                          <class name="fr5_dragon_border"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">58</property>
-                        <property name="y">165</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr6_stared_player_dragon1">
-                        <property name="name">fr6_stared_player_dragon</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\dragons\battle_titan_wyvern_1.png</property>
-                      </object>
-                      <packing>
-                        <property name="x">71</property>
-                        <property name="y">179</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr6_stared_enemy_dragon1">
-                        <property name="name">fr6_stared_enemy_dragon</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\dragons\battle_balerion.png</property>
-                      </object>
-                      <packing>
-                        <property name="x">700</property>
-                        <property name="y">179</property>
-                      </packing>
-                    </child>
                   </object>
                   <packing>
-                    <property name="name">page0</property>
-                    <property name="title" translatable="yes">page0</property>
+                    <property name="name">fr5_coliseum</property>
+                    <property name="title" translatable="yes">fr5_coliseum</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -537,430 +960,6 @@
           <packing>
             <property name="name">page0</property>
             <property name="title" translatable="yes">page0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFixed" id="fr7_result">
-            <property name="name">fr7_result</property>
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkOverlay">
-                <property name="width-request">1000</property>
-                <property name="height-request">600</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <child>
-                  <object class="GtkImage" id="fr5_img2">
-                    <property name="name">fr5_img</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="index">-1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkStack" id="fr7_stack">
-                <property name="name">fr7_stack</property>
-                <property name="width-request">1000</property>
-                <property name="height-request">512</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="transition-duration">600</property>
-                <property name="transition-type">slide-left</property>
-                <child>
-                  <object class="GtkFixed" id="fr7_battle_result">
-                    <property name="name">fr7_battle_result</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                      <object class="GtkImage" id="fr7_reward_bg">
-                        <property name="name">fr7_reward_bg</property>
-                        <property name="width-request">1000</property>
-                        <property name="height-request">483</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\battle\Balerion_bg.png</property>
-                        <style>
-                          <class name="fr5_coliseum_bg_img"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="y">29</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr7_reward_dragon_aura">
-                        <property name="name">fr7_reward_dragon_aura</property>
-                        <property name="width-request">1000</property>
-                        <property name="height-request">483</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="y">29</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr7_result_banner1">
-                        <property name="name">fr7_result_banner1</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\banner.png</property>
-                      </object>
-                      <packing>
-                        <property name="x">114</property>
-                        <property name="y">32</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr7_result_banner2">
-                        <property name="name">fr7_result_banner2</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\banner.png</property>
-                      </object>
-                      <packing>
-                        <property name="x">793</property>
-                        <property name="y">32</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr7_result_img">
-                        <property name="name">fr7_result_img</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\victory.png</property>
-                      </object>
-                      <packing>
-                        <property name="x">265</property>
-                        <property name="y">42</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr7_border_img">
-                        <property name="width-request">127</property>
-                        <property name="height-request">38</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="pixbuf">../img_files\btn_continue.png</property>
-                        <style>
-                          <class name="fr7_btn_continue_img"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">436</property>
-                        <property name="y">451</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="fr7_btn_continue">
-                        <property name="name">fr7_btn_continue</property>
-                        <property name="width-request">127</property>
-                        <property name="height-request">38</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                        <style>
-                          <class name="fr5_btn_battle"/>
-                          <class name="fr7_btn_continue"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">436</property>
-                        <property name="y">451</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr5_coliseum_battle_label1">
-                        <property name="name">fr5_coliseum_battle_label</property>
-                        <property name="width-request">127</property>
-                        <property name="height-request">38</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Continuar</property>
-                        <style>
-                          <class name="fr5_coliseum_defeat"/>
-                          <class name="fr5_coliseum_font"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">436</property>
-                        <property name="y">451</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_log_border">
-                        <property name="name">fr7_result_log_border</property>
-                        <property name="width-request">288</property>
-                        <property name="height-request">93</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <style>
-                          <class name="fr7_result_log_border"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">356</property>
-                        <property name="y">333</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_text">
-                        <property name="name">fr7_result_text</property>
-                        <property name="width-request">144</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Experiência adquirida: 
-</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">366</property>
-                        <property name="y">342</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_text2">
-                        <property name="name">fr7_result_text2</property>
-                        <property name="width-request">244</property>
-                        <property name="height-request">46</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Novo dragão adicionado ao Bestiário:                                </property>
-                        <property name="wrap">True</property>
-                        <property name="wrap-mode">char</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">366</property>
-                        <property name="y">375</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_xp_text">
-                        <property name="name">fr7_result_xp_text</property>
-                        <property name="width-request">42</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">20470</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                          <class name="fr5_dragon_name_common"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">574</property>
-                        <property name="y">342</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_newbeast_legendary">
-                        <property name="name">fr7_result_newbeast_legendary</property>
-                        <property name="width-request">60</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                          <class name="fr5_dragons_defeat"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">464</property>
-                        <property name="y">400</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_newbeast_epic">
-                        <property name="name">fr7_result_newbeast_epic</property>
-                        <property name="width-request">60</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                          <class name="fr5_dragon_name_epic"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">464</property>
-                        <property name="y">400</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_newbeast_rare">
-                        <property name="name">fr7_result_newbeast_rare</property>
-                        <property name="width-request">60</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                          <class name="fr5_dragon_name_rare"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">464</property>
-                        <property name="y">400</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="fr7_result_newbeast_common">
-                        <property name="name">fr7_result_newbeast_common</property>
-                        <property name="width-request">60</property>
-                        <property name="height-request">19</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="fr7_result_text_font"/>
-                          <class name="fr5_dragon_name_common"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">464</property>
-                        <property name="y">400</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="name">fr5_coliseum</property>
-                    <property name="title" translatable="yes">fr5_coliseum</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="y">88</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_frame_bar">
-                <property name="name">fr7_frame_bar</property>
-                <property name="width-request">100</property>
-                <property name="height-request">10</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="single-line-mode">True</property>
-                <style>
-                  <class name="fr5_levelbar"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">828</property>
-                <property name="y">40</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_level_bar">
-                <property name="name">fr7_level_bar</property>
-                <property name="width-request">1</property>
-                <property name="height-request">10</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="single-line-mode">True</property>
-                <style>
-                  <class name="fr5_bar"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">828</property>
-                <property name="y">40</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_exp_text">
-                <property name="name">fr7_exp_text</property>
-                <property name="width-request">85</property>
-                <property name="height-request">16</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">0/1</property>
-                <property name="justify">right</property>
-                <style>
-                  <class name="fr5_exp_label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">844</property>
-                <property name="y">66</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_label_lvl_text">
-                <property name="name">fr7_label_lvl_text</property>
-                <property name="width-request">55</property>
-                <property name="height-request">27</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Level</property>
-                <style>
-                  <class name="fr5_label_lvl_text"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">700</property>
-                <property name="y">34</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_label_lvl">
-                <property name="name">fr7_label_lvl</property>
-                <property name="width-request">35</property>
-                <property name="height-request">36</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">0</property>
-                <style>
-                  <class name="fr5_label_lvl"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">766</property>
-                <property name="y">30</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr7_levelup_text">
-                <property name="name">fr7_levelup_text</property>
-                <property name="width-request">64</property>
-                <property name="height-request">15</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="justify">right</property>
-                <style>
-                  <class name="fr5_exp_label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">846</property>
-                <property name="y">26</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="name">page1</property>
-            <property name="title" translatable="yes">page1</property>
-            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -3275,6 +3274,430 @@ Tempo de recarga: 1 turno(s)</property>
           <packing>
             <property name="name">bestiary_page</property>
             <property name="title" translatable="yes">bestiary_page</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fr7_result">
+            <property name="name">fr7_result</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr5_img2">
+                    <property name="name">fr5_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStack" id="fr7_stack">
+                <property name="name">fr7_stack</property>
+                <property name="width-request">1000</property>
+                <property name="height-request">512</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-duration">600</property>
+                <property name="transition-type">slide-left</property>
+                <child>
+                  <object class="GtkFixed" id="fr7_battle_result">
+                    <property name="name">fr7_battle_result</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="fr7_reward_bg">
+                        <property name="name">fr7_reward_bg</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">483</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\battle\Balerion_bg.png</property>
+                        <style>
+                          <class name="fr5_coliseum_bg_img"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="y">29</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr7_reward_dragon_aura">
+                        <property name="name">fr7_reward_dragon_aura</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">483</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="y">29</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr7_result_banner1">
+                        <property name="name">fr7_result_banner1</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\banner.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">114</property>
+                        <property name="y">32</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr7_result_banner2">
+                        <property name="name">fr7_result_banner2</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\banner.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">793</property>
+                        <property name="y">32</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr7_result_img">
+                        <property name="name">fr7_result_img</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\victory.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">265</property>
+                        <property name="y">42</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr7_border_img">
+                        <property name="width-request">127</property>
+                        <property name="height-request">38</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\btn_continue.png</property>
+                        <style>
+                          <class name="fr7_btn_continue_img"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">436</property>
+                        <property name="y">451</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr7_btn_continue">
+                        <property name="name">fr7_btn_continue</property>
+                        <property name="width-request">127</property>
+                        <property name="height-request">38</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_btn_battle"/>
+                          <class name="fr7_btn_continue"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">436</property>
+                        <property name="y">451</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_coliseum_battle_label1">
+                        <property name="name">fr5_coliseum_battle_label</property>
+                        <property name="width-request">127</property>
+                        <property name="height-request">38</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Continuar</property>
+                        <style>
+                          <class name="fr5_coliseum_defeat"/>
+                          <class name="fr5_coliseum_font"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">436</property>
+                        <property name="y">451</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_log_border">
+                        <property name="name">fr7_result_log_border</property>
+                        <property name="width-request">288</property>
+                        <property name="height-request">93</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <style>
+                          <class name="fr7_result_log_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">356</property>
+                        <property name="y">333</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_text">
+                        <property name="name">fr7_result_text</property>
+                        <property name="width-request">144</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Experiência adquirida: 
+</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">366</property>
+                        <property name="y">342</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_text2">
+                        <property name="name">fr7_result_text2</property>
+                        <property name="width-request">244</property>
+                        <property name="height-request">46</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Novo dragão adicionado ao Bestiário:                                </property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">char</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">366</property>
+                        <property name="y">375</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_xp_text">
+                        <property name="name">fr7_result_xp_text</property>
+                        <property name="width-request">42</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">20470</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                          <class name="fr5_dragon_name_common"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">574</property>
+                        <property name="y">342</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_newbeast_legendary">
+                        <property name="name">fr7_result_newbeast_legendary</property>
+                        <property name="width-request">60</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                          <class name="fr5_dragons_defeat"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">464</property>
+                        <property name="y">400</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_newbeast_epic">
+                        <property name="name">fr7_result_newbeast_epic</property>
+                        <property name="width-request">60</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                          <class name="fr5_dragon_name_epic"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">464</property>
+                        <property name="y">400</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_newbeast_rare">
+                        <property name="name">fr7_result_newbeast_rare</property>
+                        <property name="width-request">60</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                          <class name="fr5_dragon_name_rare"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">464</property>
+                        <property name="y">400</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr7_result_newbeast_common">
+                        <property name="name">fr7_result_newbeast_common</property>
+                        <property name="width-request">60</property>
+                        <property name="height-request">19</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="fr7_result_text_font"/>
+                          <class name="fr5_dragon_name_common"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">464</property>
+                        <property name="y">400</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">fr5_coliseum</property>
+                    <property name="title" translatable="yes">fr5_coliseum</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="y">88</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_frame_bar">
+                <property name="name">fr7_frame_bar</property>
+                <property name="width-request">100</property>
+                <property name="height-request">10</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="single-line-mode">True</property>
+                <style>
+                  <class name="fr5_levelbar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">828</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_level_bar">
+                <property name="name">fr7_level_bar</property>
+                <property name="width-request">1</property>
+                <property name="height-request">10</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="single-line-mode">True</property>
+                <style>
+                  <class name="fr5_bar"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">828</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_exp_text">
+                <property name="name">fr7_exp_text</property>
+                <property name="width-request">85</property>
+                <property name="height-request">16</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">0/1</property>
+                <property name="justify">right</property>
+                <style>
+                  <class name="fr5_exp_label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">844</property>
+                <property name="y">66</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_label_lvl_text">
+                <property name="name">fr7_label_lvl_text</property>
+                <property name="width-request">55</property>
+                <property name="height-request">27</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Level</property>
+                <style>
+                  <class name="fr5_label_lvl_text"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">700</property>
+                <property name="y">34</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_label_lvl">
+                <property name="name">fr7_label_lvl</property>
+                <property name="width-request">35</property>
+                <property name="height-request">36</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">0</property>
+                <style>
+                  <class name="fr5_label_lvl"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">766</property>
+                <property name="y">30</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr7_levelup_text">
+                <property name="name">fr7_levelup_text</property>
+                <property name="width-request">64</property>
+                <property name="height-request">15</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="justify">right</property>
+                <style>
+                  <class name="fr5_exp_label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">846</property>
+                <property name="y">26</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page1</property>
+            <property name="title" translatable="yes">page1</property>
             <property name="position">2</property>
           </packing>
         </child>
