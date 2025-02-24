@@ -1,6 +1,20 @@
+/* Universals */
+.universal_font {
+    font-family: 'MedievalSharp';
+    text-shadow: 
+        1px 1px 0px #000000,   /* Sombra preta no canto inferior direito */
+        -1px -1px 0px #000000, /* Sombra preta no canto superior esquerdo */
+        -1px 1px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
+        1px -1px 0px #000000,  /* Sombra preta no canto superior direito */
+        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+}
+
 .background {
     background-image: linear-gradient(#101010, #1a1a1a, #101010);
 }
+
+/*=============================================================================================== */
+
 /* Títulos das páginas */
 .tittle_labels {
     font-size: 96px;
@@ -456,7 +470,7 @@ Frame 5 - Colíseu
 }
 
 .fr6_stared_font_size {
-    font-size: 48px;
+    font-size: 38px;
 }
 
 .fr6_label_vs_font_size {
@@ -469,6 +483,22 @@ Frame 5 - Colíseu
     box-shadow: 0px 4px 4px rgba(186, 186, 186, 0.25);
     border-radius: 10px;
     color: white;
+}
+
+.fr6-no-scrollbar scrollbar {
+    background: transparent;
+    border: none;
+    min-width: 0;
+    min-height: 0;
+}
+
+.fr6-no-scrollbar scrollbar slider {
+    background: transparent;
+    border: none;
+}
+
+.fr6-no-scrollbar slider:hover {
+    background: transparent; 
 }
 
 /* Frame 7, Resultado, vitória ou derrota */
@@ -502,6 +532,23 @@ Frame 5 - Colíseu
         2px 2px 2px #000000;  
 }
 
+.fr7_btn_attacks {
+    border: 3px solid #383838;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.36));
+    box-shadow: 0px 2px 2px rgba(186, 186, 186, 0.42);
+    border-radius: 10px;
+}
+
+.fr7_chat_attack {
+    border: 6px solid rgba(0, 0 , 0, 0.4);
+    background-color: rgba(38, 38, 38, 0.7);
+    border-radius: 20px;
+}
+
+.fr7_timebar_blue {
+    background-image: linear-gradient(0deg, #00AAFF 0%, #006699 100%);
+}
+
 .fr6_combat_frame_font_size {
     font-size: 28px;
     font-weight: 400;
@@ -513,11 +560,17 @@ Frame 5 - Colíseu
 
 .fr6_framelifebar {
     background-color: transparent;
-    border: 5px solid #383838;
+    border: 3px solid #383838;
 }
 
 .fr6_lifebar_green {
     background-image: linear-gradient(0deg, #00FF2F 0%, #00991C 100%);
+}
+
+.fr6_transparent_bg {
+    background-color: transparent;
+    border: none;
+    background-image: linear-gradient(transparent, transparent);
 }
 
 /* Colors */

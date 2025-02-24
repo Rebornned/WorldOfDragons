@@ -12,7 +12,9 @@
 // cd C:/Users/Amage/Desktop/Prog/Projects/WorldOfDragons/bin/
 // cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 // gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
-// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c account.c player_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c account.c player_libs.c battle_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+
+
 // =====================================================================================================
 // Estrutura de dados GTK
 typedef struct {
@@ -26,10 +28,25 @@ typedef struct {
 } gtkData;
 
 typedef struct {
-    GtkWidget * widgetBar;
+    GtkWidget * widget;
+    GtkFixed *fixed;
     gint totalLoops;
+    gint actualPosX;
+    gint actualPosY;
+    gint finalPosX;
+    gint finalPosY;
+    gint stepX;
+    gint stepY;
+    gint timer;
     gboolean isActive;
 } gtkAnimationData;
+
+typedef struct {
+    gchar path[200];
+    GtkImage *loader;
+    gint totalLoops;
+    gint actualFrame;
+} gtkMediaData;
 
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
@@ -112,10 +129,20 @@ void updatelvlDragon(GtkButton *btn, gpointer data);
 void labelTextAnimation(GtkLabel *label, char *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
+void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
+void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames);
+void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames);
+void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
+gboolean moveWidgetAnimation(gpointer data);
 gboolean retroBarAnimationLoop(gpointer data);
 gboolean turnOnButton(gpointer data);
+gboolean timedSettingMoveWidgetAnimation(gpointer data);
 gboolean timedLabelModifier(gpointer data);
+gboolean timedLabelAnimation(gpointer data);
 gboolean timedgFree(gpointer data);
+gboolean updateLoaderFrame(gpointer data);
+gboolean timedSettingVideoPlay(gpointer data);
+gboolean settingBattleWindow(gpointer data);
 
 // ********************************************************************************************************
 
@@ -243,8 +270,8 @@ int main(int argc, char *argv[]) {
     fr5_actual_dragon_index = 26;
 
 
-    GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
-    retroBarAnimationStart(1000 ,fr6_life_bar_ent1, 2046, 1200);
+    //GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
+    //retroBarAnimationStart(1000 ,fr6_life_bar_ent1, 2046, 1200);
     
     // Inicializar player
     srand(time(NULL));
@@ -267,6 +294,7 @@ int main(int argc, char *argv[]) {
     gtk_widget_show_all(window);
 
     gtk_main();
+    
 }
 
 void switchPage(GtkButton *btn, gpointer user_data) {
@@ -389,7 +417,6 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
         if(fr5_actual_dragon_index > 0) {
             fr5_actual_dragon_index--;
-            //g_print("Actual index: %d\n", fr5_actual_dragon_index);
             if(g_strcmp0(gtk_stack_get_visible_child_name(fr5_coliseum_stack), "0") == 0) {
                 gtk_stack_set_transition_type(GTK_STACK(fr5_coliseum_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT);
                 gtk_stack_set_visible_child_name(fr5_coliseum_stack, "1");
@@ -417,6 +444,115 @@ void switchPage(GtkButton *btn, gpointer user_data) {
                 gtk_stack_set_visible_child_name(fr5_coliseum_stack, "1");
             }
             updateColiseum();
+        }
+    }
+
+    
+    if (g_strcmp0(button_name, "fr5_btn_battle") == 0) {
+        gint dragonIndex = fr5_actual_dragon_index;
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+
+        if(((pBeastVector[dragonIndex].unlock_id-27) * -1) <= player.actualProgress) {
+            GtkStack *fr6_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_stack"));
+            GtkLabel *fr6_dragon_name = GTK_LABEL(gtk_builder_get_object(builder, "fr6_dragon_name"));
+            GtkLabel *fr6_enemy_name_common = GTK_LABEL(gtk_builder_get_object(builder, "fr6_enemy_name_common"));
+            GtkLabel *fr6_enemy_name_rare = GTK_LABEL(gtk_builder_get_object(builder, "fr6_enemy_name_rare"));
+            GtkLabel *fr6_enemy_name_epic = GTK_LABEL(gtk_builder_get_object(builder, "fr6_enemy_name_epic"));
+            GtkLabel *fr6_enemy_name_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr6_enemy_name_legendary"));
+            GtkImage *fr6_stared_bg = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_stared_bg"));
+            GtkImage *fr6_stared_player_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_stared_player_dragon"));
+            GtkImage *fr6_stared_enemy_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_stared_enemy_dragon"));
+              
+            gtk_stack_set_visible_child_name(main_stack, "combat_page");
+            gtk_stack_set_visible_child_name(fr6_stack, "fr6_stared");
+            labeltextModifier(fr6_enemy_name_legendary, "");
+            labeltextModifier(fr6_enemy_name_epic, "");
+            labeltextModifier(fr6_enemy_name_rare, "");
+            labeltextModifier(fr6_enemy_name_common, "");
+
+            gchar *dragonBackgroundPath = g_strdup_printf("../assets/img_files/battle/%s_bg.png", pOriginalBeastVector[dragonIndex].name);
+            gchar *enemyDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", pOriginalBeastVector[dragonIndex].name);
+            gchar *playerDragonImgPath, dragonStage[50], *playerDragonName;
+            gtkData *labelAnimationDataEnemy = g_malloc(sizeof(gtkData));
+            
+            if(player.dragon.level >= 1) {
+                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_baby_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
+                strcpy(dragonStage, "( Bebê )");
+            }
+            if(player.dragon.level >= 10) {
+                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_juvenile_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
+                strcpy(dragonStage, "( Jovem )");
+            }
+            if(player.dragon.level >= 50) {
+                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_adult_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
+                strcpy(dragonStage, "( Adulto )");
+            }
+            if(player.dragon.level >= 80) {
+                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_titan_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
+                strcpy(dragonStage, "( Titã )");
+            }
+
+            gtk_image_set_from_file(fr6_stared_enemy_dragon, enemyDragonImgPath);
+            gtk_image_set_from_file(fr6_stared_player_dragon, playerDragonImgPath);
+            gtk_image_set_from_file(fr6_stared_bg, dragonBackgroundPath);
+
+            labelAnimationDataEnemy->intSingle = 1500;
+            strcpy(labelAnimationDataEnemy->string, pOriginalBeastVector[dragonIndex].tittle);
+            
+            if (dragonIndex < 3) {
+                labelAnimationDataEnemy->widgetSingle = GTK_WIDGET(fr6_enemy_name_legendary);
+            }
+            else if (dragonIndex > 2  && dragonIndex < 8) {
+                labelAnimationDataEnemy->widgetSingle = GTK_WIDGET(fr6_enemy_name_epic);
+            }
+            else if (dragonIndex > 7  && dragonIndex < 16) {
+                labelAnimationDataEnemy->widgetSingle = GTK_WIDGET(fr6_enemy_name_rare);
+            }
+            else if (dragonIndex > 15) {
+                labelAnimationDataEnemy->widgetSingle = GTK_WIDGET(fr6_enemy_name_common);
+            }
+
+            GtkFixed *fr6_stared_fixed_animation = GTK_FIXED(gtk_builder_get_object(builder, "fr6_stared_fixed_animation"));
+            GtkWidget *fr6_stared_player_dragon_wid = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_stared_player_dragon"));
+            GtkWidget *fr6_stared_dragon_border2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_stared_dragon_border2"));
+            GtkWidget *fr6_stared_enemy_dragon_wid = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_stared_enemy_dragon"));
+            GtkWidget *fr6_stared_dragon_border = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_stared_dragon_border"));
+
+            settingTimedMoveWidgetAnimation(330, 3000, fr6_stared_player_dragon_wid, fr6_stared_fixed_animation, -250, 18, 80, -1);
+            settingTimedMoveWidgetAnimation(330, 3000, fr6_stared_dragon_border2, fr6_stared_fixed_animation, -262, 4, 68, -1);
+
+            playerDragonName = g_strdup_printf("%s %s", player.dragon.name, dragonStage);
+            gtkData *labelAnimationDataPlayer = g_malloc(sizeof(gtkData));
+            labelAnimationDataPlayer->intSingle = 1500;
+            strcpy(labelAnimationDataPlayer->string, playerDragonName);
+            labelAnimationDataPlayer->widgetSingle = GTK_WIDGET(fr6_dragon_name);
+            g_timeout_add(3330, timedLabelAnimation, labelAnimationDataPlayer);
+
+            gtkData *labelVersusText = g_malloc(sizeof(gtkData));
+            GtkWidget *fr6_label_vs_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_label_vs_text"));
+            labelVersusText->intSingle = 750;
+            strcpy(labelVersusText->string, "VS");
+            labelVersusText->widgetSingle = GTK_WIDGET(fr6_label_vs_text);
+            g_timeout_add(4830, timedLabelAnimation, labelVersusText);
+            
+            GtkImage *fr6_video_loader = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_video_loader"));
+            settingVideoPlay(fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/render", 109);
+
+            settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_enemy_dragon_wid, fr6_stared_fixed_animation, 1014, 18, 702, -1);
+            settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_dragon_border, fr6_stared_fixed_animation, 1002, 4, 688, -1);
+            g_timeout_add(5910, timedLabelAnimation, labelAnimationDataEnemy);
+            settingTimedVideoPlay(7600, fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139);
+
+            g_print("Pode batalhar\n");
+            Battle *battleInstance = g_malloc(sizeof(Battle));
+            player = getPlayer(playerFile);
+            strcpy(player.dragon.img_path, playerDragonImgPath);
+
+            setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player);
+            g_timeout_add(9680, settingBattleWindow, battleInstance);
+        }
+        else {
+            g_print("Não pode batalhar\n");
         }
     }
 
@@ -496,6 +632,10 @@ void registerSignals(GtkBuilder *builder) {
 
     GObject *fr5_btn_coliseum_return = gtk_builder_get_object(builder, "fr5_btn_coliseum_return");
     g_signal_connect(fr5_btn_coliseum_return, "clicked", G_CALLBACK(switchPage), NULL);
+
+    GObject *fr5_btn_battle = gtk_builder_get_object(builder, "fr5_btn_battle");
+    g_signal_connect(fr5_btn_battle, "clicked", G_CALLBACK(switchPage), NULL);
+
 
     for(int i=0; i < totalBeasts; i++) {
         char actBtnName[100];
@@ -809,7 +949,7 @@ void updateDataCave() {
 }
 
 void updateColiseum() {
-    int dragonIndex = fr5_actual_dragon_index;
+    gint dragonIndex = fr5_actual_dragon_index;
     player = getPlayer(playerFile);
     GtkLabel * fr5_dragon_name_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_legendary"));
     GtkLabel * fr5_dragon_name_epic = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_name_epic"));
@@ -836,6 +976,7 @@ void updateColiseum() {
     gchar *defeatDragons = g_strdup_printf("%d", player.actualProgress);
 
     GtkWidget *actualImage = GTK_WIDGET(gtk_builder_get_object(builder, widgetPathing));
+
     gtk_image_set_from_file(GTK_IMAGE(actualImage), battlePathing);
     gtk_image_set_from_file(fr5_coliseum_bg, backgroundPathing);
     labeltextModifier(fr5_coliseum_defeat_label, defeatDragons);
@@ -857,17 +998,18 @@ void updateColiseum() {
     else if (dragonIndex > 2  && dragonIndex < 8) {
         labeltextModifier(fr5_dragon_name_epic, pOriginalBeastVector[dragonIndex].tittle);
         labeltextModifier(fr5_coliseum_difficulty_hard, "Difícil");
-
     }
     else if (dragonIndex > 7  && dragonIndex < 16) {
         labeltextModifier(fr5_dragon_name_rare, pOriginalBeastVector[dragonIndex].tittle);
         labeltextModifier(fr5_coliseum_difficulty_medium, "Média");
     }
+
     else if (dragonIndex > 15) {
         labeltextModifier(fr5_dragon_name_common, pOriginalBeastVector[dragonIndex].tittle);
         labeltextModifier(fr5_coliseum_difficulty_easy, "Fácil");
     }
-    
+
+
     int levelDiff = pOriginalBeastVector[dragonIndex].level - player.dragon.level;
     
     labeltextModifier(fr5_coliseum_rec_infernal, "");
@@ -875,19 +1017,28 @@ void updateColiseum() {
     labeltextModifier(fr5_coliseum_rec_medium, "");
     labeltextModifier(fr5_coliseum_rec_easy, "");
 
-    if(levelDiff > 14) 
+    if(levelDiff > 14)
         labeltextModifier(fr5_coliseum_rec_infernal, lvlReq);
     else if(levelDiff < 15 && levelDiff >= 7)
         labeltextModifier(fr5_coliseum_rec_hard, lvlReq);
     else if(levelDiff < 7 && levelDiff >= 0)
         labeltextModifier(fr5_coliseum_rec_medium, lvlReq);
     else if(levelDiff < 0)
-        labeltextModifier(fr5_coliseum_rec_easy, lvlReq);    
+        labeltextModifier(fr5_coliseum_rec_easy, lvlReq);
+
+    if(((pBeastVector[dragonIndex].unlock_id-27) * -1) > player.actualProgress) {
+        labeltextModifier(fr5_dragon_name_legendary, "");
+        labeltextModifier(fr5_dragon_name_epic, "");
+        labeltextModifier(fr5_dragon_name_rare, "");
+        labeltextModifier(fr5_dragon_name_common, "Desconhecido");
+        gtk_image_set_from_file(GTK_IMAGE(actualImage), "../assets/img_files/beast_unknown_coliseum.png");
+        gtk_image_set_from_file(GTK_IMAGE(fr5_coliseum_bg), "../assets/img_files/unknown_background.png");
+    }
 }
 
 void labelTextAnimation(GtkLabel *label, char *text, int timer) {
     int totalChars = strlen(text);
-    char completeText[strlen(text)];
+    char completeText[strlen(text)+10];
     memset(completeText, '\0', sizeof(completeText));
 
     for(int i=0; i < totalChars; i++) {
@@ -896,7 +1047,6 @@ void labelTextAnimation(GtkLabel *label, char *text, int timer) {
         strncat(completeText, &text[i], 1);
         strcpy(labelData->string, completeText);
         g_timeout_add(timer/totalChars*i, timedLabelModifier, labelData);
-        g_timeout_add(timer/totalChars*i, timedgFree, labelData);
     }
 }
 
@@ -904,9 +1054,83 @@ void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gin
     gint barSize;
     gtkAnimationData *barData = g_malloc(sizeof(gtkAnimationData) * 1);
     gtk_widget_get_size_request(GTK_WIDGET(widget), &barSize, NULL);
-    barData->widgetBar = widget;
+    barData->widget = widget;
     barData->totalLoops = (gint) ((gfloat) barSize - barSize * ((gfloat) newValue/actualValue));
     g_timeout_add(timer/barData->totalLoops, retroBarAnimationLoop, barData);
+}
+
+void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY) {
+    gtkAnimationData *widgetAnimationData = g_malloc(sizeof(gtkAnimationData));
+    widgetAnimationData->timer = timerAnimation;
+    widgetAnimationData->widget = widget;
+    widgetAnimationData->fixed = fixed;
+    widgetAnimationData->actualPosX = actualX;
+    widgetAnimationData->actualPosY = actualY;
+    widgetAnimationData->finalPosX = finalPosX;
+    widgetAnimationData->finalPosY = finalPosY;
+    g_timeout_add(timeout, timedSettingMoveWidgetAnimation, widgetAnimationData);
+}
+
+void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames) {
+    gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
+    mediaData->loader = loader;
+    mediaData->totalLoops = totalFrames;
+    mediaData->actualFrame = 1;
+    strcpy(mediaData->path, path);
+    g_timeout_add_full(G_PRIORITY_HIGH, timeout, (GSourceFunc) timedSettingVideoPlay, mediaData, NULL);
+    //g_timeout_add(timeout, timedSettingVideoPlay, mediaData);
+}
+
+void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY) {
+    gtkAnimationData *widgetData = g_malloc(sizeof(gtkAnimationData) * 1);
+    widgetData->fixed = GTK_FIXED(fixed);
+    widgetData->widget = GTK_WIDGET(widget);
+    widgetData->finalPosX = finalPosX;
+    widgetData->finalPosY = finalPosY;
+    widgetData->actualPosX = actualX;
+    widgetData->actualPosY = actualY;
+    widgetData->totalLoops = timer / 10;
+    widgetData->stepX = abs(actualX - finalPosX) / widgetData->totalLoops;
+    widgetData->stepY = abs(actualY - finalPosY) / widgetData->totalLoops;
+    g_timeout_add(10, moveWidgetAnimation, widgetData);
+}
+
+void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames) {
+    gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
+    mediaData->loader = loader;
+    mediaData->totalLoops = totalFrames;
+    mediaData->actualFrame = 1;
+    strcpy(mediaData->path, path);
+    g_timeout_add_full(G_PRIORITY_HIGH, 16, (GSourceFunc) updateLoaderFrame, mediaData, NULL);
+    //g_timeout_add(16, updateLoaderFrame, mediaData);
+}
+
+gboolean settingBattleWindow(gpointer data) {
+    Battle *battle = (Battle *) data;
+    GtkStack *fr6_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_stack"));
+    GtkImage *fr6_combat_bg = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_bg"));
+    GtkLabel *fr6_lvl_name_ent1 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_lvl_name_ent1"));
+    GtkLabel *fr6_lvl_name_ent2 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_lvl_name_ent2"));
+    GtkImage *fr6_combat_player_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_player_dragon"));
+    GtkImage *fr6_combat_enemy_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_enemy_dragon"));
+
+    gchar ent1_lvl_name[100], ent2_lvl_name[100];
+    gchar *battleBackgroundPath = g_strdup_printf("../assets/img_files/battle/%s_bg.png", battle->EntityTwo.entDragon.name);
+    gchar *enemyDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", battle->EntityTwo.entDragon.name);
+
+    gtk_image_set_from_file(fr6_combat_bg, battleBackgroundPath);
+    snprintf(ent1_lvl_name, sizeof(ent1_lvl_name), "%d %s", battle->EntityOne.entDragon.level, battle->EntityOne.entDragon.name);
+    snprintf(ent2_lvl_name, sizeof(ent2_lvl_name), "%d %s", battle->EntityTwo.entDragon.level, battle->EntityTwo.entDragon.name);
+
+    labeltextModifier(fr6_lvl_name_ent1, ent1_lvl_name);
+    labeltextModifier(fr6_lvl_name_ent2, ent2_lvl_name);
+    gtk_image_set_from_file(fr6_combat_player_dragon, battle->EntityOne.entDragon.img_path);
+
+    gtk_image_set_from_file(fr6_combat_enemy_dragon, enemyDragonImgPath);
+
+    gtk_stack_set_visible_child_name(fr6_stack, "fr6_combat");
+
+    return FALSE;
 }
 
 gboolean retroBarAnimationLoop(gpointer data) {
@@ -918,13 +1142,26 @@ gboolean retroBarAnimationLoop(gpointer data) {
 
     if(barData->isActive == TRUE) {
         gint actualWidth, actualHeight;
-        gtk_widget_get_size_request(GTK_WIDGET(barData->widgetBar), &actualWidth, &actualHeight);
-        gtk_widget_set_size_request(GTK_WIDGET(barData->widgetBar), actualWidth-1, actualHeight);
+        gtk_widget_get_size_request(GTK_WIDGET(barData->widget), &actualWidth, &actualHeight);
+        gtk_widget_set_size_request(GTK_WIDGET(barData->widget), actualWidth-1, actualHeight);
         barData->totalLoops--;
         return TRUE;
     }
     
     g_free(barData);    
+    return FALSE;
+}
+
+gboolean timedSettingVideoPlay(gpointer data) {
+    gtkMediaData *mediadata = ( gtkMediaData* ) data;
+    settingVideoPlay(mediadata->loader, mediadata->path, mediadata->totalLoops);
+    return FALSE;
+}
+
+gboolean timedSettingMoveWidgetAnimation(gpointer data) {
+    gtkAnimationData *widgetData = (gtkAnimationData *) data;
+    settingMoveWidgetAnimation(widgetData->timer, widgetData->widget, widgetData->fixed, widgetData->actualPosX, widgetData->actualPosY, widgetData->finalPosX, widgetData->finalPosY);
+    g_free(widgetData);
     return FALSE;
 }
 
@@ -936,7 +1173,15 @@ gboolean timedgFree(gpointer data) {
 gboolean timedLabelModifier(gpointer data) {
     gtkData *labelData = (gtkData*) data;
     labeltextModifier(GTK_LABEL(labelData->widgetSingle), labelData->string);
+    g_free(labelData);
     return G_SOURCE_REMOVE;
+}
+
+gboolean timedLabelAnimation(gpointer data) {
+    gtkData *labelData = (gtkData*) data;
+    labelTextAnimation(GTK_LABEL(labelData->widgetSingle), labelData->string, labelData->intSingle);
+    g_free(labelData);
+    return FALSE;
 }
 
 gboolean turnOnButton(gpointer data) {
@@ -947,6 +1192,39 @@ gboolean turnOnButton(gpointer data) {
 
 // Animações
 // Restaura a opacidade de um botão
+gboolean moveWidgetAnimation(gpointer data) {
+    gtkAnimationData *widgetData = (gtkAnimationData*) data;
+    gint deslocationX, deslocationY, multiplyStepX, multiplyStepY;
+    if(widgetData->totalLoops > -1) {
+        multiplyStepX = widgetData->actualPosX < widgetData->finalPosX ? 1 : -1;
+        multiplyStepY = widgetData->actualPosY < widgetData->finalPosY ? 1 : -1;
+        
+        deslocationX = widgetData->stepX * multiplyStepX;
+        deslocationY = widgetData->stepY * multiplyStepY;
+        
+        if(widgetData->totalLoops == 0) {
+            if(widgetData->actualPosX + deslocationX != widgetData->finalPosX)
+                deslocationX = abs(widgetData->actualPosX - widgetData->finalPosX) * multiplyStepX;
+            if(widgetData->actualPosY + deslocationY != widgetData->finalPosY)
+                deslocationY = abs(widgetData->actualPosY - widgetData->finalPosY) * multiplyStepY;
+        }
+        if(widgetData->finalPosX == -1)
+            deslocationX = 0;
+        if(widgetData->finalPosY == -1)
+            deslocationY = 0;
+
+        widgetData->actualPosX += deslocationX;
+        widgetData->actualPosY += deslocationY;
+    
+        gtk_fixed_move(widgetData->fixed, widgetData->widget, widgetData->actualPosX, widgetData->actualPosY);
+        widgetData->totalLoops -= 1;
+        return TRUE;
+    }
+   
+    g_free(widgetData);
+    return FALSE;
+}
+
 gboolean btn_animation_rest_opacity(gpointer data) {
     GtkWidget *button = GTK_WIDGET(data); // Converte o gpointer para GtkWidget*
     gtk_widget_set_opacity(button, 1.0); // Restaura a opacidade
@@ -983,3 +1261,20 @@ gboolean atributeUpAnimation(gpointer data) {
     return G_SOURCE_REMOVE;
 }
 
+gboolean updateLoaderFrame(gpointer data) {
+    gtkMediaData *mediaData = (gtkMediaData*) data;
+    if(mediaData->totalLoops > 0) {
+        gchar actualPath[300];
+        snprintf(actualPath, sizeof(actualPath), "%s/frame (%d).png", mediaData->path, mediaData->actualFrame);
+        //g_print("path atual: %s\n", actualPath);
+        gtk_image_set_from_file(mediaData->loader, actualPath);
+
+        mediaData->actualFrame += 1;
+        mediaData->totalLoops -= 1;
+        return TRUE;
+    }
+
+    gtk_image_clear(GTK_IMAGE(mediaData->loader));
+    g_free(mediaData);
+    return FALSE;
+}

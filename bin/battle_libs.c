@@ -8,6 +8,7 @@ int binarySearch(int item, int vec[], int length);
 int startTurn(Battle *battleInstance);
 int debuffTick(Debuff *debuff, Entity *entity);
 
+/*
 int main() {
     Dragon newdragon;
     srand(time(NULL));
@@ -18,6 +19,7 @@ int main() {
     }
 
 }
+*/
 
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
     int cooldownsVector[4] = {0, 0, 0, 0};
