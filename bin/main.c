@@ -43,13 +43,18 @@ typedef struct {
 
 typedef struct {
     gchar path[200];
+    gchar animationName[150];
     GtkImage *loader;
     gint totalLoops;
     gint actualFrame;
+    gint animationIndex;
 } gtkMediaData;
 
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// Animations
+GdkPixbuf *pAnimationsFrameVector[10][500];  // Array animations
+
 // Main window
 GtkWidget *window; 
 GtkBuilder *builder;
@@ -130,9 +135,11 @@ void labelTextAnimation(GtkLabel *label, char *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
-void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames);
-void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames);
+void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName);
+void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName);
 void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
+void loadingPixbuffAnimation(char *path, gint totalFrames, gint animationIndex);
+void registerAnimations();
 gboolean moveWidgetAnimation(gpointer data);
 gboolean retroBarAnimationLoop(gpointer data);
 gboolean turnOnButton(gpointer data);
@@ -212,7 +219,7 @@ int main(int argc, char *argv[]) {
     fr5_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_stack"));
     fr5_beastiary = GTK_FIXED(gtk_builder_get_object(builder, "fr5_beastiary"));
     fr5_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_tittle_label"));
-
+    
     // Barra de experiência
     fr5_actual_page = 1;
     fr5_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_levelup_text"));
@@ -287,6 +294,7 @@ int main(int argc, char *argv[]) {
     updateColiseum();
     
     // Registrando sinais de callback para botões executarem funções
+    registerAnimations();
     registerSignals(builder);
 
     g_signal_connect(window, "map", G_CALLBACK(set_cursor_window), NULL);
@@ -536,12 +544,12 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             g_timeout_add(4830, timedLabelAnimation, labelVersusText);
             
             GtkImage *fr6_video_loader = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_video_loader"));
-            settingVideoPlay(fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/render", 109);
+            settingVideoPlay(fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/render", 109, "battle_opening");
 
             settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_enemy_dragon_wid, fr6_stared_fixed_animation, 1014, 18, 702, -1);
             settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_dragon_border, fr6_stared_fixed_animation, 1002, 4, 688, -1);
             g_timeout_add(5910, timedLabelAnimation, labelAnimationDataEnemy);
-            settingTimedVideoPlay(7600, fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139);
+            settingTimedVideoPlay(7600, fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139, "battle_opening2");
 
             g_print("Pode batalhar\n");
             Battle *battleInstance = g_malloc(sizeof(Battle));
@@ -1071,11 +1079,19 @@ void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidge
     g_timeout_add(timeout, timedSettingMoveWidgetAnimation, widgetAnimationData);
 }
 
-void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames) {
+void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName) {
     gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
     mediaData->loader = loader;
     mediaData->totalLoops = totalFrames;
     mediaData->actualFrame = 1;
+    if(strcmp(animationName, "battle_opening") == 0) {
+        mediaData->animationIndex = 1;
+    }
+    else if(strcmp(animationName, "battle_opening2") == 0) {
+        mediaData->animationIndex = 2;
+    }
+
+    strcpy(mediaData->animationName, animationName);
     strcpy(mediaData->path, path);
     g_timeout_add_full(G_PRIORITY_HIGH, timeout, (GSourceFunc) timedSettingVideoPlay, mediaData, NULL);
     //g_timeout_add(timeout, timedSettingVideoPlay, mediaData);
@@ -1095,14 +1111,34 @@ void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, 
     g_timeout_add(10, moveWidgetAnimation, widgetData);
 }
 
-void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames) {
+void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName) {
     gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
     mediaData->loader = loader;
     mediaData->totalLoops = totalFrames;
     mediaData->actualFrame = 1;
+
+    if(strcmp(animationName, "battle_opening") == 0) {
+        mediaData->animationIndex = 1;
+    }
+    else if(strcmp(animationName, "battle_opening2") == 0) {
+        mediaData->animationIndex = 2;
+    }
+    strcpy(mediaData->animationName, animationName);
     strcpy(mediaData->path, path);
     g_timeout_add_full(G_PRIORITY_HIGH, 16, (GSourceFunc) updateLoaderFrame, mediaData, NULL);
-    //g_timeout_add(16, updateLoaderFrame, mediaData);
+}
+
+void registerAnimations() {
+    loadingPixbuffAnimation("../assets/img_files/animations/animation_battle_opening/render", 109, 1); // Animação de abertura de batalha
+    loadingPixbuffAnimation("../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139, 2); // Animação de abertura batalha 2
+}
+
+void loadingPixbuffAnimation(char *path, gint totalFrames, gint animationIndex) {
+    char framePath[200];
+    for (int i = 1; i <= totalFrames; i++) {
+        snprintf(framePath, sizeof(framePath),"%s/frame (%d).png", path, i);
+        pAnimationsFrameVector[animationIndex][i] = gdk_pixbuf_new_from_file(framePath, NULL);
+    }
 }
 
 gboolean settingBattleWindow(gpointer data) {
@@ -1154,7 +1190,7 @@ gboolean retroBarAnimationLoop(gpointer data) {
 
 gboolean timedSettingVideoPlay(gpointer data) {
     gtkMediaData *mediadata = ( gtkMediaData* ) data;
-    settingVideoPlay(mediadata->loader, mediadata->path, mediadata->totalLoops);
+    settingVideoPlay(mediadata->loader, mediadata->path, mediadata->totalLoops, mediadata->animationName);
     return FALSE;
 }
 
@@ -1267,8 +1303,8 @@ gboolean updateLoaderFrame(gpointer data) {
         gchar actualPath[300];
         snprintf(actualPath, sizeof(actualPath), "%s/frame (%d).png", mediaData->path, mediaData->actualFrame);
         //g_print("path atual: %s\n", actualPath);
-        gtk_image_set_from_file(mediaData->loader, actualPath);
-
+        //gtk_image_set_from_file(mediaData->loader, actualPath);
+        gtk_image_set_from_pixbuf(mediaData->loader, pAnimationsFrameVector[mediaData->animationIndex][mediaData->actualFrame]);
         mediaData->actualFrame += 1;
         mediaData->totalLoops -= 1;
         return TRUE;
