@@ -2615,7 +2615,7 @@ Tempo de recarga: 1 turno(s)</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkImage" id="fr6_video_loader">
+                      <object class="GtkDrawingArea" id="fr6_video_loader">
                         <property name="name">fr6_video_loader</property>
                         <property name="width-request">1000</property>
                         <property name="height-request">483</property>
@@ -3227,7 +3227,7 @@ Tempo de recarga: 1 turno(s)</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="fr6_btn_run">
+                              <object class="GtkButton" id="fr6_btn_attack5">
                                 <property name="label" translatable="yes">Fugir</property>
                                 <property name="name">fr6_btn_run</property>
                                 <property name="width-request">127</property>
@@ -3374,7 +3374,8 @@ Tempo de recarga: 1 turno(s)</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkLabel" id="fr6_chat_label">
+                                <property name="name">fr6_chat_label</property>
                                 <property name="width-request">261</property>
                                 <property name="height-request">101</property>
                                 <property name="visible">True</property>
@@ -3384,6 +3385,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="fr7_chat_attack_font"/>
                                 </style>
                               </object>
                               <packing>

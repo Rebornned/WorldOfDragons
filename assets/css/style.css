@@ -545,6 +545,7 @@ Frame 5 - Colíseu
     border-radius: 20px;
 }
 
+
 .fr7_timebar_blue {
     background-image: linear-gradient(0deg, #00AAFF 0%, #006699 100%);
 }
@@ -556,6 +557,11 @@ Frame 5 - Colíseu
 
 .fr6_combat_frame_font_hp {
     font-size: 24px;
+}
+
+.fr7_chat_attack_font {
+    font-size: 20px;
+    color: white;
 }
 
 .fr6_framelifebar {

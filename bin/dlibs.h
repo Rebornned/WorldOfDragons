@@ -7,6 +7,32 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <epoxy/gl.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+/*
+typedef struct {
+    gchar path[200];
+    gchar animationName[150];
+    GdkPixbuf *actualTexture;
+    GtkWidget *loader;
+    GtkFixed *fixed;
+    gint totalLoops;
+    gint actualFrame;
+    gint animationIndex;
+    gint posX;
+    gint posY;
+    gint width;
+    gint height;
+} gtkMediaData;
+*/
+typedef struct {
+    GtkWidget *widget;
+    gint animationIndex;
+    gint currentFrame;
+    gint totalFrames;
+    guint timeoutID;
+} AnimationData;
 
 typedef struct {
     char name[150];
@@ -49,8 +75,6 @@ typedef struct {
     Dragon dragon;
 } Player;
 
-
-
 typedef struct {
     char type[100];
     int turns;
@@ -64,8 +88,8 @@ typedef struct {
 typedef struct {
     Dragon entDragon;
     Dragon fixedDragon;
-    Buff entityBuffs[10];
-    Debuff entityDebuffs[10];
+    Buff entityBuffs[4];
+    Debuff entityDebuffs[4];
     int skillsCooldown[4];
 } Entity;
 
@@ -78,6 +102,17 @@ typedef struct {
     char winnerEnt[100];
     int expReward;
 } Battle;
+
+typedef struct {
+    Battle *battle;
+    GtkWidget *actualTurn;
+    GtkWidget *pHealthBar;
+    GtkWidget *eHealthBar;
+    GtkStack *optionsStack;
+    GtkLabel *pHealthText;
+    GtkLabel *battleText;
+    GtkLabel *turnsText;
+} Game;
 
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
@@ -123,3 +158,12 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
 int startTurn(Battle *battleInstance);
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int debuffTick(Debuff *debuff, Entity *entity);
+
+// Animations
+gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
+void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName);
+gboolean delayedStartAnimation(gpointer data);
+void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames);
+
+// Game
+gboolean onBattle(gpointer data);

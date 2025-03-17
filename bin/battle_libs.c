@@ -7,19 +7,8 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int binarySearch(int item, int vec[], int length);
 int startTurn(Battle *battleInstance);
 int debuffTick(Debuff *debuff, Entity *entity);
+int applyDebuff(gchar *debuffType, gint turns, Entity *entity);
 
-/*
-int main() {
-    Dragon newdragon;
-    srand(time(NULL));
-    newdragon.defense = 150;
-    for(int i=0; i < 10; i++) {
-        causeDamage(150, 2.0, 55, &newdragon);
-        sleep(1);
-    }
-
-}
-*/
 
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
     int cooldownsVector[4] = {0, 0, 0, 0};
@@ -52,7 +41,7 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     else if(playerEnt.speed == enemyEnt.speed) battleInstance->entityTurn = random_choice(1, 2);
 
     // Zera os buffs e debbufs de ambas as entidades
-    for(int i=0; i<10; i++)  {
+    for(int i=0; i<4; i++)  {
         strcpy(battleInstance->EntityOne.entityBuffs[i].type, "");
         battleInstance->EntityOne.entityBuffs[i].turns = 0;
         strcpy(battleInstance->EntityOne.entityDebuffs[i].type, "");
@@ -83,7 +72,9 @@ int startTurn(Battle *battleInstance) {
         debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo);
     }
     // Aplicando Efeitos de buff e atualizando recarga...
+
     // Em andamento
+    bI->actualTurn++;
 
 
 }
@@ -106,8 +97,37 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     return totalDamage;
 }
 
+int applyDebuff(gchar *debuffType, gint turns, Entity *entity) {
+    if(strlen(debuffType) == 0 || !entity)
+        return -1;
+    
+    gint availableSlot = -1;
+
+    for(int i=0; i < 4; i++) {
+        if(strcmp(debuffType, entity->entityDebuffs[i].type) == 0) {
+            availableSlot = -1;
+            return -2;
+        }
+        if(strlen(entity->entityDebuffs->type) > 0) {
+            availableSlot = i;
+            break;
+        }
+    } 
+    if(availableSlot != -1) {
+        if(strcmp(debuffType, "Carbonized") == 0)
+            entity->entDragon.defense -= (entity->entDragon.defense*0.2);
+        if(strcmp(debuffType, "Terrified") == 0)
+            entity->entDragon.attack -= (entity->entDragon.attack*0.2);
+        entity->entityDebuffs[availableSlot].turns = turns;
+        strcpy(entity->entityDebuffs[availableSlot].type, debuffType);
+        return 0;
+    }
+
+    return 1;
+}
+
 int debuffTick(Debuff *debuff, Entity *entity) {
-    if(strlen(debuff->type) == 0) 
+    if(strlen(debuff->type) == 0 || !entity)  
         return 1;
 
     if(strcmp(debuff->type, "Bleeding") == 0)

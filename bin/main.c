@@ -3,16 +3,20 @@
 #include <locale.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <cairo.h>
 #include <glib.h>
 #include <direct.h>
 #include <math.h>
 #include "dlibs.h"
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 // Compilação necessária para funcionar
 // cd C:/Users/Amage/Desktop/Prog/Projects/WorldOfDragons/bin/
 // cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 // gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
-// Sem terminal: gcc -o main.exe main.c files_libs.c sorts_libs.c account.c player_libs.c battle_libs.c -mwindows `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
+// Sem terminal: gcc -o main.exe main.c animations_libs.c files_libs.c sorts_libs.c account.c player_libs.c battle_libs.c -mwindows $(pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango)
+
+
 
 
 // =====================================================================================================
@@ -42,18 +46,17 @@ typedef struct {
 } gtkAnimationData;
 
 typedef struct {
-    gchar path[200];
-    gchar animationName[150];
-    GtkImage *loader;
-    gint totalLoops;
-    gint actualFrame;
-    gint animationIndex;
-} gtkMediaData;
+    GtkStack *stack;
+    gchar page[128];
+} gtkTimedStack;
 
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+// Game
+gchar request[300];
+
 // Animations
-GdkPixbuf *pAnimationsFrameVector[10][500];  // Array animations
+GdkPixbuf *pAnimationsFrameVector[10][500];  // Animations array
 
 // Main window
 GtkWidget *window; 
@@ -111,6 +114,7 @@ GtkWidget *fr5_cave_speed_up;
 GtkStack *fr5_coliseum_stack;
 int fr5_actual_dragon_index;
 
+
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
 // Registro de funções referentes a tela
@@ -131,15 +135,16 @@ gboolean atributeUpAnimation(gpointer data);
 void updateDataCave();
 void updateColiseum();
 void updatelvlDragon(GtkButton *btn, gpointer data);
-void labelTextAnimation(GtkLabel *label, char *text, int timer);
+void labelTextAnimation(GtkLabel *label, gchar *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
-void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName);
-void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName);
 void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
-void loadingPixbuffAnimation(char *path, gint totalFrames, gint animationIndex);
-void registerAnimations();
+void loadAnimationFrames(gchar *path, gint totalFrames, gint animationIndex);
+void registerTexturesAnimations();
+void settingTimedStackChange(gint timeout, GtkStack *stack, gchar *page);
+void sendRequest(GtkButton *btn, gpointer user_data);
+gboolean timedStackChange(gpointer data);
 gboolean moveWidgetAnimation(gpointer data);
 gboolean retroBarAnimationLoop(gpointer data);
 gboolean turnOnButton(gpointer data);
@@ -148,7 +153,6 @@ gboolean timedLabelModifier(gpointer data);
 gboolean timedLabelAnimation(gpointer data);
 gboolean timedgFree(gpointer data);
 gboolean updateLoaderFrame(gpointer data);
-gboolean timedSettingVideoPlay(gpointer data);
 gboolean settingBattleWindow(gpointer data);
 
 // ********************************************************************************************************
@@ -281,6 +285,7 @@ int main(int argc, char *argv[]) {
     //retroBarAnimationStart(1000 ,fr6_life_bar_ent1, 2046, 1200);
     
     // Inicializar player
+    strcpy(request, "");
     srand(time(NULL));
     playerFile = getAccountfile("Rambo");
 
@@ -293,16 +298,15 @@ int main(int argc, char *argv[]) {
     updateDataCave();
     updateColiseum();
     
-    // Registrando sinais de callback para botões executarem funções
-    registerAnimations();
-    registerSignals(builder);
 
+    registerTexturesAnimations();
+
+    registerSignals(builder);
     g_signal_connect(window, "map", G_CALLBACK(set_cursor_window), NULL);
 
     gtk_widget_show_all(window);
-
-    gtk_main();
     
+    gtk_main();
 }
 
 void switchPage(GtkButton *btn, gpointer user_data) {
@@ -543,13 +547,14 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             labelVersusText->widgetSingle = GTK_WIDGET(fr6_label_vs_text);
             g_timeout_add(4830, timedLabelAnimation, labelVersusText);
             
-            GtkImage *fr6_video_loader = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_video_loader"));
-            settingVideoPlay(fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/render", 109, "battle_opening");
+            GtkFixed *fr6_stared = GTK_FIXED(gtk_builder_get_object(builder, "fr6_stared"));
+            GtkWidget *fr6_video_loader = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_video_loader"));
 
             settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_enemy_dragon_wid, fr6_stared_fixed_animation, 1014, 18, 702, -1);
             settingTimedMoveWidgetAnimation(330, 5580, fr6_stared_dragon_border, fr6_stared_fixed_animation, 1002, 4, 688, -1);
             g_timeout_add(5910, timedLabelAnimation, labelAnimationDataEnemy);
-            settingTimedVideoPlay(7600, fr6_video_loader, "../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139, "battle_opening2");
+            settingTimedVideoPlay(fr6_video_loader, 0, 109, "battle_opening");
+            settingTimedVideoPlay(fr6_video_loader, 7620, 144, "battle_opening2");
 
             g_print("Pode batalhar\n");
             Battle *battleInstance = g_malloc(sizeof(Battle));
@@ -557,7 +562,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             strcpy(player.dragon.img_path, playerDragonImgPath);
 
             setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player);
-            g_timeout_add(9680, settingBattleWindow, battleInstance);
+            g_timeout_add(10400, settingBattleWindow, battleInstance);
         }
         else {
             g_print("Não pode batalhar\n");
@@ -646,11 +651,19 @@ void registerSignals(GtkBuilder *builder) {
 
 
     for(int i=0; i < totalBeasts; i++) {
-        char actBtnName[100];
+        gchar actBtnName[100];
         sprintf(actBtnName, "fr5_btn_dragon%d", i+1);
         GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
         g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_dragon_in_beastiary), GINT_TO_POINTER(i));
     }
+    // Paínel de ataque da aba de combate
+    for(int i=1; i <= 4; i++) {
+        gchar actBtnName[100];
+        sprintf(actBtnName, "fr6_btn_attack%d", i);
+        GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
+        g_signal_connect(actual_btn, "clicked", G_CALLBACK(sendRequest), GINT_TO_POINTER(i));
+    }
+
     return;
 }
 
@@ -1044,7 +1057,7 @@ void updateColiseum() {
     }
 }
 
-void labelTextAnimation(GtkLabel *label, char *text, int timer) {
+void labelTextAnimation(GtkLabel *label, gchar *text, int timer) {
     int totalChars = strlen(text);
     char completeText[strlen(text)+10];
     memset(completeText, '\0', sizeof(completeText));
@@ -1079,24 +1092,6 @@ void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidge
     g_timeout_add(timeout, timedSettingMoveWidgetAnimation, widgetAnimationData);
 }
 
-void settingTimedVideoPlay(gint timeout, GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName) {
-    gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
-    mediaData->loader = loader;
-    mediaData->totalLoops = totalFrames;
-    mediaData->actualFrame = 1;
-    if(strcmp(animationName, "battle_opening") == 0) {
-        mediaData->animationIndex = 1;
-    }
-    else if(strcmp(animationName, "battle_opening2") == 0) {
-        mediaData->animationIndex = 2;
-    }
-
-    strcpy(mediaData->animationName, animationName);
-    strcpy(mediaData->path, path);
-    g_timeout_add_full(G_PRIORITY_HIGH, timeout, (GSourceFunc) timedSettingVideoPlay, mediaData, NULL);
-    //g_timeout_add(timeout, timedSettingVideoPlay, mediaData);
-}
-
 void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY) {
     gtkAnimationData *widgetData = g_malloc(sizeof(gtkAnimationData) * 1);
     widgetData->fixed = GTK_FIXED(fixed);
@@ -1111,48 +1106,36 @@ void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, 
     g_timeout_add(10, moveWidgetAnimation, widgetData);
 }
 
-void settingVideoPlay(GtkImage *loader, gchar *path, gint totalFrames, gchar *animationName) {
-    gtkMediaData *mediaData = g_malloc(sizeof(gtkMediaData));
-    mediaData->loader = loader;
-    mediaData->totalLoops = totalFrames;
-    mediaData->actualFrame = 1;
-
-    if(strcmp(animationName, "battle_opening") == 0) {
-        mediaData->animationIndex = 1;
-    }
-    else if(strcmp(animationName, "battle_opening2") == 0) {
-        mediaData->animationIndex = 2;
-    }
-    strcpy(mediaData->animationName, animationName);
-    strcpy(mediaData->path, path);
-    g_timeout_add_full(G_PRIORITY_HIGH, 16, (GSourceFunc) updateLoaderFrame, mediaData, NULL);
+void settingTimedStackChange(gint timeout, GtkStack *stack, gchar *page) {
+    gtkTimedStack *data = g_malloc(sizeof(gtkTimedStack));
+    data->stack = stack;
+    strcpy(data->page, page);
+    g_timeout_add(timeout, timedStackChange, data);
 }
 
-void registerAnimations() {
-    loadingPixbuffAnimation("../assets/img_files/animations/animation_battle_opening/render", 109, 1); // Animação de abertura de batalha
-    loadingPixbuffAnimation("../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 139, 2); // Animação de abertura batalha 2
-}
-
-void loadingPixbuffAnimation(char *path, gint totalFrames, gint animationIndex) {
-    char framePath[200];
-    for (int i = 1; i <= totalFrames; i++) {
-        snprintf(framePath, sizeof(framePath),"%s/frame (%d).png", path, i);
-        pAnimationsFrameVector[animationIndex][i] = gdk_pixbuf_new_from_file(framePath, NULL);
-    }
+gboolean timedStackChange(gpointer data) {
+    gtkTimedStack *changeData = (gtkTimedStack*) data;
+    gtk_stack_set_visible_child_name(changeData->stack, changeData->page);
+    g_free(changeData);
+    return FALSE;
 }
 
 gboolean settingBattleWindow(gpointer data) {
     Battle *battle = (Battle *) data;
     GtkStack *fr6_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_stack"));
+    GtkStack *fr6_battle_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_battle_stack"));
     GtkImage *fr6_combat_bg = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_bg"));
+    GtkLabel *fr6_chat_label = GTK_LABEL(gtk_builder_get_object(builder, "fr6_chat_label"));
     GtkLabel *fr6_lvl_name_ent1 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_lvl_name_ent1"));
     GtkLabel *fr6_lvl_name_ent2 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_lvl_name_ent2"));
     GtkImage *fr6_combat_player_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_player_dragon"));
     GtkImage *fr6_combat_enemy_dragon = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_combat_enemy_dragon"));
-
+    GtkWidget *fr6_dragon_first_border = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_dragon_first_border"));
+    GtkFixed *fr6_combat = GTK_FIXED(gtk_builder_get_object(builder, "fr6_combat"));
     gchar ent1_lvl_name[100], ent2_lvl_name[100];
     gchar *battleBackgroundPath = g_strdup_printf("../assets/img_files/battle/%s_bg.png", battle->EntityTwo.entDragon.name);
     gchar *enemyDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", battle->EntityTwo.entDragon.name);
+    GtkLabel *fr6_tittle_label  = GTK_LABEL(gtk_builder_get_object(builder, "fr6_tittle_label"));
 
     gtk_image_set_from_file(fr6_combat_bg, battleBackgroundPath);
     snprintf(ent1_lvl_name, sizeof(ent1_lvl_name), "%d %s", battle->EntityOne.entDragon.level, battle->EntityOne.entDragon.name);
@@ -1161,12 +1144,61 @@ gboolean settingBattleWindow(gpointer data) {
     labeltextModifier(fr6_lvl_name_ent1, ent1_lvl_name);
     labeltextModifier(fr6_lvl_name_ent2, ent2_lvl_name);
     gtk_image_set_from_file(fr6_combat_player_dragon, battle->EntityOne.entDragon.img_path);
-
     gtk_image_set_from_file(fr6_combat_enemy_dragon, enemyDragonImgPath);
 
+    labeltextModifier(fr6_tittle_label, "Turno: 1");
+    // Limpando debuffs e buffs
+    gchar *ent1Debbufs, *ent2Debbufs;
+    for(int i=1; i <= 4; i++) {
+        ent1Debbufs = g_strdup_printf("fr6_playerdragon_debuff%d", i);
+        ent2Debbufs = g_strdup_printf("fr6_enemydragon_debuff%d", i);
+
+        GtkImage *playerDebuff = GTK_IMAGE(gtk_builder_get_object(builder, ent1Debbufs));
+        GtkImage *enemyDebuff = GTK_IMAGE(gtk_builder_get_object(builder, ent2Debbufs));
+        gtk_image_clear(playerDebuff);
+        gtk_image_clear(enemyDebuff);
+    }
+
+    // Ajusta a vida atual do dragão player
+    GtkLabel *fr6_life_value_ent1 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_life_value_ent1"));
+    gchar *ent1ActualHealth = g_strdup_printf("%d/%d", battle->EntityOne.entDragon.health, battle->EntityOne.entDragon.health);
+    labeltextModifier(fr6_life_value_ent1, ent1ActualHealth);
+
+    // Demonstrando quem joga primeiro e o texto inicial
+    gchar *firstEntity;
+    gint firstBorderX;
+    if(battle->entityTurn == 1) {
+        firstEntity = g_strdup_printf("Após a luta começar, %s vai em direção as núvens, sumindo da visão de %s...", battle->EntityOne.entDragon.name, battle->EntityTwo.entDragon.name);
+        settingTimedStackChange(7000, fr6_battle_stack, "fr6_battle_buttons");
+        firstBorderX = 17;
+    }
+    if(battle->entityTurn == 2) {
+        firstEntity = g_strdup_printf("Após a luta começar, %s vai em direção as núvens, sumindo da visão de %s...", battle->EntityTwo.entDragon.name, battle->EntityOne.entDragon.name);
+        firstBorderX = 663;
+    }
+    labelTextAnimation(fr6_chat_label, firstEntity, 3000);
     gtk_stack_set_visible_child_name(fr6_stack, "fr6_combat");
+    gtk_stack_set_visible_child_name(fr6_battle_stack, "fr6_battle_chat");
+    gtk_fixed_move(fr6_combat, fr6_dragon_first_border, firstBorderX, 165);
+    // ===========================================================================
+    Game *game = g_malloc(sizeof(Game));
+    g_timeout_add(1000, onBattle, game);
 
     return FALSE;
+}
+
+gboolean onBattle(gpointer data) {
+    Game *game = (Game*) data;
+    
+    g_print("request atual: %s\n", request);
+    strcpy(request, "");
+
+    return TRUE;
+}
+
+void sendRequest(GtkButton *btn, gpointer user_data) {
+    btn_animation_clicked(GTK_WIDGET(btn), NULL);
+    sprintf(request, "Ataque: %d", GPOINTER_TO_INT(user_data));
 }
 
 gboolean retroBarAnimationLoop(gpointer data) {
@@ -1185,12 +1217,6 @@ gboolean retroBarAnimationLoop(gpointer data) {
     }
     
     g_free(barData);    
-    return FALSE;
-}
-
-gboolean timedSettingVideoPlay(gpointer data) {
-    gtkMediaData *mediadata = ( gtkMediaData* ) data;
-    settingVideoPlay(mediadata->loader, mediadata->path, mediadata->totalLoops, mediadata->animationName);
     return FALSE;
 }
 
@@ -1213,6 +1239,15 @@ gboolean timedLabelModifier(gpointer data) {
     return G_SOURCE_REMOVE;
 }
 
+gboolean turnOnButton(gpointer data) {
+    GtkWidget *button = GTK_WIDGET(data);
+    gtk_widget_set_sensitive(button, TRUE);
+    return G_SOURCE_REMOVE;
+}
+
+// *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+// Animações
+// Inicia uma animação de texto de label após um timeout
 gboolean timedLabelAnimation(gpointer data) {
     gtkData *labelData = (gtkData*) data;
     labelTextAnimation(GTK_LABEL(labelData->widgetSingle), labelData->string, labelData->intSingle);
@@ -1220,14 +1255,7 @@ gboolean timedLabelAnimation(gpointer data) {
     return FALSE;
 }
 
-gboolean turnOnButton(gpointer data) {
-    GtkWidget *button = GTK_WIDGET(data);
-    gtk_widget_set_sensitive(button, TRUE);
-    return G_SOURCE_REMOVE;
-}
-
-// Animações
-// Restaura a opacidade de um botão
+// Move uma widget da tela para um novo local em forma de animação
 gboolean moveWidgetAnimation(gpointer data) {
     gtkAnimationData *widgetData = (gtkAnimationData*) data;
     gint deslocationX, deslocationY, multiplyStepX, multiplyStepY;
@@ -1261,6 +1289,7 @@ gboolean moveWidgetAnimation(gpointer data) {
     return FALSE;
 }
 
+// Restaura a opacidade de um botão
 gboolean btn_animation_rest_opacity(gpointer data) {
     GtkWidget *button = GTK_WIDGET(data); // Converte o gpointer para GtkWidget*
     gtk_widget_set_opacity(button, 1.0); // Restaura a opacidade
@@ -1297,20 +1326,67 @@ gboolean atributeUpAnimation(gpointer data) {
     return G_SOURCE_REMOVE;
 }
 
-gboolean updateLoaderFrame(gpointer data) {
-    gtkMediaData *mediaData = (gtkMediaData*) data;
-    if(mediaData->totalLoops > 0) {
-        gchar actualPath[300];
-        snprintf(actualPath, sizeof(actualPath), "%s/frame (%d).png", mediaData->path, mediaData->actualFrame);
-        //g_print("path atual: %s\n", actualPath);
-        //gtk_image_set_from_file(mediaData->loader, actualPath);
-        gtk_image_set_from_pixbuf(mediaData->loader, pAnimationsFrameVector[mediaData->animationIndex][mediaData->actualFrame]);
-        mediaData->actualFrame += 1;
-        mediaData->totalLoops -= 1;
-        return TRUE;
+// Carrega todas as texturas dos frames
+void registerTexturesAnimations() {
+    loadAnimationFrames("../assets/img_files/animations/animation_battle_opening/render", 109, 1); // Animação de abertura de batalha
+    loadAnimationFrames("../assets/img_files/animations/animation_battle_opening/animation_battle_transition", 144, 2); // Animação de abertura batalha 2
+}
+
+// Carrega os frames para o vetor
+void loadAnimationFrames(gchar *path, gint totalFrames, gint animationIndex) {
+    for (int i = 0; i < totalFrames; i++) {
+        gchar filename[256];
+        snprintf(filename, sizeof(filename), "%s/frame (%d).png", path, i+1);
+        //g_print("Tentando carregar: %s\n", filename);
+        
+        pAnimationsFrameVector[animationIndex][i] = gdk_pixbuf_new_from_file(filename, NULL);
+        /*if (pAnimationsFrameVector[animationIndex][i] != NULL) {
+            g_print("Frame %d carregado com sucesso.\n", i);
+        } else {
+            g_printerr("Erro ao carregar frame %d: %s\n", i + 1, filename);
+        }*/
+    }
+}
+
+gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data) {
+    AnimationData *animData = (AnimationData *) data;
+
+    if (!animData) {
+        g_print("Erro: animData é NULL\n");
+        return FALSE;
     }
 
-    gtk_image_clear(GTK_IMAGE(mediaData->loader));
-    g_free(mediaData);
+    if (animData->animationIndex < 0 || !animData->animationIndex) {
+        g_print("Erro: Índice da animação inválido: %d\n", animData->animationIndex);
+        return FALSE;
+    }
+
+    if (!pAnimationsFrameVector[animData->animationIndex]) {
+        g_print("Erro: Vetor de quadros da animação %d é NULL\n", animData->animationIndex);
+        return FALSE;
+    }
+    if (animData->currentFrame < 0 || animData->currentFrame >= animData->totalFrames) {
+        //g_print("Erro: Frame atual inválido: %d\n", animData->currentFrame);
+        return FALSE;
+    }
+
+    GdkPixbuf *frame = pAnimationsFrameVector[animData->animationIndex][animData->currentFrame];
+    if (!frame) {
+        g_print("Erro: Frame %d da animação %d é NULL\n", animData->currentFrame, animData->animationIndex);
+        return FALSE;
+    }
+
+    gdk_cairo_set_source_pixbuf(cr, frame, 0, 0);
+    cairo_paint(cr);
+
+    animData->currentFrame++;
+
+    if (animData->currentFrame <= animData->totalFrames) {
+        g_timeout_add(7, (GSourceFunc) gtk_widget_queue_draw, widget);
+    } else {
+        g_print("Animação de ID: %d finalizada.\n", animData->animationIndex);
+        g_timeout_add(500, timedgFree, animData);
+    }
+
     return FALSE;
 }
