@@ -657,7 +657,7 @@ void registerSignals(GtkBuilder *builder) {
         g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_dragon_in_beastiary), GINT_TO_POINTER(i));
     }
     // Paínel de ataque da aba de combate
-    for(int i=1; i <= 4; i++) {
+    for(int i=1; i <= 5; i++) {
         gchar actBtnName[100];
         sprintf(actBtnName, "fr6_btn_attack%d", i);
         GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
@@ -1136,7 +1136,9 @@ gboolean settingBattleWindow(gpointer data) {
     gchar *battleBackgroundPath = g_strdup_printf("../assets/img_files/battle/%s_bg.png", battle->EntityTwo.entDragon.name);
     gchar *enemyDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", battle->EntityTwo.entDragon.name);
     GtkLabel *fr6_tittle_label  = GTK_LABEL(gtk_builder_get_object(builder, "fr6_tittle_label"));
-
+    GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
+    GtkWidget *fr6_life_bar_ent2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent2"));
+    
     gtk_image_set_from_file(fr6_combat_bg, battleBackgroundPath);
     snprintf(ent1_lvl_name, sizeof(ent1_lvl_name), "%d %s", battle->EntityOne.entDragon.level, battle->EntityOne.entDragon.name);
     snprintf(ent2_lvl_name, sizeof(ent2_lvl_name), "%d %s", battle->EntityTwo.entDragon.level, battle->EntityTwo.entDragon.name);
@@ -1182,6 +1184,13 @@ gboolean settingBattleWindow(gpointer data) {
     gtk_fixed_move(fr6_combat, fr6_dragon_first_border, firstBorderX, 165);
     // ===========================================================================
     Game *game = g_malloc(sizeof(Game));
+    game->battle = battle;
+    game->actualTurn = fr6_dragon_first_border;
+    game->battleText = fr6_chat_label;
+    game->pHealthBar = fr6_life_bar_ent1;
+    game->eHealthBar = fr6_life_bar_ent2;
+    game->optionsStack = fr6_battle_stack;
+    game->turnsText = fr6_tittle_label;
     g_timeout_add(1000, onBattle, game);
 
     return FALSE;
@@ -1189,6 +1198,8 @@ gboolean settingBattleWindow(gpointer data) {
 
 gboolean onBattle(gpointer data) {
     Game *game = (Game*) data;
+    //g_print("Informações de batalha turno %d\n", game->battle->actualTurn);
+    //g_print("Nível do player: %d | Nível do inimigo: %d | Recompensa de Xp: %d\n", game->battle->EntityOne.entDragon.level, game->battle->EntityTwo.entDragon.level, game->battle->expReward);
     
     g_print("request atual: %s\n", request);
     strcpy(request, "");
@@ -1198,7 +1209,13 @@ gboolean onBattle(gpointer data) {
 
 void sendRequest(GtkButton *btn, gpointer user_data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
-    sprintf(request, "Ataque: %d", GPOINTER_TO_INT(user_data));
+    gint requestType = GPOINTER_TO_INT(user_data);
+    if(requestType == 1) strcpy(request, "bite");
+    if(requestType == 2) strcpy(request, "scratch");
+    if(requestType == 3) strcpy(request, "roar");
+    if(requestType == 4) strcpy(request, "dracarys");
+    if(requestType == 5) strcpy(request, "run");
+    //sprintf(request, "%d", GPOINTER_TO_INT(user_data));
 }
 
 gboolean retroBarAnimationLoop(gpointer data) {

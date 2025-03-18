@@ -16,6 +16,9 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     battleInstance->turnPlayed = FALSE;
 
     // Verifica a quantidade de xp recebida de acordo com o balanceamento
+    //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
+    //g_print("Xp requirido padrão: %d\n", player.requiredExp);
+
     if(playerEnt.level > enemyEnt.level)
         if(playerEnt.level - enemyEnt.level > 1)
             battleInstance->expReward = player.requiredExp * 0.5;
@@ -23,7 +26,7 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
             battleInstance->expReward = player.requiredExp * 0.25;
         if(playerEnt.level - enemyEnt.level >= 10)
             battleInstance->expReward = player.requiredExp * 0.1;
-    else
+    else if(enemyEnt.level >= playerEnt.level)
         battleInstance->expReward = player.requiredExp * 4 + 200;
     
     // Seta os cooldowns de todos os ataques para 0 inicialmente 
