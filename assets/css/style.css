@@ -573,6 +573,14 @@ Frame 5 - Colíseu
     background-image: linear-gradient(0deg, #00FF2F 0%, #00991C 100%);
 }
 
+.fr6_lifebar_yellow {
+    background-image: linear-gradient(0deg, #FFFF00 0%, #999900 100%);
+}
+
+.fr6_lifebar_red {
+    background-image: linear-gradient(0deg, #D70000 0%, #710000 100%);
+}
+
 .fr6_transparent_bg {
     background-color: transparent;
     border: none;

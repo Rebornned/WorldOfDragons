@@ -9,6 +9,7 @@
 #include <glib.h>
 #include <epoxy/gl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <sys/time.h>
 
 /*
 typedef struct {
@@ -32,6 +33,8 @@ typedef struct {
     gint currentFrame;
     gint totalFrames;
     guint timeoutID;
+    gboolean finished;
+    gint64 startTime;  // Novo campo para armazenar tempo inicial
 } AnimationData;
 
 typedef struct {
@@ -76,8 +79,12 @@ typedef struct {
 } Player;
 
 typedef struct {
-    char type[100];
-    int turns;
+    gchar type[100];
+    gint turns;
+    gint slot;
+    GtkFixed *fixed;
+    GtkWidget *video;
+    GtkImage *image;
 } Debuff;
 
 typedef struct {
@@ -90,21 +97,22 @@ typedef struct {
     Dragon fixedDragon;
     Buff entityBuffs[4];
     Debuff entityDebuffs[4];
-    int skillsCooldown[4];
+    gint skillsCooldown[4];
 } Entity;
 
 typedef struct {
     Entity EntityOne;
     Entity EntityTwo;
-    int entityTurn;
-    gboolean turnPlayed;
-    int actualTurn;
-    char winnerEnt[100];
-    int expReward;
+    gint entityTurn;
+    gint turnPlayed;
+    gint actualTurn;
+    gchar winnerEnt[100];
+    gint expReward;
 } Battle;
 
 typedef struct {
     Battle *battle;
+    GtkFixed *fixed;
     GtkWidget *actualTurn;
     GtkWidget *pHealthBar;
     GtkWidget *eHealthBar;
@@ -112,6 +120,7 @@ typedef struct {
     GtkLabel *pHealthText;
     GtkLabel *battleText;
     GtkLabel *turnsText;
+    GtkBuilder *builder;
 } Game;
 
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
@@ -155,15 +164,20 @@ int beastsLength(FILE *pFile);
 int attacksLength(FILE *pFile);
 
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player);
-int startTurn(Battle *battleInstance);
+int startTurn(Battle *battleInstance, Game *game);
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
-int debuffTick(Debuff *debuff, Entity *entity);
+int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
+int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 
 // Animations
+void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
+void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
 void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName);
 gboolean delayedStartAnimation(gpointer data);
 void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames);
+void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
+void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
 
 // Game
 gboolean onBattle(gpointer data);

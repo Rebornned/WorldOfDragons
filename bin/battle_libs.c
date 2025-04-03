@@ -5,15 +5,15 @@
 
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int binarySearch(int item, int vec[], int length);
-int startTurn(Battle *battleInstance);
-int debuffTick(Debuff *debuff, Entity *entity);
-int applyDebuff(gchar *debuffType, gint turns, Entity *entity);
+int startTurn(Battle *battleInstance, Game *game);
+int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
+int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 
 
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
     int cooldownsVector[4] = {0, 0, 0, 0};
     battleInstance->actualTurn = 1;
-    battleInstance->turnPlayed = FALSE;
+    battleInstance->turnPlayed = 0;
 
     // Verifica a quantidade de xp recebida de acordo com o balanceamento
     //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
@@ -57,10 +57,9 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     }
 }
 
-int startTurn(Battle *battleInstance) {
+int startTurn(Battle *battleInstance, Game *game) {
     Battle *bI = battleInstance;
-    bI->turnPlayed = FALSE;
-    
+    bI->turnPlayed = 0;
     // Atualizando tempo de recarga dos ataques
     for(int i=0; i < 4; i++) {
         if(bI->EntityOne.skillsCooldown[i] > 0)
@@ -70,16 +69,16 @@ int startTurn(Battle *battleInstance) {
     }
 
     // Aplicando Efeitos de debuff e atualizando recarga
-    for(int i; i < 10; i++) {
-        debuffTick(&bI->EntityOne.entityDebuffs[i], &bI->EntityOne);
-        debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo);
+    for(int i=0; i < 4; i++) {
+        debuffTick(&bI->EntityOne.entityDebuffs[i], &bI->EntityOne, 2, game);
+        debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo, 1, game);
     }
-    // Aplicando Efeitos de buff e atualizando recarga...
 
     // Em andamento
+    //if(bI->entityTurn == 1) bI->entityTurn = 2;
+    //else if(bI->entityTurn == 2) bI->entityTurn = 1;
+    
     bI->actualTurn++;
-
-
 }
 
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
@@ -90,59 +89,112 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     randomNumber = random_choice(0, 99);
     if(binarySearch(randomNumber, choiceVector, precision) == False) {
         canHit = False;
-        printf("MISS!!!\n");
+        //printf("MISS!!!\n");
         return -1;
     }
     if(canHit == True) {
         totalDamage = damage * multiplicator - enemy->defense*0.3;
     }
-    printf("Totaldamage: %d\n", totalDamage);
+    g_print("Totaldamage: %d\n", totalDamage);
     return totalDamage;
 }
 
-int applyDebuff(gchar *debuffType, gint turns, Entity *entity) {
+int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated) {
     if(strlen(debuffType) == 0 || !entity)
-        return -1;
+        return -1; // Erro de memória
     
     gint availableSlot = -1;
 
+    // Verifica se o alvo já possui este status
+    for(int j=0; j < 4; j++) {
+        if(strcmp(debuffType, entity->entityDebuffs[j].type) == 0) {
+            *duplicated = 1;
+            break;
+        }
+    }
+
+    // verifica um slot disponivel para o status.
     for(int i=0; i < 4; i++) {
         if(strcmp(debuffType, entity->entityDebuffs[i].type) == 0) {
-            availableSlot = -1;
-            return -2;
+            entity->entityDebuffs[i].turns = turns;
+            return i; // Atualiza o debuff
         }
-        if(strlen(entity->entityDebuffs->type) > 0) {
+        if(strcmp(entity->entityDebuffs[i].type, "") == 0 && *duplicated == 0) {
             availableSlot = i;
             break;
         }
     } 
+
     if(availableSlot != -1) {
-        if(strcmp(debuffType, "Carbonized") == 0)
+        if(strcmp(debuffType, "Broken-Armor") == 0)
             entity->entDragon.defense -= (entity->entDragon.defense*0.2);
-        if(strcmp(debuffType, "Terrified") == 0)
+        if(strcmp(debuffType, "Terrified") == 0) 
             entity->entDragon.attack -= (entity->entDragon.attack*0.2);
+        
         entity->entityDebuffs[availableSlot].turns = turns;
         strcpy(entity->entityDebuffs[availableSlot].type, debuffType);
-        return 0;
+        entity->entityDebuffs[availableSlot].slot = availableSlot;
+        return availableSlot; // Debuff aplicado com sucesso
     }
-
-    return 1;
+    
+    return -3; // Debuff não aplicado
 }
 
-int debuffTick(Debuff *debuff, Entity *entity) {
+int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
+    gint totalDamage = 0;
+    gint beforeHealth = entity->entDragon.health;
+
     if(strlen(debuff->type) == 0 || !entity)  
         return 1;
+    if(strcmp(debuff->type, "Bleeding") == 0) {
+        gchar *damageText = g_strdup_printf("-%d", entity->fixedDragon.health*0.05);
+        g_print("Vida anterior ao bleeding: %d\n", entity->entDragon.health);
+        totalDamage = (entity->fixedDragon.health*0.05);
+        entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        g_print("Vida após ao bleeding: %d\n", entity->entDragon.health);
+        if(entity->entDragon.health < 0)
+            entity->entDragon.health = 0;
+    }
+    if(strcmp(debuff->type, "Burning") == 0) {
+        totalDamage = (entity->fixedDragon.health*0.05);
+        g_print("Vida anterior ao burning: %d\n", entity->entDragon.health);
+        entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        g_print("Vida após ao burning: %d\n", entity->entDragon.health);
+    }
 
-    if(strcmp(debuff->type, "Bleeding") == 0)
-        entity->entDragon.health -= (entity->entDragon.health*0.05);
+    // Entidade inimiga recebeu dano de debuff
+    if(entityNumber == 1 && totalDamage > 0) {
+        retroBarAnimationStart(500, game->eHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
+        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+    }
+    
+    // Entidade player recebeu dano de debuff
+    //if(entityNumber == 2 && totalDamage > 0) {
+    //    retroBarAnimationStart(500, game->pHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
+    //    logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+    //}
+    debuff->turns -= 1;    
+    g_print("Debuff type: %s | debuff turns: %d\n", debuff->type, debuff->turns);
 
-    debuff->turns -= 1;
     if(debuff->turns == 0) {
-        if(strcmp(debuff->type, "Carbonized") == 0)
+        if(strcmp(debuff->type, "Broken-Armor") == 0) {
             entity->entDragon.defense = entity->fixedDragon.defense;
-        
-        if(strcmp(debuff->type, "Terrified") == 0)
+            updateDebuffAnimation(entityNumber, "finish", debuff, 6, "broken_status");
+            //g_print("BROKEN ARMOR FINALIZADO *************************\n");
+        }
+        if(strcmp(debuff->type, "Bleeding") == 0) { 
+            updateDebuffAnimation(entityNumber, "finish", debuff, 4, "bleeding_status");
+            //g_print("BLEEDING FINALIZADO *************************\n");
+        }
+        if(strcmp(debuff->type, "Burning") == 0) {
+            updateDebuffAnimation(entityNumber, "finish", debuff, 8, "burning_status");
+            //g_print("BURNING FINALIZADO *************************\n");
+        }
+        if(strcmp(debuff->type, "Terrified") == 0) {
             entity->entDragon.attack = entity->fixedDragon.attack;
+            updateDebuffAnimation(entityNumber, "finish", debuff, 10, "terrified_status");
+            //g_print("TERRIFIER FINALIZADO *************************\n");
+        }
 
         strcpy(debuff->type, "");
     }

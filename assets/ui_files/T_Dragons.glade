@@ -2836,62 +2836,6 @@ Tempo de recarga: 1 turno(s)</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkImage" id="fr6_playerdragon_debuff1">
-                            <property name="name">fr6_playerdragon_debuff1</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\broken_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">50</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_playerdragon_debuff2">
-                            <property name="name">fr6_playerdragon_debuff1</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\burned_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">77</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_playerdragon_debuff3">
-                            <property name="name">fr6_playerdragon_debuff1</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\terrifier_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">104</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_playerdragon_debuff4">
-                            <property name="name">fr6_playerdragon_debuff1</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\bleeding_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">131</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="fr6_lvl_name_ent1">
                             <property name="name">fr6_lvl_name_ent1</property>
                             <property name="width-request">70</property>
@@ -2909,6 +2853,31 @@ Tempo de recarga: 1 turno(s)</property>
                           <packing>
                             <property name="x">56</property>
                             <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="fr6_playerdragon_debuff_box">
+                            <property name="width-request">108</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">3</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">90</property>
                           </packing>
                         </child>
                       </object>
@@ -3023,62 +2992,6 @@ Tempo de recarga: 1 turno(s)</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkImage" id="fr6_enemydragon_debuff1">
-                            <property name="name">fr6_enemydragon_debuff1</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\broken_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">50</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_enemydragon_debuff2">
-                            <property name="name">fr6_enemydragon_debuff2</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\burned_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">77</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_enemydragon_debuff3">
-                            <property name="name">fr6_enemydragon_debuff3</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\terrifier_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">104</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="fr6_enemydragon_debuff4">
-                            <property name="name">fr6_enemydragon_debuff4</property>
-                            <property name="width-request">24</property>
-                            <property name="height-request">24</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="pixbuf">../img_files\bleeding_status.png</property>
-                          </object>
-                          <packing>
-                            <property name="x">131</property>
-                            <property name="y">90</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="fr6_lvl_name_ent2">
                             <property name="name">fr6_lvl_name_ent2</property>
                             <property name="width-request">70</property>
@@ -3096,6 +3009,31 @@ Tempo de recarga: 1 turno(s)</property>
                           <packing>
                             <property name="x">56</property>
                             <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="fr6_enemydragon_debuff_box">
+                            <property name="width-request">108</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">3</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">90</property>
                           </packing>
                         </child>
                       </object>
@@ -3185,7 +3123,7 @@ Tempo de recarga: 1 turno(s)</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="fr6_btn_attack3">
+                              <object class="GtkButton" id="fr6_btn_attack4">
                                 <property name="label" translatable="yes">Dracarys</property>
                                 <property name="name">fr6_btn_attack3</property>
                                 <property name="width-request">127</property>
@@ -3206,7 +3144,7 @@ Tempo de recarga: 1 turno(s)</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="fr6_btn_attack4">
+                              <object class="GtkButton" id="fr6_btn_attack3">
                                 <property name="label" translatable="yes">Rugido</property>
                                 <property name="name">fr6_btn_attack4</property>
                                 <property name="width-request">127</property>
@@ -3566,7 +3504,7 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="pixbuf">../img_files\banner.png</property>
                       </object>
                       <packing>
-                        <property name="x">114</property>
+                        <property name="x">80</property>
                         <property name="y">32</property>
                       </packing>
                     </child>
@@ -3607,24 +3545,6 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="pixbuf">../img_files\btn_continue.png</property>
                         <style>
                           <class name="fr7_btn_continue_img"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">436</property>
-                        <property name="y">451</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="fr7_btn_continue">
-                        <property name="name">fr7_btn_continue</property>
-                        <property name="width-request">127</property>
-                        <property name="height-request">38</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                        <style>
-                          <class name="fr5_btn_battle"/>
-                          <class name="fr7_btn_continue"/>
                         </style>
                       </object>
                       <packing>
@@ -3710,7 +3630,6 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="height-request">19</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">20470</property>
                         <property name="wrap">True</property>
                         <style>
                           <class name="fr7_result_text_font"/>
@@ -3736,7 +3655,7 @@ Tempo de recarga: 1 turno(s)</property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">464</property>
+                        <property name="x">488</property>
                         <property name="y">400</property>
                       </packing>
                     </child>
@@ -3792,6 +3711,33 @@ Tempo de recarga: 1 turno(s)</property>
                       <packing>
                         <property name="x">464</property>
                         <property name="y">400</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkDrawingArea" id="fr7_result_animation">
+                        <property name="name">fr7_result_animation</property>
+                        <property name="width-request">1000</property>
+                        <property name="height-request">512</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr7_btn_continue">
+                        <property name="name">fr7_btn_continue</property>
+                        <property name="width-request">127</property>
+                        <property name="height-request">38</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr5_btn_battle"/>
+                          <class name="fr7_btn_continue"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">436</property>
+                        <property name="y">451</property>
                       </packing>
                     </child>
                   </object>
@@ -3910,8 +3856,8 @@ Tempo de recarga: 1 turno(s)</property>
             </child>
           </object>
           <packing>
-            <property name="name">page1</property>
-            <property name="title" translatable="yes">page1</property>
+            <property name="name">result_page</property>
+            <property name="title" translatable="yes">result_page</property>
             <property name="position">3</property>
           </packing>
         </child>

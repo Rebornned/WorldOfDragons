@@ -13,6 +13,8 @@
         "math.h": "c",
         "string.h": "c",
         "gdk-pixbuf.h": "c",
-        "dirent.h": "c"
+        "dirent.h": "c",
+        "compare": "c",
+        "type_traits": "c"
     }
 }
