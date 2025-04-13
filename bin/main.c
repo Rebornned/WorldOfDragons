@@ -73,6 +73,19 @@ typedef struct {
     gchar page[128];
 } gtkTimedStack;
 
+
+typedef struct {
+    gint *actualValue;
+    gint minValue;
+    gint maxValue;
+    gdouble duration;        // duração da animação em segundos
+    gint64 start_time;       // tempo em microssegundos
+    GtkWidget *pointer;
+    GtkFixed *fixed;
+    gint actualY;
+    gint direction;
+} animMeterbarData;
+
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Game
@@ -147,6 +160,7 @@ void switchPage(GtkButton *btn, gpointer user_data);
 void clean_elements(GtkEntry **input_vec, GtkLabel **label_vec);
 void labeltextModifier(GtkLabel *label, const gchar *text);
 static void set_cursor_window(GtkWidget *widget, gpointer data);
+void settingTimedLabelModifier(gint timeout, GtkLabel *label, gchar *text);
 gboolean btn_animation_rest_opacity(gpointer data);
 void btn_animation_clicked(GtkWidget *widget, gpointer data);
 void set_dragon_in_beastiary(GtkButton *btn, gpointer data);
@@ -171,6 +185,9 @@ void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
 void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
 void settingTimedNumbersAnimation(gint timeout, GtkLabel *label, gint range, gint animTime);
 void removeAllStyleClasses(GtkWidget *widget);
+void settingMeterbarAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gdouble duration);
+gboolean meterBarAnimation(gpointer data);
+gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gboolean timedGtkDestroyObject(gpointer data);
 gboolean timedSwitchBooleanValue(gpointer data);
 gboolean timedLvlBarUpdate(gpointer data);
@@ -312,7 +329,6 @@ int main(int argc, char *argv[]) {
     fr5_cave_defense_up = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_cave_defense_up"));
     fr5_cave_speed_up = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_cave_speed_up"));
 
-
     // Colíseu
     GtkWidget *fr5_page_view3 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view3"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view3), "../assets/img_files/beastiary_page3.png");    
@@ -338,15 +354,86 @@ int main(int argc, char *argv[]) {
     set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
     updateDataCave();
     updateColiseum();
-    
+
+    // Registra todas as animações no sistema    
     registerTexturesAnimations();
 
+    // Conecta todos os sinais necessários a tela
+    gtk_widget_realize(window);
     registerSignals(builder);
     g_signal_connect(window, "map", G_CALLBACK(set_cursor_window), NULL);
 
     gtk_widget_show_all(window);
     
     gtk_main();
+}
+
+gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+    Game *game = (Game*) data;
+    gchar keyval_name[32];
+    gint pressed_number;
+    // Obtém o nome da tecla pressionada
+    snprintf(keyval_name, sizeof(keyval_name), "%s", gdk_keyval_name(event->keyval));
+    if(strcmp(keyval_name, "space") == 0 && !game->minigame->minigamePlayed) {
+        game->minigame->minigameResultValue = *(game->minigame->minigameValue);
+        game->minigame->minigamePlayed = TRUE;
+        *(game->minigame->minigameValue) = -1;
+    }
+    g_print("Tecla pressionada %s, number:%d \n", keyval_name, pressed_number);
+    
+    return FALSE; 
+}
+
+void settingMeterbarAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gdouble duration) {
+    animMeterbarData *data = g_malloc(sizeof(animMeterbarData));
+    *actualValue = minValue;
+    data->actualValue = actualValue;
+    data->maxValue = maxValue;
+    data->minValue = minValue;
+    data->pointer = pointer;
+    data->fixed = fixed;
+    data->actualY = actualY;
+    data->direction = 1;
+    data->duration = duration;
+    data->start_time = g_get_monotonic_time(); // tempo atual em microssegundos
+
+    g_timeout_add(16, meterBarAnimation, data);    
+}
+
+gboolean meterBarAnimation(gpointer data) {
+    animMeterbarData *animData = (animMeterbarData*) data;
+    
+    if(*(animData->actualValue) == -1) {
+        g_print("METERBAR FINALIZADO ************************\n");
+        g_free(animData);
+        return FALSE;
+    }
+
+    gint64 now = g_get_monotonic_time(); // microssegundos
+    gdouble elapsed = (now - animData->start_time) / 1000000.0; // segundos
+    gdouble t = elapsed / animData->duration;
+    if (t > 1.0) t = 1.0;
+    gdouble progress = (1 - cos(t * G_PI)) / 2;
+
+    if (progress >= 1.0) {
+        // Inverte a direção
+        animData->direction *= -1;
+        animData->start_time = now;
+        progress = 0.0;
+    }
+
+    // Interpola o valor baseado na direção
+    gint range = animData->maxValue - animData->minValue;
+    if (animData->direction == 1) {
+        *(animData->actualValue) = animData->minValue + (gint)(range * progress);
+    } else {
+        *(animData->actualValue) = animData->maxValue - (gint)(range * progress);
+    }
+
+    // Move o ponteiro
+    gtk_fixed_move(animData->fixed, animData->pointer, *(animData->actualValue), animData->actualY);
+
+    return TRUE; // continua o loop
 }
 
 void switchPage(GtkButton *btn, gpointer user_data) {
@@ -609,7 +696,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             player = getPlayer(playerFile);
             strcpy(player.dragon.img_path, playerDragonImgPath);
 
-            setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player);
+            setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player, dragonIndex);
             g_timeout_add(9420, settingBattleWindow, battleInstance);
         }
         else {
@@ -1108,6 +1195,13 @@ void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gin
     g_timeout_add(16, retroBarAnimationLoop, barData);
 }
 
+void settingTimedLabelModifier(gint timeout, GtkLabel *label, gchar *text) {
+    gtkData *data = (gtkData*) g_malloc(sizeof(gtkData));
+    data->widgetSingle = GTK_WIDGET(label);
+    strcpy(data->string, text);
+    g_timeout_add(timeout, timedLabelModifier, data);
+}
+
 void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY) {
     gtkAnimationData *widgetAnimationData = g_malloc(sizeof(gtkAnimationData));
     widgetAnimationData->timer = timerAnimation;
@@ -1197,7 +1291,7 @@ gboolean settingBattleWindow(gpointer data) {
     gchar *ent1ActualHealth = g_strdup_printf("%d/%d", battle->EntityOne.entDragon.health, battle->EntityOne.entDragon.health);
     labeltextModifier(fr6_life_value_ent1, ent1ActualHealth);
     gtk_widget_set_visible(GTK_WIDGET(fr6_life_bar_ent1), TRUE);
-    gtk_widget_set_size_request(GTK_WIDGET(fr6_life_bar_ent1), 248, 26);
+    gtk_widget_set_size_request(GTK_WIDGET(fr6_life_bar_ent1), 233, 11);
     removeAllStyleClasses(fr6_life_bar_ent1);
     gtk_style_context_add_class(fr6_life_bar_ent1_context, "fr6_lifebar_green");
 
@@ -1207,7 +1301,7 @@ gboolean settingBattleWindow(gpointer data) {
     gtk_style_context_add_class(fr6_life_bar_ent2_context, "fr6_lifebar_green");
 
     gtk_widget_set_visible(GTK_WIDGET(fr6_life_bar_ent2), TRUE);
-    gtk_widget_set_size_request(GTK_WIDGET(fr6_life_bar_ent2), 248, 26);
+    gtk_widget_set_size_request(GTK_WIDGET(fr6_life_bar_ent2), 233, 11);
 
     // Demonstrando quem joga primeiro e o texto inicial
     gchar *firstEntity, *ent1Name, *ent2Name;
@@ -1248,6 +1342,12 @@ gboolean settingBattleWindow(gpointer data) {
     game->optionsStack = fr6_battle_stack;
     game->turnsText = fr6_tittle_label;
     game->builder = builder;
+    MiniGame *minigame = g_malloc(sizeof(MiniGame));
+    minigame->minigamePlayed = FALSE;
+    minigame->minigameValue = (gint *) g_malloc(sizeof(gint));
+    *(minigame->minigameValue) = 0;
+    strcpy(minigame->pAction, "");
+    game->minigame = minigame;
     g_timeout_add(1000, onBattle, game);
 
     return FALSE;
@@ -1259,14 +1359,19 @@ gboolean onBattle(gpointer data) {
     //g_print("Informações de batalha turno %d\n", game->battle->actualTurn);
     //g_print("Nível do player: %d | Nível do inimigo: %d | Recompensa de Xp: %d\n", game->battle->EntityOne.entDragon.level, game->battle->EntityTwo.entDragon.level, game->battle->expReward);
     // Início do round
-    // Caso seja o turno do player
     
+    // Turno do player
     if(game->battle->entityTurn == 1) {
         gint playerAttack = game->battle->EntityOne.entDragon.attack;
-        gint totalDamage = -1;
+        gint totalDamage = 0;
         gint appliedDebuff = -3;
         gint duplicated = 0;
-    
+        gint dragonDifficult = game->battle->difficult;
+        gint precision = 0;
+
+        // Arrasta a barra para sinalizar quem está atacando
+        gtk_fixed_move(game->fixed, game->actualTurn, 17, 165);
+        
         // Verificação de cooldowns das habilidades
         for(int i=0; i<4; i++) {
             gchar *object = g_strdup_printf("fr6_btn_attack%d", i+1);
@@ -1279,14 +1384,82 @@ gboolean onBattle(gpointer data) {
                 gtk_widget_set_sensitive(fr6_btn_attack, TRUE);
                 gtk_widget_set_opacity(fr6_btn_attack, 1.0);
             }
-
         }
+        
+        // Nessa parte vai o minigame mudando o request.
+        if(strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) {
+            GtkImage *fr6_battle_powerbar_img = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_battle_powerbar_img"));
+            GtkWidget *fr6_battle_powerbar_pointer = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_battle_powerbar_pointer"));
+            GtkFixed *fr6_battle_powerbar = GTK_FIXED(gtk_builder_get_object(builder, "fr6_battle_powerbar"));
+            
+            if(dragonDifficult == 4) {
+                gtk_image_set_from_file(fr6_battle_powerbar_img, "../assets/img_files/meterbar_infernal.png");
+                gint tempVector[4][4] = {{22,89,187,254}, {90,129,147,186}, {130,134,142,146}, {135,141,135,141}}; memcpy(game->minigame->vectorRange, tempVector, sizeof(game->minigame->vectorRange));
+            }
+            if(dragonDifficult == 3) {
+                gtk_image_set_from_file(fr6_battle_powerbar_img, "../assets/img_files/meterbar_hard.png");
+                gint tempVector[4][4] = {{22,79,197,254}, {80,109,167,196}, {110,129,147,166}, {130,146,130,146}}; 
+                memcpy(game->minigame->vectorRange, tempVector, sizeof(game->minigame->vectorRange));
+            }
+            if(dragonDifficult == 2) {
+                gtk_image_set_from_file(fr6_battle_powerbar_img, "../assets/img_files/meterbar_medium.png");
+                gint tempVector[4][4] = {{22,69,206,254}, {70,99,177,205}, {100,119,157,176}, {120,156,120,156}};
+                memcpy(game->minigame->vectorRange, tempVector, sizeof(game->minigame->vectorRange));
+            }
+            if(dragonDifficult == 1) {
+                gtk_image_set_from_file(fr6_battle_powerbar_img, "../assets/img_files/meterbar_easy.png");
+                gint tempVector[4][4] = {{22, 28, 248, 254}, {29, 71, 205, 247}, {72, 109, 167, 204}, {110, 166, 110, 166}}; 
+                memcpy(game->minigame->vectorRange, tempVector, sizeof(game->minigame->vectorRange));
+            }            
+            
+            gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_powerbar");
+            // Conecta o evento de pressionar teclas à função de callback
+            g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), game);         
+            settingMeterbarAnimation(fr6_battle_powerbar_pointer, fr6_battle_powerbar, 105, 22, 254, game->minigame->minigameValue, 0.75); 
+            if(strcmp(request, "bite") == 0) strcpy(game->minigame->pAction, "bite");
+            if(strcmp(request, "scratch") == 0) strcpy(game->minigame->pAction, "scratch");
+            if(strcmp(request, "dracarys") == 0) strcpy(game->minigame->pAction, "dracarys");
+        }
+        if(game->minigame->minigamePlayed && *(game->minigame->minigameValue) == -1) {
+            gint value = game->minigame->minigameResultValue;
+            gint barResult = 0;
+            g_print("Minigame finalizado dentro da função. valor obtido: %d\n", game->minigame->minigameResultValue);
+            for(int i=0; i<4; i++) {
+                gint start1 = game->minigame->vectorRange[i][0], end1 = game->minigame->vectorRange[i][1];
+                gint start2 = game->minigame->vectorRange[i][2], end2 = game->minigame->vectorRange[i][3];
+                if((start1 <= value && value <= end1) || (start2 <= value && value <= end2))
+                    barResult = i;
+            }
+            if(barResult == 3) { // Critico - parte verde da barra
+                playerAttack += playerAttack * 0.5;
+                precision = 100;
+                logStartAnimation("CRITICAL", "color_FF0000", 500, 44, 175, 412, 360, 10, game->fixed);
+            }
+            if(barResult == 2) { // Ataque normal - parte laranja da barra
+                precision = 0;
+            }
+            if(barResult == 1) { // Ataque fraco - parte vermelha da barra
+                playerAttack -= playerAttack * 0.25;
+                precision = -20;
+            }
+            if(barResult == 0) { // Falha - Parte preta da barra
+                precision = -100;
+            }
+            g_print("resultado da barra: %d\n", barResult);
+            //settingTimedStackChange(1000, game->optionsStack, "fr6_battle_text");
+        } 
+        
         // Ataque mordida
-        if(strcmp(request, "bite") == 0) {
+        if(strcmp(game->minigame->pAction, "bite") == 0 && game->minigame->minigamePlayed) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
+            if(precision + 90 >= 100)
+                precision = 100;
+            else
+                precision += 90;
+            g_print("Precisão atual: %d | Bite\n", precision);
             game->battle->EntityOne.skillsCooldown[0] = 2;
-            totalDamage = causeDamage(playerAttack, 1.2, 90, &game->battle->EntityTwo.entDragon);
+            totalDamage = causeDamage(playerAttack, 1.2, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
                 appliedDebuff =  applyDebuff("Bleeding", 2, &game->battle->EntityTwo, &duplicated);
                 if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
@@ -1300,11 +1473,17 @@ gboolean onBattle(gpointer data) {
             }
         }
         // Ataque Arranhão
-        if(strcmp(request, "scratch") == 0) {
+        if(strcmp(game->minigame->pAction, "scratch") == 0 && game->minigame->minigamePlayed) {
+            game->minigame->minigamePlayed = FALSE;
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
+            if(precision + 100 >= 100)
+                precision = 100;
+            else
+                precision += 100;
+            g_print("Precisão atual: %d | scratch\n", precision);
             game->battle->EntityOne.skillsCooldown[1] = 0;
-            totalDamage = causeDamage(playerAttack, 1.0, 100, &game->battle->EntityTwo.entDragon);
+            totalDamage = causeDamage(playerAttack, 1.0, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
                 appliedDebuff =  applyDebuff("Broken-Armor", 2, &game->battle->EntityTwo, &duplicated);
                 if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
@@ -1334,11 +1513,17 @@ gboolean onBattle(gpointer data) {
             g_timeout_add(3000, timedSwitchBooleanValue, game);
         }
         // Ataque Dracarys
-        if(strcmp(request, "dracarys") == 0) {
+        if(strcmp(game->minigame->pAction, "dracarys") == 0 && game->minigame->minigamePlayed) {
+            game->minigame->minigamePlayed = FALSE;
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
+            if(precision + 55 >= 100)
+                precision = 100;
+            else
+                precision += 55;
+            g_print("Precisão atual: %d | Dracarys\n", precision);
             game->battle->EntityOne.skillsCooldown[3] = 4;
-            totalDamage = causeDamage(playerAttack, 2.0, 55, &game->battle->EntityTwo.entDragon);
+            totalDamage = causeDamage(playerAttack, 2.0, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
                 appliedDebuff =  applyDebuff("Burning", 2, &game->battle->EntityTwo, &duplicated);
                 if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
@@ -1355,8 +1540,8 @@ gboolean onBattle(gpointer data) {
         if(strcmp(request, "run") == 0) {
             game->battle->EntityOne.entDragon.health = 0;
         }
-
-        if(totalDamage != -1) {
+        // Aplica o dano causado
+        if(totalDamage > 0) {
             gchar *damageText = g_strdup_printf("-%d", totalDamage);
             gint beforeHealth = game->battle->EntityTwo.entDragon.health;
             GtkWidget *fr6_life_bar_ent2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent2"));
@@ -1369,23 +1554,41 @@ gboolean onBattle(gpointer data) {
             g_print("Vida atual do inimigo pós dano: %d\n", game->battle->EntityTwo.entDragon.health);
             for(int i=0; i < 4; i++) 
                 g_print("Debuff slot[%d]: type: %s | Turns left: %d\n", i,game->battle->EntityTwo.entityDebuffs[i].type, game->battle->EntityTwo.entityDebuffs[i].turns);
+            
+            strcpy(game->minigame->pAction, "");
+            game->minigame->minigamePlayed = FALSE;
             g_timeout_add(3000, timedSwitchBooleanValue, game);
             g_print("==================================================================\n");
 
         }
-        else if((strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) && totalDamage == -1) {
+        // Erra o ataque
+        if((strcmp(game->minigame->pAction, "bite") == 0 || strcmp(game->minigame->pAction, "dracarys") == 0 || strcmp(game->minigame->pAction, "scratch") == 0) && totalDamage == -1) {
             logStartAnimation("MISS", "fr5_dragon_name_common", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+            game->minigame->minigamePlayed = FALSE;
+            strcpy(game->minigame->pAction, "");
             g_timeout_add(3000, timedSwitchBooleanValue, game);
         }
-
-    }
-    if(game->battle->entityTurn == 2) {
-        g_print("Turno do inimigo\n");
     }
     
-    if(game->battle->turnPlayed == TRUE) {
-        startTurn(game->battle, game);
-        labeltextModifier(fr6_tittle_label, g_strdup_printf("Turno: %d", game->battle->actualTurn));
+    // Turno do Inimigo
+    if(game->battle->entityTurn == 2) {
+        gint enemyAttack = game->battle->EntityTwo.entDragon.attack;
+        gint totalDamage = 0;
+        gint appliedDebuff = -3;
+        gint duplicated = 0;
+        gint dragonDifficult = 0;
+        gint precision = 0;
+
+        gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_chat");
+        
+        labeltextModifier(game->battleText, "Turno inimigo");
+        // Arrasta a barra para sinalizar quem está atacando
+        gtk_fixed_move(game->fixed, game->actualTurn, 663, 165);
+
+        // Comportamento inimigo
+        if(game->battle->difficult == 1) { // Dificuldade fácil
+        
+        }
     }
 
     // Sessão de vitória ou derrota
@@ -1418,7 +1621,6 @@ gboolean onBattle(gpointer data) {
         labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
         }
     
-
     // Vitória do player
     else if(game->battle->EntityTwo.entDragon.health <= 0) {
         settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory");
@@ -1439,6 +1641,11 @@ gboolean onBattle(gpointer data) {
 
     // Fim de batalha
     if(game->battle->EntityTwo.entDragon.health <= 0 || game->battle->EntityOne.entDragon.health <= 0) {
+        GtkWidget *fr7_btn_continue = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue"));
+        GtkWidget *fr7_btn_continue_label = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue_label"));
+        *(game->minigame->minigameValue) = -1;
+        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_press), game);
+        settingTimedLabelModifier(4000, game->turnsText, "Combate");
         settingTimedStackChange(3000, main_stack, "result_page");
         gtk_image_clear(GTK_IMAGE(fr7_result_banner1));
         gtk_image_clear(GTK_IMAGE(fr7_result_banner2));
@@ -1447,14 +1654,29 @@ gboolean onBattle(gpointer data) {
         settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
         labeltextModifier(fr7_result_xp_text, "");
         settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
+        
+        gtk_widget_set_sensitive(fr7_btn_continue, FALSE);
+        gtk_widget_set_opacity(fr7_btn_continue_label, 0.5);
+        g_timeout_add(6700, turnOnButton, fr7_btn_continue);
+        g_timeout_add(6700, btn_animation_rest_opacity, fr7_btn_continue_label);
+
         settingUpdatelvlBarAnimation(0, fr7_label_lvl, fr7_exp_text, fr7_level_bar, fixed, fr7_levelup_text);
         g_timeout_add(4600, timedLvlBarUpdate, animData);
+        g_timeout_add(9000, timedgFree, game->battle);
+        g_timeout_add(9000, timedgFree, game->minigame->minigameValue);
+        g_timeout_add(9000, timedgFree, game->minigame);
         g_timeout_add(10000, timedgFree, game);
         return FALSE;
     }
     
-    g_print("Turno jogado: %d\n", game->battle->turnPlayed);
-    g_print("request atual: %s\n", request);
+    // Passagem de turnos
+    if(game->battle->turnPlayed == TRUE) {
+        startTurn(game->battle, game);
+        labeltextModifier(fr6_tittle_label, g_strdup_printf("Turno: %d", game->battle->actualTurn));
+    }
+
+    //g_print("Turno jogado: %d\n", game->battle->turnPlayed);
+    //g_print("request atual: %s\n", request);
     strcpy(request, "");
 
     return TRUE;
@@ -1590,23 +1812,22 @@ gboolean retroBarAnimationLoop(gpointer data) {
         gint actualWidth =  barData->finalPosX - barData->actualStep;
         GtkStyleContext *bar_context = gtk_widget_get_style_context(barData->widget);
         
-        if(actualWidth > 124 && barData->changed != TRUE) {
+        if(actualWidth > 116 && barData->changed != TRUE) {
             removeAllStyleClasses(barData->widget);
             gtk_style_context_add_class(bar_context, "fr6_lifebar_green");
             barData->changed = TRUE;
         }
-        else if(actualWidth < 125 && actualWidth > 62 && barData->changed == TRUE) {
+        else if(actualWidth < 117 && actualWidth > 58 && barData->changed == TRUE) {
             removeAllStyleClasses(barData->widget);
             gtk_style_context_add_class(bar_context, "fr6_lifebar_yellow");
             barData->changed = FALSE;
         }
-        else if(actualWidth < 63 && actualWidth > 0 && barData->changed == FALSE) {
+        else if(actualWidth < 59 && actualWidth > 0 && barData->changed != TRUE) {
             removeAllStyleClasses(barData->widget);
             gtk_style_context_add_class(bar_context, "fr6_lifebar_red");
             barData->changed = TRUE;
         }
 
-        //g_print("posfinalX: %d | Actual step: %f | actual width: %d\n", barData->finalPosX ,barData->actualStep, actualWidth);
         gtk_widget_set_size_request(GTK_WIDGET(barData->widget), actualWidth, actualHeight);
         
         if(actualWidth <= 1)

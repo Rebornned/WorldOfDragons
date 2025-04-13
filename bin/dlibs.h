@@ -108,10 +108,19 @@ typedef struct {
     gint actualTurn;
     gchar winnerEnt[100];
     gint expReward;
+    gint difficult;
 } Battle;
 
 typedef struct {
+    gchar pAction[100];
+    gboolean minigamePlayed;
+    gint *minigameValue;
+    gint minigameResultValue;
+    gint vectorRange[4][4];
+} MiniGame;
+typedef struct {
     Battle *battle;
+    MiniGame *minigame;
     GtkFixed *fixed;
     GtkWidget *actualTurn;
     GtkWidget *pHealthBar;
@@ -163,7 +172,7 @@ int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
 int attacksLength(FILE *pFile);
 
-void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player);
+void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex);
 int startTurn(Battle *battleInstance, Game *game);
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);

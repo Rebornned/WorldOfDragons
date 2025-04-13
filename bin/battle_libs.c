@@ -10,7 +10,7 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 
 
-void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player) {
+void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex) {
     int cooldownsVector[4] = {0, 0, 0, 0};
     battleInstance->actualTurn = 1;
     battleInstance->turnPlayed = 0;
@@ -26,6 +26,8 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
             battleInstance->expReward = player.requiredExp * 0.25;
         if(playerEnt.level - enemyEnt.level >= 10)
             battleInstance->expReward = player.requiredExp * 0.1;
+        if(playerEnt.level - enemyEnt.level >= 16)
+            battleInstance->expReward = player.requiredExp * 0;
     else if(enemyEnt.level >= playerEnt.level)
         battleInstance->expReward = player.requiredExp * 4 + 200;
     
@@ -37,6 +39,20 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     battleInstance->EntityTwo.entDragon = enemyEnt;
     battleInstance->EntityTwo.fixedDragon = enemyEnt;
     memset(battleInstance->EntityTwo.skillsCooldown, 0, sizeof(battleInstance->EntityTwo.skillsCooldown));
+
+    // Definição de dificuldade do dragão inimigo
+    if (dragonIndex < 3) { // Dragão de nível Infernal
+        battleInstance->difficult = 4;
+    }
+    else if (dragonIndex > 2  && dragonIndex < 8) { // Dragão de nível difícil
+        battleInstance->difficult = 3;
+    }
+    else if (dragonIndex > 7  && dragonIndex < 16) { // Dragão de nível Média
+        battleInstance->difficult = 2;
+    }
+    else if (dragonIndex > 15) { // Dragão de nível fácil
+        battleInstance->difficult = 1;
+    }
 
     // Decide quem vai atacar primeiro
     if(playerEnt.speed > enemyEnt.speed) battleInstance->entityTurn = 1;
@@ -75,13 +91,15 @@ int startTurn(Battle *battleInstance, Game *game) {
     }
 
     // Em andamento
-    //if(bI->entityTurn == 1) bI->entityTurn = 2;
-    //else if(bI->entityTurn == 2) bI->entityTurn = 1;
+    if(bI->entityTurn == 1) bI->entityTurn = 2;
+    else if(bI->entityTurn == 2) bI->entityTurn = 1;
     
     bI->actualTurn++;
 }
 
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
+    if(precision <= 0)
+        return -1; // MISS
     int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;
     for(int j=0; j < precision; j++) {
         choiceVector[j] = j;
@@ -90,7 +108,7 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     if(binarySearch(randomNumber, choiceVector, precision) == False) {
         canHit = False;
         //printf("MISS!!!\n");
-        return -1;
+        return -1; // MISS
     }
     if(canHit == True) {
         totalDamage = damage * multiplicator - enemy->defense*0.3;
@@ -151,6 +169,8 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
         g_print("Vida anterior ao bleeding: %d\n", entity->entDragon.health);
         totalDamage = (entity->fixedDragon.health*0.05);
         entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        if(entity->entDragon.health < 0)
+            entity->entDragon.health = 0;
         g_print("Vida após ao bleeding: %d\n", entity->entDragon.health);
         if(entity->entDragon.health < 0)
             entity->entDragon.health = 0;
@@ -159,6 +179,8 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
         totalDamage = (entity->fixedDragon.health*0.05);
         g_print("Vida anterior ao burning: %d\n", entity->entDragon.health);
         entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        if(entity->entDragon.health < 0)
+            entity->entDragon.health = 0;
         g_print("Vida após ao burning: %d\n", entity->entDragon.health);
     }
 
@@ -203,7 +225,7 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
 
 int binarySearch(int item, int vec[], int length) {
     int start = 0, end = length-1, center = (start+end) / 2;
-    while(end > start) {
+    while(start <= end) {
         if(vec[center] == item) 
             return True;
         if(item > vec[center]) {

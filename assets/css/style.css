@@ -1,6 +1,6 @@
 /* Universals */
 .universal_font {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     text-shadow: 
         1px 1px 0px #000000,   /* Sombra preta no canto inferior direito */
         -1px -1px 0px #000000, /* Sombra preta no canto superior esquerdo */
@@ -18,13 +18,13 @@
 /* Títulos das páginas */
 .tittle_labels {
     font-size: 96px;
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     color: #FFFDD0;
 }
 /* Botões universais */
 .menu_btns {
     background-image: linear-gradient(transparent, transparent);
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 32px;
     border-radius: 20px;
     border-color: #FFFBA9;
@@ -38,7 +38,7 @@
 .fr2_entry {
     background-image: linear-gradient(transparent, transparent);
     background-color: transparent;
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 16px;
     border-radius: 16px;
     border-color: #FFFBA9;
@@ -48,14 +48,14 @@
 }
 
 .fr2_labels {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 20px;
     color: #D19275;
 }
 
 .side_btns {
     background-image: linear-gradient(transparent, transparent);
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 24px;
     border-radius: 20px;
     border-color: #FFFBA9;
@@ -66,7 +66,7 @@
 
 .fr2_forget {
     background-image: linear-gradient(transparent, transparent);
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 14px;
     border-color: transparent;
     box-shadow: none;
@@ -75,7 +75,7 @@
 
 .fr4_warning {
     background-image: linear-gradient(transparent, transparent);
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 16px;
     border-color: transparent;
     box-shadow: none;
@@ -85,7 +85,7 @@
 /* Frame 5 principal: Bestiário, Fosso, Colíseu*/
 .fr5_tittles {
     background-image: linear-gradient(transparent, transparent);
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 64px;
     border-color: transparent;
     box-shadow: none;
@@ -126,7 +126,7 @@
 }
 
 .fr5_exp_label {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 13px;
     color: white;
     font-weight: bold;
@@ -139,14 +139,14 @@
 }
 
 .fr5_label_lvl_text {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 24px;
     color: #FFDFA3;
     font-weight: bold;
 }
 
 .fr5_label_lvl {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 32px;
     color: white;  
 }
@@ -170,13 +170,13 @@
 }
 
 .fr5_text_sort {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 24px;
     color: white;
 }
 
 .fr5_dragon_label {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 18px;
     color: rgb(255, 255, 255);
     background-color: transparent;
@@ -207,7 +207,7 @@
 }
 
 .fr5_dragon_history {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 14px;
     color: white; 
     font-weight: bold;
@@ -233,7 +233,7 @@
 }
 
 .fr5_btns_list {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     font-size: 24px;
     color: #ffffff; 
     background-image: linear-gradient(transparent, transparent);
@@ -291,7 +291,7 @@ scrollbar slider:hover {
 }
 
 .fr5_cave_font {
-    font-family: 'MedievalSharp'; 
+    font-family: 'Pixellari'; 
     background-image: linear-gradient(transparent, transparent);
     text-shadow: 
         2px 2px 0px #000000,   /* Sombra preta no canto inferior direito */
@@ -390,7 +390,7 @@ scrollbar slider:hover {
 }
 
 .fr5_btn_confirm {
-    font-family: "MedievalSharp";
+    font-family: "Pixellari";
     font-size: 20px;
     border-radius: 20px;
     background-image: linear-gradient(transparent, transparent);
@@ -415,7 +415,7 @@ scrollbar slider:hover {
 Frame 5 - Colíseu
 */
 .fr5_coliseum_font {
-    font-family: 'MedievalSharp';
+    font-family: 'Pixellari';
     color: #FFFFFF;
 }
 
@@ -520,7 +520,7 @@ Frame 5 - Colíseu
 }
 
 .fr7_result_text_font {
-    font-family: "MedievalSharp";
+    font-family: "Pixellari";
     font-size: 20px;
     color: #FFE9AD;
 
@@ -570,15 +570,17 @@ Frame 5 - Colíseu
 }
 
 .fr6_lifebar_green {
-    background-image: linear-gradient(0deg, #00FF2F 0%, #00991C 100%);
+    background: linear-gradient(180deg, #00FF2F 0%, #48FF6A 49.52%, #00991C 100%);
+    box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 }
 
 .fr6_lifebar_yellow {
-    background-image: linear-gradient(0deg, #FFFF00 0%, #999900 100%);
+    background: linear-gradient(180deg, #FFFF00 0%, #FFFF0B 50%, #999900 100%);
+    box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 }
 
 .fr6_lifebar_red {
-    background-image: linear-gradient(0deg, #D70000 0%, #710000 100%);
+    background: linear-gradient(180deg, #D70000 0%, #FF0202 48.56%, #710000 100%);
 }
 
 .fr6_transparent_bg {
@@ -618,4 +620,20 @@ Frame 5 - Colíseu
 
 .fr5_difficulty_hard {
     color: #7300FF;
+}
+
+.color_029AF8 {
+    color: #029AF8;
+}
+
+.color_44FF00 {
+    color: #44FF00;
+}
+
+.color_FF0000 {
+    color: #FF0000;
+}
+
+.color_FFFFFF {
+    color: #FFFFFF;
 }

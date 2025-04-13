@@ -1,45 +1,85 @@
-#include <gtk/gtk.h>
+#include <SDL2/SDL.h>
+#include <math.h>
+#include <stdbool.h>
 
-GtkWidget *debuff_container;
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define PLAYER_RADIUS 20
+#define PLAYER_SPEED 5
 
-void remover_debuff(GtkWidget *debuff) {
-    gtk_widget_destroy(debuff); // Remove o widget da interface
+bool check_collision_circle_rect(int cx, int cy, int radius, SDL_Rect rect) {
+    // Calcula ponto mais próximo no retângulo ao centro do círculo
+    int closestX = SDL_clamp(cx, rect.x, rect.x + rect.w);
+    int closestY = SDL_clamp(cy, rect.y, rect.y + rect.h);
+    int dx = cx - closestX;
+    int dy = cy - closestY;
+    return (dx * dx + dy * dy) <= (radius * radius);
 }
 
-void adicionar_debuff(GtkWidget *parent) {
-    GtkWidget *debuff = gtk_button_new_with_label("🔥"); // Apenas um exemplo, pode ser uma imagem
-    gtk_box_pack_start(GTK_BOX(parent), debuff, FALSE, FALSE, 5);
-    gtk_widget_show(debuff);
-    
-    // Simula a remoção do debuff após um tempo
-    g_timeout_add(3000, (GSourceFunc) remover_debuff, debuff);
+void draw_circle(SDL_Renderer* renderer, int cx, int cy, int radius) {
+    for (int w = 0; w < radius * 2; w++) {
+        for (int h = 0; h < radius * 2; h++) {
+            int dx = radius - w;
+            int dy = radius - h;
+            if (dx * dx + dy * dy <= radius * radius)
+                SDL_RenderDrawPoint(renderer, cx + dx, cy + dy);
+        }
+    }
 }
 
-void ativar_turno(GtkWidget *widget, gpointer data) {
-    adicionar_debuff(debuff_container);
-}
+int SDL_main(int argc, char* argv[]) {
+    SDL_Init(SDL_INIT_VIDEO);
 
-int main(int argc, char *argv[]) {
-    gtk_init(&argc, &argv);
+    SDL_Window* window = SDL_CreateWindow("Colisão com SDL2",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_container_add(GTK_CONTAINER(window), vbox);
+    int playerX = SCREEN_WIDTH / 2;
+    int playerY = SCREEN_HEIGHT / 2;
 
-    // Container para os debuffs
-    debuff_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-    gtk_box_set_homogeneous(GTK_BOX(debuff_container), FALSE);
-    gtk_box_pack_start(GTK_BOX(vbox), debuff_container, FALSE, FALSE, 0);
+    SDL_Rect bloco = { 100, 100, 100, 100 };
 
-    // Botão para simular turno e adicionar debuff
-    GtkWidget *btn = gtk_button_new_with_label("Novo Turno");
-    g_signal_connect(btn, "clicked", G_CALLBACK(ativar_turno), NULL);
-    gtk_box_pack_start(GTK_BOX(vbox), btn, FALSE, FALSE, 5);
+    bool running = true;
+    SDL_Event event;
 
-    gtk_widget_show_all(window);
-    gtk_main();
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                running = false;
+        }
 
+        const Uint8* keys = SDL_GetKeyboardState(NULL);
+        if (keys[SDL_SCANCODE_UP]) playerY -= PLAYER_SPEED;
+        if (keys[SDL_SCANCODE_DOWN]) playerY += PLAYER_SPEED;
+        if (keys[SDL_SCANCODE_LEFT]) playerX -= PLAYER_SPEED;
+        if (keys[SDL_SCANCODE_RIGHT]) playerX += PLAYER_SPEED;
+
+        // Verificar colisão
+        if (check_collision_circle_rect(playerX, playerY, PLAYER_RADIUS, bloco)) {
+            printf("Colidiu!\n");
+        }
+
+        // Render
+        SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255); // Fundo
+        SDL_RenderClear(renderer);
+
+        // Desenhar retângulo
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(renderer, &bloco);
+
+        // Desenhar jogador (círculo)
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        draw_circle(renderer, playerX, playerY, PLAYER_RADIUS);
+
+        SDL_RenderPresent(renderer);
+
+        SDL_Delay(16); // ~60 FPS
+    }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
     return 0;
 }

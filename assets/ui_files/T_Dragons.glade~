@@ -2782,27 +2782,10 @@ Tempo de recarga: 1 turno(s)</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="fr6_frame_bar_ent1">
-                            <property name="name">fr6_frame_bar_ent1</property>
-                            <property name="width-request">254</property>
-                            <property name="height-request">32</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="single-line-mode">True</property>
-                            <style>
-                              <class name="fr6_framelifebar"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="x">47</property>
-                            <property name="y">54</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="fr6_life_bar_ent1">
                             <property name="name">fr6_life_bar_ent1</property>
-                            <property name="width-request">248</property>
-                            <property name="height-request">26</property>
+                            <property name="width-request">233</property>
+                            <property name="height-request">11</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="single-line-mode">True</property>
@@ -2811,8 +2794,8 @@ Tempo de recarga: 1 turno(s)</property>
                             </style>
                           </object>
                           <packing>
-                            <property name="x">50</property>
-                            <property name="y">57</property>
+                            <property name="x">60</property>
+                            <property name="y">63</property>
                           </packing>
                         </child>
                         <child>
@@ -2861,7 +2844,7 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="height-request">24</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="spacing">3</property>
+                            <property name="spacing">6</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -2876,8 +2859,21 @@ Tempo de recarga: 1 turno(s)</property>
                             </child>
                           </object>
                           <packing>
-                            <property name="x">50</property>
+                            <property name="x">56</property>
                             <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_healthframe_ent1">
+                            <property name="width-request">254</property>
+                            <property name="height-request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\healthbar_frame.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">52</property>
                           </packing>
                         </child>
                       </object>
@@ -2958,27 +2954,10 @@ Tempo de recarga: 1 turno(s)</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="fr6_frame_bar_ent2">
-                            <property name="name">fr6_frame_bar_ent2</property>
-                            <property name="width-request">254</property>
-                            <property name="height-request">32</property>
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="single-line-mode">True</property>
-                            <style>
-                              <class name="fr6_framelifebar"/>
-                            </style>
-                          </object>
-                          <packing>
-                            <property name="x">47</property>
-                            <property name="y">54</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="fr6_life_bar_ent2">
                             <property name="name">fr6_life_bar_ent2</property>
-                            <property name="width-request">248</property>
-                            <property name="height-request">26</property>
+                            <property name="width-request">233</property>
+                            <property name="height-request">11</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="single-line-mode">True</property>
@@ -2987,8 +2966,8 @@ Tempo de recarga: 1 turno(s)</property>
                             </style>
                           </object>
                           <packing>
-                            <property name="x">50</property>
-                            <property name="y">57</property>
+                            <property name="x">60</property>
+                            <property name="y">63</property>
                           </packing>
                         </child>
                         <child>
@@ -3017,7 +2996,7 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="height-request">24</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="spacing">3</property>
+                            <property name="spacing">6</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -3032,29 +3011,27 @@ Tempo de recarga: 1 turno(s)</property>
                             </child>
                           </object>
                           <packing>
-                            <property name="x">50</property>
+                            <property name="x">56</property>
                             <property name="y">90</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_healthframe_ent2">
+                            <property name="width-request">254</property>
+                            <property name="height-request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">../img_files\healthbar_frame.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">50</property>
+                            <property name="y">52</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="x">662</property>
                         <property name="y">39</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="fr6_btn_reduce_life">
-                        <property name="label" translatable="yes">Diminuir vida</property>
-                        <property name="name">fr6_btn_reduce_life</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">20</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                      </object>
-                      <packing>
-                        <property name="x">400</property>
-                        <property name="y">50</property>
                       </packing>
                     </child>
                     <child>
@@ -3338,6 +3315,79 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkFixed" id="fr6_battle_powerbar">
+                            <property name="name">fr6_battle_powerbar</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr6_powerbar_border">
+                                <property name="name">fr6_powerbar_border</property>
+                                <property name="width-request">289</property>
+                                <property name="height-request">137</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <style>
+                                  <class name="fr7_chat_attack"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">8</property>
+                                <property name="y">52</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_battle_powerbar_img">
+                                <property name="name">fr6_battle_powerbar_img</property>
+                                <property name="width-request">256</property>
+                                <property name="height-request">42</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\meterbar_infernal.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">22</property>
+                                <property name="y">108</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_battle_powerbar_pointer">
+                                <property name="name">fr6_battle_powerbar_pointer</property>
+                                <property name="width-request">25</property>
+                                <property name="height-request">47</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\pointer.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">139</property>
+                                <property name="y">105</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr6_powerbar_key">
+                                <property name="name">fr7_result_text</property>
+                                <property name="width-request">249</property>
+                                <property name="height-request">23</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Aperte espaço para parar...</property>
+                                <style>
+                                  <class name="fr7_result_text_font"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">31</property>
+                                <property name="y">156</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr6_battle_powerbar</property>
+                            <property name="title" translatable="yes">fr6_battle_powerbar</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="x">348</property>
@@ -3553,7 +3603,7 @@ Tempo de recarga: 1 turno(s)</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_coliseum_battle_label1">
+                      <object class="GtkLabel" id="fr7_btn_continue_label">
                         <property name="name">fr5_coliseum_battle_label</property>
                         <property name="width-request">127</property>
                         <property name="height-request">38</property>
@@ -3613,7 +3663,6 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Novo dragão adicionado ao Bestiário:                                </property>
                         <property name="wrap">True</property>
-                        <property name="wrap-mode">char</property>
                         <style>
                           <class name="fr7_result_text_font"/>
                         </style>
@@ -3655,8 +3704,8 @@ Tempo de recarga: 1 turno(s)</property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">488</property>
-                        <property name="y">400</property>
+                        <property name="x">460</property>
+                        <property name="y">398</property>
                       </packing>
                     </child>
                     <child>

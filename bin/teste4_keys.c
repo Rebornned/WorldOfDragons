@@ -117,8 +117,6 @@ gint main(gint argc, gchar *argv[]) {
 
     gtk_container_add(GTK_CONTAINER(window), boxContainer);
 
-
-
     // Conecta o evento de pressionar teclas à função de callback
     g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), label);
 
