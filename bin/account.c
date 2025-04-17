@@ -8,7 +8,6 @@
 // Compilation: gcc -o account account.c files_libs.c sorts_libs.c
 // Cd bin: cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 
-
 int newAccount(FILE *pFile, char *user, char *email, char *pass);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
