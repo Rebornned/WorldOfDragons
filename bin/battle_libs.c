@@ -2,14 +2,34 @@
 
 #define True 0
 #define False 1
+#define DEFENSE_SCALE 0.3
 
-int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
-int binarySearch(int item, int vec[], int length);
-int startTurn(Battle *battleInstance, Game *game);
+// **********************************************************************************
+// Functions Dictionary 
+//###################################################################################
+// Building
+void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex);
+// *********************************************************************************
+// Debuffs
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
+// ******************************************************************************
+// Damage
+int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
+// ******************************************************************************
+// Turns
+int startTurn(Battle *battleInstance, Game *game);
+// ******************************************************************************
+// Search Alg
+int binarySearch(int item, int vec[], int length);
+// ******************************************************************************
 
-
+// ###############################################################################
+// Code 
+// ###############################################################################
+// Building
+// ###############################################################################
+// Funcao para iniciar os valores de uma batalha
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex) {
     int cooldownsVector[4] = {0, 0, 0, 0};
     battleInstance->actualTurn = 1;
@@ -73,50 +93,10 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     }
 }
 
-int startTurn(Battle *battleInstance, Game *game) {
-    Battle *bI = battleInstance;
-    bI->turnPlayed = 0;
-    // Atualizando tempo de recarga dos ataques
-    for(int i=0; i < 4; i++) {
-        if(bI->EntityOne.skillsCooldown[i] > 0)
-            bI->EntityOne.skillsCooldown[i]--;
-        if(bI->EntityTwo.skillsCooldown[i] > 0)
-            bI->EntityOne.skillsCooldown[i]--;
-    }
-
-    // Aplicando Efeitos de debuff e atualizando recarga
-    for(int i=0; i < 4; i++) {
-        debuffTick(&bI->EntityOne.entityDebuffs[i], &bI->EntityOne, 2, game);
-        debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo, 1, game);
-    }
-
-    // Em andamento
-    if(bI->entityTurn == 1) bI->entityTurn = 2;
-    else if(bI->entityTurn == 2) bI->entityTurn = 1;
-    
-    bI->actualTurn++;
-}
-
-int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
-    if(precision <= 0)
-        return -1; // MISS
-    int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;
-    for(int j=0; j < precision; j++) {
-        choiceVector[j] = j;
-    }
-    randomNumber = random_choice(0, 99);
-    if(binarySearch(randomNumber, choiceVector, precision) == False) {
-        canHit = False;
-        //printf("MISS!!!\n");
-        return -1; // MISS
-    }
-    if(canHit == True) {
-        totalDamage = damage * multiplicator - enemy->defense*0.3;
-    }
-    g_print("Totaldamage: %d\n", totalDamage);
-    return totalDamage;
-}
-
+// ###############################################################################
+// Debuffs
+// ###############################################################################
+// Funcao para aplicar o efeito negativo na entidade
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated) {
     if(strlen(debuffType) == 0 || !entity)
         return -1; // Erro de memória
@@ -158,6 +138,7 @@ int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated)
     return -3; // Debuff não aplicado
 }
 
+// Funcao responsavel por atualizar o estado do efeito negativo na entidade
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     gint totalDamage = 0;
     gint beforeHealth = entity->entDragon.health;
@@ -223,6 +204,61 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     return 0;
 }
 
+// ###############################################################################
+// Damage
+// ###############################################################################
+// Funcao que calcula o dano que sera causado a entidade
+int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
+    if(precision <= 0)
+        return -1; // MISS
+    int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;
+    for(int j=0; j < precision; j++) {
+        choiceVector[j] = j;
+    }
+    randomNumber = random_choice(0, 99);
+    if(binarySearch(randomNumber, choiceVector, precision) == False) {
+        canHit = False;
+        return -1; // MISS
+    }
+    if(canHit == True) {
+        totalDamage = damage * multiplicator - enemy->defense*DEFENSE_SCALE;
+    }
+    g_print("Totaldamage: %d\n", totalDamage);
+    return totalDamage;
+}
+
+// ###############################################################################
+// Turns
+// ###############################################################################
+// Funcao que atualiza o turno, modificando as variaveis e tudo o que acontece durante o inicio do novo turno
+int startTurn(Battle *battleInstance, Game *game) {
+    Battle *bI = battleInstance;
+    bI->turnPlayed = 0;
+    // Atualizando tempo de recarga dos ataques
+    for(int i=0; i < 4; i++) {
+        if(bI->EntityOne.skillsCooldown[i] > 0)
+            bI->EntityOne.skillsCooldown[i]--;
+        if(bI->EntityTwo.skillsCooldown[i] > 0)
+            bI->EntityOne.skillsCooldown[i]--;
+    }
+
+    // Aplicando Efeitos de debuff e atualizando recarga
+    for(int i=0; i < 4; i++) {
+        debuffTick(&bI->EntityOne.entityDebuffs[i], &bI->EntityOne, 2, game);
+        debuffTick(&bI->EntityTwo.entityDebuffs[i], &bI->EntityTwo, 1, game);
+    }
+
+    // Em andamento
+    if(bI->entityTurn == 1) bI->entityTurn = 2;
+    else if(bI->entityTurn == 2) bI->entityTurn = 1;
+    
+    bI->actualTurn++;
+}
+
+// ###############################################################################
+// Search Alg
+// ###############################################################################
+// Funcao que realiza uma busca binaria em um vetor de inteiros
 int binarySearch(int item, int vec[], int length) {
     int start = 0, end = length-1, center = (start+end) / 2;
     while(start <= end) {
@@ -239,3 +275,4 @@ int binarySearch(int item, int vec[], int length) {
     }
     return False;
 }
+// ###############################################################################
