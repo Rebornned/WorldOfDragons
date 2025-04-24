@@ -11,22 +11,9 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <sys/time.h>
 
-/*
-typedef struct {
-    gchar path[200];
-    gchar animationName[150];
-    GdkPixbuf *actualTexture;
-    GtkWidget *loader;
-    GtkFixed *fixed;
-    gint totalLoops;
-    gint actualFrame;
-    gint animationIndex;
-    gint posX;
-    gint posY;
-    gint width;
-    gint height;
-} gtkMediaData;
-*/
+// **********************************************************************************
+// Structs Dictionary 
+//###################################################################################
 typedef struct {
     GtkWidget *widget;
     gchar animationName[100];
@@ -123,6 +110,7 @@ typedef struct {
     gint minigameResultValue;
     gint vectorRange[4][4];
 } MiniGame;
+
 typedef struct {
     Battle *battle;
     MiniGame *minigame;
@@ -136,35 +124,56 @@ typedef struct {
     GtkLabel *turnsText;
     GtkBuilder *builder;
 } Game;
+// ###############################################################################
 
+// **********************************************************************************
+// Functions Dictionary 
+//###################################################################################
+// File: account.c
+//###################################################################################
 int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int random_choice(int min, int max);
+int containSpecialchar(char *email);
 
+//###################################################################################
+// File: player_libs.c
+//###################################################################################
 int initPlayer(FILE *pFile, Player *newPlayer);
 Player getPlayer(FILE *pFile);
 int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon);
 Dragon trainplayerDragon(Dragon dragon, int lvls);
 int addExperiencetoPlayer(FILE *pFile, int exp);
-
-Account * readAccountvector(FILE *pFile);
-Dragon * readBeastvector(FILE *pFile);
-Attack * readAttackvector(FILE *pFile);
 Dragon getplayerDragon(FILE *pFile, char *name);
 
-int addAccountinlist(Account *account, FILE *pFile);
-int delAccountinlist(FILE *pFile, char *username);
-int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
-
-int addBeastinlist(Dragon *dragon, FILE *pFile);
-int delBeastinlist(FILE *pFile, char *name);
-
-int addAttackinlist(Attack *attack, FILE *pFile);
-
-int validateAccount(FILE *pFile, char *username, char *password);
+//###################################################################################
+// File: files_libs.c
+//###################################################################################
+FILE * createAccountslistfile();
+FILE * createBeastslistfile();
+FILE * createBeastslistfile();
+FILE * createAttackslistfile();
 FILE * getAccountfile(char *username);
+
+Dragon * readBeastvector(FILE *pFile);
+Account * readAccountvector(FILE *pFile);
+Attack * readAttackvector(FILE *pFile);
+
+int addAccountinlist(Account *account, FILE *pFile);
+int addBeastinlist(Dragon *dragon, FILE *pFile);
+int addAttackinlist(Attack *attack, FILE *pFile);
+int accountsLength(FILE *pFile);
+int beastsLength(FILE *pFile);
+int attacksLength(FILE *pFile);
+int delBeastinlist(FILE *pFile, char *name);
+int delAccountinlist(FILE *pFile, char *username);
+
+int changePassword(FILE *pFile, char *email, char *password, char *confirmPass);
 int overwriteAccount(FILE * pFile, char *email, char *username);
+int validateAccount(FILE *pFile, char *username, char *password);
+void reinsFile(FILE *pFile);
+//###################################################################################
 
 Dragon * bubbleSort(int type, Dragon * vector, int length);
 int printfDragonvector(Dragon * vector, int length);
