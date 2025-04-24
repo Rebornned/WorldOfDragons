@@ -3388,6 +3388,109 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkFixed" id="fr6_battle_challenge">
+                            <property name="name">fr6_battle_challenge</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr6_challenger_border">
+                                <property name="name">fr6_challenger_border</property>
+                                <property name="width-request">289</property>
+                                <property name="height-request">159</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <style>
+                                  <class name="fr7_chat_attack"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">8</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_battle_powerbar_img1">
+                                <property name="name">fr6_battle_challenge_bar</property>
+                                <property name="width-request">100</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\challenger_bar.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">22</property>
+                                <property name="y">27</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr6_challenger_border1">
+                                <property name="name">fr6_challenger_border</property>
+                                <property name="width-request">66</property>
+                                <property name="height-request">66</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <style>
+                                  <class name="fr7_chat_attack"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">114</property>
+                                <property name="y">112</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">28</property>
+                                <property name="height-request">18</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">X</property>
+                                <style>
+                                  <class name="fr5_exp_label"/>
+                                  <class name="fr6_stared_font_size"/>
+                                  <class name="color_FFFFFF"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">133</property>
+                                <property name="y">130</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr6_battle_challenge_pointer">
+                                <property name="name">fr6_battle_challenge_pointer</property>
+                                <property name="width-request">40</property>
+                                <property name="height-request">40</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\pointer_challenge.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">129</property>
+                                <property name="y">47</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkDrawingArea" id="fr6_battle_challenge_animation">
+                                <property name="name">fr6_battle_challenge_animation</property>
+                                <property name="width-request">80</property>
+                                <property name="height-request">80</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                              </object>
+                              <packing>
+                                <property name="x">107</property>
+                                <property name="y">104</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">fr6_battle_challenge</property>
+                            <property name="title" translatable="yes">fr6_battle_challenge</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="x">348</property>

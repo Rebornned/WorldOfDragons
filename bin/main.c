@@ -86,10 +86,22 @@ typedef struct {
     gint direction;
 } animMeterbarData;
 
+typedef struct {
+    gint *actualValue;
+    gint minValue;
+    gint maxValue;
+    GtkWidget *pointer;
+    GtkFixed *fixed;
+    gint actualY;
+    gint enemyForce;
+    gint playerForce;
+} animChallengeData;
+
 // Ponteiros globais
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 // Game
 gchar request[300];
+gboolean keyPressed;
 
 // Animations
 GdkPixbuf *pAnimationsFrameVector[20][500];  // Animations array
@@ -187,7 +199,11 @@ void settingTimedNumbersAnimation(gint timeout, GtkLabel *label, gint range, gin
 void removeAllStyleClasses(GtkWidget *widget);
 void settingMeterbarAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gdouble duration);
 gboolean meterBarAnimation(gpointer data);
+void settingChallengeAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gint enemyForce);
+gboolean challengeAnimation(gpointer data);
+gboolean timedStartChallengeGame(gpointer data);
 gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data);
+gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gboolean timedGtkDestroyObject(gpointer data);
 gboolean timedSwitchBooleanValue(gpointer data);
 gboolean timedLvlBarUpdate(gpointer data);
@@ -204,6 +220,7 @@ gboolean timedLabelAnimation(gpointer data);
 gboolean timedgFree(gpointer data);
 gboolean updateLoaderFrame(gpointer data);
 gboolean settingBattleWindow(gpointer data);
+gboolean startBattle(gpointer data);
 
 // Animações
 void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
@@ -347,7 +364,7 @@ int main(int argc, char *argv[]) {
     playerFile = getAccountfile("Rambo");
 
     initPlayer(playerFile, &player);
-    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 20, NULL);
+    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
@@ -374,14 +391,32 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
     gint pressed_number;
     // Obtém o nome da tecla pressionada
     snprintf(keyval_name, sizeof(keyval_name), "%s", gdk_keyval_name(event->keyval));
-    if(strcmp(keyval_name, "space") == 0 && !game->minigame->minigamePlayed) {
+    if(!keyPressed) {
+      if(strcmp(keyval_name, "space") == 0 && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "meterbar") == 0) {
         game->minigame->minigameResultValue = *(game->minigame->minigameValue);
         game->minigame->minigamePlayed = TRUE;
         *(game->minigame->minigameValue) = -1;
+        }
+        if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "challenge") == 0) {     
+            gint playerForce = 7 + ( 16.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
+            //g_print("Força do player: %d\n", playerForce);
+            if(*(game->minigame->minigameValue) != 1)
+                *(game->minigame->minigameValue) += playerForce;
+        }  
     }
-    g_print("Tecla pressionada %s, number:%d \n", keyval_name, pressed_number);
+    if(strcmp(keyval_name, "c") == 0 && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "challenge") == 0) {
+        *(game->minigame->minigameValue) += 24;
+    }  
+
+    keyPressed = TRUE;
+    //g_print("Tecla pressionada %s, number:%d \n", keyval_name, pressed_number);
     
     return FALSE; 
+}
+
+gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+    keyPressed = FALSE;
+    return FALSE;
 }
 
 void settingMeterbarAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gdouble duration) {
@@ -434,6 +469,72 @@ gboolean meterBarAnimation(gpointer data) {
     gtk_fixed_move(animData->fixed, animData->pointer, *(animData->actualValue), animData->actualY);
 
     return TRUE; // continua o loop
+}
+
+void settingChallengeAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY, gint minValue, gint maxValue, gint *actualValue, gint enemyForce) {
+    animChallengeData *data = g_malloc(sizeof(animChallengeData));
+    *actualValue = (minValue+maxValue)/2;
+    data->actualValue = actualValue;
+    data->maxValue = maxValue;
+    data->minValue = minValue;
+    data->pointer = pointer;
+    data->fixed = fixed;
+    data->actualY = actualY;
+    data->enemyForce = enemyForce;
+    g_print("INICIANDO CHALLENGER AGORA *******************************************\n");
+    g_timeout_add(16, challengeAnimation, data);    
+}
+
+gboolean challengeAnimation(gpointer data) {
+    animChallengeData *animData = (animChallengeData*) data;
+     
+    if(*(animData->actualValue) == 1) {
+        g_print("Challenger finalizado ************************\n");
+        g_free(animData);
+        return FALSE;
+    }
+    //g_print("Enemyforce: %d | value: %d\n", animData->enemyForce, *(animData->actualValue));
+    if(animData) {
+        if(*(animData->actualValue) < animData->minValue) {
+            gtk_fixed_move(animData->fixed, animData->pointer, animData->minValue, animData->actualY);
+            g_print("LOST minigame !_!_!__!_!_!_!_!__!_!_!_!_!\n");
+        }
+        if(*(animData->actualValue) > animData->maxValue) {
+            gtk_fixed_move(animData->fixed, animData->pointer, animData->maxValue, animData->actualY);
+            g_print("WON minigame !_!_!__!_!_!_!_!__!_!_!_!_!\n");
+        }
+        if(*(animData->actualValue) > animData->maxValue || *(animData->actualValue) < animData->minValue) {
+            *(animData->actualValue) = 1;
+            return FALSE;
+        }
+        
+        // Move o ponteiro
+        gtk_fixed_move(animData->fixed, animData->pointer, *(animData->actualValue), animData->actualY);
+        *(animData->actualValue) -= animData->enemyForce;
+    }
+    
+    return TRUE; // continua o loop
+}
+
+gboolean timedStartChallengeGame(gpointer data) {
+    Game *game = (Game*) data;
+    GtkWidget *fr6_battle_challenge_pointer = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_battle_challenge_pointer"));
+    GtkFixed *fr6_battle_challenge = GTK_FIXED(gtk_builder_get_object(builder, "fr6_battle_challenge"));
+    GtkWidget *fr6_battle_challenge_animation = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_battle_challenge_animation"));
+
+    gtk_fixed_move(fr6_battle_challenge, fr6_battle_challenge_pointer, 127, 47);
+    
+    // Conecta o evento de pressionar teclas à função de callback
+    game->minigame->isActive = TRUE;
+    game->minigame->minigamePlayed = FALSE;
+    *(game->minigame->minigameValue) = 0;
+    strcpy(game->minigame->name, "challenge");
+    g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), game);    
+    g_signal_connect(window, "key-release-event", G_CALLBACK(on_key_release), game);  
+    g_print("Dificuldade: %d\n", game->battle->difficult); 
+    settingTimedVideoPlay(fr6_battle_challenge_animation, 0, 4, "keypress", 1, game->minigame->minigameValue); 
+    settingChallengeAnimation(fr6_battle_challenge_pointer, fr6_battle_challenge, 47, 21, 237, game->minigame->minigameValue, game->battle->difficult);
+    return FALSE;
 }
 
 void switchPage(GtkButton *btn, gpointer user_data) {
@@ -687,8 +788,8 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
 
             g_timeout_add(5910, timedLabelAnimation, labelAnimationDataEnemy);
-            settingTimedVideoPlay(fr6_video_loader, 0, 109, "battle_opening");
-            settingTimedVideoPlay(fr6_video_loader, 7620, 144, "battle_opening2");
+            settingTimedVideoPlay(fr6_video_loader, 0, 109, "battle_opening", 0, NULL);
+            settingTimedVideoPlay(fr6_video_loader, 7620, 144, "battle_opening2", 0, NULL);
 
             g_print("Pode batalhar\n");
             Battle *battleInstance = g_malloc(sizeof(Battle));
@@ -1343,13 +1444,17 @@ gboolean settingBattleWindow(gpointer data) {
     game->turnsText = fr6_tittle_label;
     game->builder = builder;
     MiniGame *minigame = g_malloc(sizeof(MiniGame));
-    minigame->minigamePlayed = FALSE;
     minigame->minigameValue = (gint *) g_malloc(sizeof(gint));
-    *(minigame->minigameValue) = 0;
-    strcpy(minigame->pAction, "");
-    game->minigame = minigame;
-    g_timeout_add(1000, onBattle, game);
+    game->minigame = minigame;    
+    game->minigame->isActive = FALSE;
+    g_timeout_add(3000, startBattle, game);
 
+    return FALSE;
+}
+
+gboolean startBattle(gpointer data) {
+    Game *game = (Game*) data;
+    g_timeout_add(1000, onBattle, game);
     return FALSE;
 }
 
@@ -1414,7 +1519,14 @@ gboolean onBattle(gpointer data) {
             
             gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_powerbar");
             // Conecta o evento de pressionar teclas à função de callback
-            g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), game);         
+            // Seta as iniciais do minigame
+            game->minigame->minigamePlayed = FALSE;
+            *(game->minigame->minigameValue) = 0;
+            strcpy(game->minigame->pAction, "");
+            strcpy(game->minigame->name, "meterbar");
+
+            g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), game);        
+            g_signal_connect(window, "key-release-event", G_CALLBACK(on_key_release), game); 
             settingMeterbarAnimation(fr6_battle_powerbar_pointer, fr6_battle_powerbar, 105, 22, 254, game->minigame->minigameValue, 0.75); 
             if(strcmp(request, "bite") == 0) strcpy(game->minigame->pAction, "bite");
             if(strcmp(request, "scratch") == 0) strcpy(game->minigame->pAction, "scratch");
@@ -1446,7 +1558,6 @@ gboolean onBattle(gpointer data) {
                 precision = -100;
             }
             g_print("resultado da barra: %d\n", barResult);
-            //settingTimedStackChange(1000, game->optionsStack, "fr6_battle_text");
         } 
         
         // Ataque mordida
@@ -1579,15 +1690,22 @@ gboolean onBattle(gpointer data) {
         gint dragonDifficult = 0;
         gint precision = 0;
 
-        gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_chat");
-        
+        //gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_chat");
         labeltextModifier(game->battleText, "Turno inimigo");
+
         // Arrasta a barra para sinalizar quem está atacando
         gtk_fixed_move(game->fixed, game->actualTurn, 663, 165);
 
         // Comportamento inimigo
         if(game->battle->difficult == 1) { // Dificuldade fácil
+            
+        }
         
+        // Início do minigame challenge
+        if(!game->minigame->isActive) { // Condicional
+            settingTimedStackChange(1500, game->optionsStack, "fr6_battle_challenge");
+            g_timeout_add(1500, timedStartChallengeGame, game);
+            game->minigame->isActive = TRUE;
         }
     }
 
@@ -1616,14 +1734,14 @@ gboolean onBattle(gpointer data) {
 
     // Derrota do player
     if(game->battle->EntityOne.entDragon.health <= 0) {
-        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat");
+        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL);
         settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
         labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
         }
     
     // Vitória do player
     else if(game->battle->EntityTwo.entDragon.health <= 0) {
-        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory");
+        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory", 0, NULL);
         settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/victory.png");
         //g_print("Index do dragão atual: %d | atual progresso do player %d\n", (fr5_actual_dragon_index-27)*-1, player.actualProgress);
         if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-27) * -1 == player.actualProgress && player.actualProgress < 27) {
@@ -1645,6 +1763,7 @@ gboolean onBattle(gpointer data) {
         GtkWidget *fr7_btn_continue_label = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue_label"));
         *(game->minigame->minigameValue) = -1;
         g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_press), game);
+        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_release), game);
         settingTimedLabelModifier(4000, game->turnsText, "Combate");
         settingTimedStackChange(3000, main_stack, "result_page");
         gtk_image_clear(GTK_IMAGE(fr7_result_banner1));
@@ -1719,17 +1838,17 @@ void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint 
             debuff->image = fr6_enemydragon_debuff;
             debuff->video = fr6_enemydragon_animation_debuff;
             debuff->fixed = fixed;
-            settingTimedVideoPlay(GTK_WIDGET(fr6_enemydragon_animation_debuff), 0, 31, animationName);
+            settingTimedVideoPlay(GTK_WIDGET(fr6_enemydragon_animation_debuff), 0, 31, animationName, 0, NULL);
             settingTimedImageModifier(500, GTK_WIDGET(debuff->image), statusPath);
         }
         else if(strcmp(type, "reapply") == 0) {
             gchar *animationName = g_strdup_printf("%s_apply", status);
-            settingTimedVideoPlay(GTK_WIDGET(debuff->video), 0, 31, animationName);
+            settingTimedVideoPlay(GTK_WIDGET(debuff->video), 0, 31, animationName, 0, NULL);
         }
         else if(strcmp(type, "finish") == 0) {
             gchar *animationName = g_strdup_printf("%s_finish", status);
             gtk_image_clear(GTK_IMAGE(debuff->image));
-            settingTimedVideoPlay(debuff->video, 0, 31, animationName);
+            settingTimedVideoPlay(debuff->video, 0, 31, animationName, 0, NULL);
             g_timeout_add(1000, timedGtkDestroyObject, debuff->fixed);
         }
     }
@@ -2041,6 +2160,7 @@ void registerTexturesAnimations() {
     loadAnimationFrames("../assets/img_files/animations/debuffs_animations/terrified_finish", 31, 10); // Debuff de terror finalizado
     loadAnimationFrames("../assets/img_files/animations/result_animations/victory", 91, 11); // Vitória
     loadAnimationFrames("../assets/img_files/animations/result_animations/defeat", 91, 12); // Derrota
+    loadAnimationFrames("../assets/img_files/animations/battle_animations/keypress", 4, 13); // Keypress
 }
 
 // Carrega os frames para o vetor
@@ -2070,13 +2190,19 @@ gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data) {
     // Seta qual será o frame atual
     gint frameDuration = 1000000 / 60; // 60 FPS -> cada frame dura 16.67ms (16666µs)
     animData->currentFrame = elapsed / frameDuration;
-
-    if (animData->currentFrame >= animData->totalFrames) {
+    
+    if (animData->currentFrame >= animData->totalFrames || (animData->cancelAnimation && *(animData->cancelAnimation) == 1)) {
+        if(animData->cancelAnimation && *(animData->cancelAnimation) == 1)
+            animData->isLoop = 0;
+        //g_print("Animação: %s | isLoop: %d\n", animData->animationName, animData->isLoop);
+        if(animData->isLoop == 1)
+            settingTimedVideoPlay(animData->widget, 0, animData->totalFrames, animData->animationName, 1, animData->cancelAnimation);
         animData->finished = TRUE;
         g_signal_handlers_disconnect_by_func(animData->widget, G_CALLBACK(on_draw_animation), animData);
         g_timeout_add(500, timedgFree, animData);
         return FALSE;
     }
+    
 
     // Carrega e desenha o frame correto
     GdkPixbuf *frame = pAnimationsFrameVector[animData->animationIndex - 1][animData->currentFrame];

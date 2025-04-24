@@ -29,12 +29,15 @@ typedef struct {
 */
 typedef struct {
     GtkWidget *widget;
+    gchar animationName[100];
+    gint *cancelAnimation;
+    gint isLoop;
     gint animationIndex;
     gint currentFrame;
     gint totalFrames;
     guint timeoutID;
     gboolean finished;
-    gint64 startTime;  // Novo campo para armazenar tempo inicial
+    gint64 startTime;
 } AnimationData;
 
 typedef struct {
@@ -113,7 +116,9 @@ typedef struct {
 
 typedef struct {
     gchar pAction[100];
+    gchar name[100];
     gboolean minigamePlayed;
+    gboolean isActive;
     gint *minigameValue;
     gint minigameResultValue;
     gint vectorRange[4][4];
@@ -182,9 +187,9 @@ int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated)
 void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
-void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName);
+void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation);
 gboolean delayedStartAnimation(gpointer data);
-void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames);
+void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName);
 void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
 void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
 
