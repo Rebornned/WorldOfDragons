@@ -102,6 +102,7 @@ typedef struct {
 // Game
 gchar request[300];
 gboolean keyPressed;
+Game *game;
 
 // Animations
 GdkPixbuf *pAnimationsFrameVector[20][500];  // Animations array
@@ -206,6 +207,7 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer data);
 gboolean timedGtkDestroyObject(gpointer data);
 gboolean timedSwitchBooleanValue(gpointer data);
+gboolean timedInverseBooleanValue(gpointer data);
 gboolean timedLvlBarUpdate(gpointer data);
 gboolean settingNumbersAnimation(gpointer data);
 gboolean timedNumbersAnimation(gpointer data);
@@ -392,16 +394,15 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
     // Obtém o nome da tecla pressionada
     snprintf(keyval_name, sizeof(keyval_name), "%s", gdk_keyval_name(event->keyval));
     if(!keyPressed) {
-      if(strcmp(keyval_name, "space") == 0 && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "meterbar") == 0) {
+      if(strcmp(keyval_name, "space") == 0 && !game->doors.mgMeterPlayed && strcmp(game->minigame->name, "meterbar") == 0) {
         game->minigame->minigameResultValue = *(game->minigame->minigameValue);
-        game->minigame->minigamePlayed = TRUE;
+        game->doors.mgMeterPlayed = TRUE;
         *(game->minigame->minigameValue) = -1;
         }
-        if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "challenge") == 0) {     
-            gint playerForce = 7 + ( 16.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
+        if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->doors.mgChallengerPlayed && strcmp(game->minigame->name, "challenge") == 0) {     
+            gint playerForce = 7 + ( 18.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
             //g_print("Força do player: %d\n", playerForce);
-            if(*(game->minigame->minigameValue) != 1)
-                *(game->minigame->minigameValue) += playerForce;
+            *(game->minigame->minigameValue) += playerForce;
         }  
     }
     if(strcmp(keyval_name, "c") == 0 && !game->minigame->minigamePlayed && strcmp(game->minigame->name, "challenge") == 0) {
@@ -488,24 +489,27 @@ void settingChallengeAnimation(GtkWidget *pointer, GtkFixed *fixed, gint actualY
 gboolean challengeAnimation(gpointer data) {
     animChallengeData *animData = (animChallengeData*) data;
      
-    if(*(animData->actualValue) == 1) {
+    if(game->doors.mgChallengerPlayed) {
         g_print("Challenger finalizado ************************\n");
+        game->minigame->isActive = FALSE;
+        *(animData->actualValue) = 1;
         g_free(animData);
         return FALSE;
     }
-    //g_print("Enemyforce: %d | value: %d\n", animData->enemyForce, *(animData->actualValue));
     if(animData) {
-        if(*(animData->actualValue) < animData->minValue) {
+        if(*(animData->actualValue) < animData->minValue) { // Perde o minigame
             gtk_fixed_move(animData->fixed, animData->pointer, animData->minValue, animData->actualY);
+            game->doors.mgChallengerPlayed = TRUE;
+            game->minigame->minigameResultValue = -1;
             g_print("LOST minigame !_!_!__!_!_!_!_!__!_!_!_!_!\n");
+            return TRUE;
         }
-        if(*(animData->actualValue) > animData->maxValue) {
+        else if(*(animData->actualValue) > animData->maxValue) { // Ganha o minigame
             gtk_fixed_move(animData->fixed, animData->pointer, animData->maxValue, animData->actualY);
+            game->doors.mgChallengerPlayed = TRUE;
+            game->minigame->minigameResultValue = 1;
             g_print("WON minigame !_!_!__!_!_!_!_!__!_!_!_!_!\n");
-        }
-        if(*(animData->actualValue) > animData->maxValue || *(animData->actualValue) < animData->minValue) {
-            *(animData->actualValue) = 1;
-            return FALSE;
+            return TRUE;
         }
         
         // Move o ponteiro
@@ -525,10 +529,10 @@ gboolean timedStartChallengeGame(gpointer data) {
     gtk_fixed_move(fr6_battle_challenge, fr6_battle_challenge_pointer, 127, 47);
     
     // Conecta o evento de pressionar teclas à função de callback
-    game->minigame->isActive = TRUE;
-    game->minigame->minigamePlayed = FALSE;
+    //game->minigame->minigamePlayed = FALSE;
     *(game->minigame->minigameValue) = 0;
     strcpy(game->minigame->name, "challenge");
+    gtk_widget_realize(window);
     g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press), game);    
     g_signal_connect(window, "key-release-event", G_CALLBACK(on_key_release), game);  
     g_print("Dificuldade: %d\n", game->battle->difficult); 
@@ -1433,20 +1437,27 @@ gboolean settingBattleWindow(gpointer data) {
 
     gtk_fixed_move(fr6_combat, fr6_dragon_first_border, firstBorderX, 165);
     // ===========================================================================
-    Game *game = g_malloc(sizeof(Game));
-    game->battle = battle;
-    game->fixed = fr6_combat;
-    game->actualTurn = fr6_dragon_first_border;
-    game->battleText = fr6_chat_label;
-    game->pHealthBar = fr6_life_bar_ent1;
-    game->eHealthBar = fr6_life_bar_ent2;
-    game->optionsStack = fr6_battle_stack;
-    game->turnsText = fr6_tittle_label;
-    game->builder = builder;
+    
+    Game *game_pointer = g_malloc(sizeof(Game));
+    game_pointer->battle = battle;
+    game_pointer->fixed = fr6_combat;
+    game_pointer->actualTurn = fr6_dragon_first_border;
+    game_pointer->battleText = fr6_chat_label;
+    game_pointer->pHealthBar = fr6_life_bar_ent1;
+    game_pointer->eHealthBar = fr6_life_bar_ent2;
+    game_pointer->optionsStack = fr6_battle_stack;
+    game_pointer->turnsText = fr6_tittle_label;
+    game_pointer->builder = builder;
     MiniGame *minigame = g_malloc(sizeof(MiniGame));
     minigame->minigameValue = (gint *) g_malloc(sizeof(gint));
-    game->minigame = minigame;    
-    game->minigame->isActive = FALSE;
+    game_pointer->minigame = minigame;    
+    game_pointer->minigame->isActive = FALSE;
+    game_pointer->doors.mgMeterPlayed = FALSE;
+    game_pointer->doors.playerPlayed = FALSE;
+    game_pointer->doors.eAttackReady = FALSE;
+    game_pointer->doors.enemyPlayed = FALSE;
+    game_pointer->doors.mgChallengerPlayed = FALSE;
+    game = game_pointer;
     g_timeout_add(3000, startBattle, game);
 
     return FALSE;
@@ -1466,7 +1477,7 @@ gboolean onBattle(gpointer data) {
     // Início do round
     
     // Turno do player
-    if(game->battle->entityTurn == 1) {
+    if(game->battle->entityTurn == 1 && !game->doors.playerPlayed) {
         gint playerAttack = game->battle->EntityOne.entDragon.attack;
         gint totalDamage = 0;
         gint appliedDebuff = -3;
@@ -1478,19 +1489,20 @@ gboolean onBattle(gpointer data) {
         gtk_fixed_move(game->fixed, game->actualTurn, 17, 165);
         
         // Verificação de cooldowns das habilidades
-        for(int i=0; i<4; i++) {
-            gchar *object = g_strdup_printf("fr6_btn_attack%d", i+1);
-            GtkWidget *fr6_btn_attack = GTK_WIDGET(gtk_builder_get_object(builder, object));
-            if(game->battle->EntityOne.skillsCooldown[i] > 0) {
-                gtk_widget_set_sensitive(fr6_btn_attack, FALSE);
-                gtk_widget_set_opacity(fr6_btn_attack, 0.5);
-            }
-            else {
-                gtk_widget_set_sensitive(fr6_btn_attack, TRUE);
-                gtk_widget_set_opacity(fr6_btn_attack, 1.0);
+        if(game->battle->actualTurn == 1 || game->battle->turnPlayed == TRUE) {
+            for(int i=0; i<4; i++) {
+                gchar *object = g_strdup_printf("fr6_btn_attack%d", i+1);
+                GtkWidget *fr6_btn_attack = GTK_WIDGET(gtk_builder_get_object(builder, object));
+                if(game->battle->EntityOne.skillsCooldown[i] > 0) {
+                    gtk_widget_set_sensitive(fr6_btn_attack, FALSE);
+                    gtk_widget_set_opacity(fr6_btn_attack, 0.5);
+                }
+                else {
+                    gtk_widget_set_sensitive(fr6_btn_attack, TRUE);
+                    gtk_widget_set_opacity(fr6_btn_attack, 1.0);
+                }
             }
         }
-        
         // Nessa parte vai o minigame mudando o request.
         if(strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) {
             GtkImage *fr6_battle_powerbar_img = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_battle_powerbar_img"));
@@ -1532,7 +1544,9 @@ gboolean onBattle(gpointer data) {
             if(strcmp(request, "scratch") == 0) strcpy(game->minigame->pAction, "scratch");
             if(strcmp(request, "dracarys") == 0) strcpy(game->minigame->pAction, "dracarys");
         }
-        if(game->minigame->minigamePlayed && *(game->minigame->minigameValue) == -1) {
+        
+        // Realizando ataque após o minigame
+        if(game->doors.mgMeterPlayed && *(game->minigame->minigameValue) == -1) {
             gint value = game->minigame->minigameResultValue;
             gint barResult = 0;
             g_print("Minigame finalizado dentro da função. valor obtido: %d\n", game->minigame->minigameResultValue);
@@ -1561,7 +1575,7 @@ gboolean onBattle(gpointer data) {
         } 
         
         // Ataque mordida
-        if(strcmp(game->minigame->pAction, "bite") == 0 && game->minigame->minigamePlayed) {
+        if(strcmp(game->minigame->pAction, "bite") == 0 && game->doors.mgMeterPlayed) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
             if(precision + 90 >= 100)
@@ -1569,7 +1583,7 @@ gboolean onBattle(gpointer data) {
             else
                 precision += 90;
             g_print("Precisão atual: %d | Bite\n", precision);
-            game->battle->EntityOne.skillsCooldown[0] = 2;
+            game->battle->EntityOne.skillsCooldown[0] = 4;
             totalDamage = causeDamage(playerAttack, 1.2, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
                 appliedDebuff =  applyDebuff("Bleeding", 2, &game->battle->EntityTwo, &duplicated);
@@ -1584,7 +1598,7 @@ gboolean onBattle(gpointer data) {
             }
         }
         // Ataque Arranhão
-        if(strcmp(game->minigame->pAction, "scratch") == 0 && game->minigame->minigamePlayed) {
+        if(strcmp(game->minigame->pAction, "scratch") == 0 && game->doors.mgMeterPlayed) {
             game->minigame->minigamePlayed = FALSE;
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
@@ -1596,7 +1610,7 @@ gboolean onBattle(gpointer data) {
             game->battle->EntityOne.skillsCooldown[1] = 0;
             totalDamage = causeDamage(playerAttack, 1.0, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
-                appliedDebuff =  applyDebuff("Broken-Armor", 2, &game->battle->EntityTwo, &duplicated);
+                appliedDebuff =  applyDebuff("Broken-Armor", 3, &game->battle->EntityTwo, &duplicated);
                 if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
                     updateDebuffAnimation(1, "apply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], 5, "broken_status");
                 }
@@ -1624,7 +1638,7 @@ gboolean onBattle(gpointer data) {
             g_timeout_add(3000, timedSwitchBooleanValue, game);
         }
         // Ataque Dracarys
-        if(strcmp(game->minigame->pAction, "dracarys") == 0 && game->minigame->minigamePlayed) {
+        if(strcmp(game->minigame->pAction, "dracarys") == 0 && game->doors.mgMeterPlayed) {
             game->minigame->minigamePlayed = FALSE;
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
@@ -1633,7 +1647,7 @@ gboolean onBattle(gpointer data) {
             else
                 precision += 55;
             g_print("Precisão atual: %d | Dracarys\n", precision);
-            game->battle->EntityOne.skillsCooldown[3] = 4;
+            game->battle->EntityOne.skillsCooldown[3] = 6;
             totalDamage = causeDamage(playerAttack, 2.0, precision, &game->battle->EntityTwo.entDragon);
             if(totalDamage != -1) {
                 appliedDebuff =  applyDebuff("Burning", 2, &game->battle->EntityTwo, &duplicated);
@@ -1667,7 +1681,7 @@ gboolean onBattle(gpointer data) {
                 g_print("Debuff slot[%d]: type: %s | Turns left: %d\n", i,game->battle->EntityTwo.entityDebuffs[i].type, game->battle->EntityTwo.entityDebuffs[i].turns);
             
             strcpy(game->minigame->pAction, "");
-            game->minigame->minigamePlayed = FALSE;
+            game->doors.playerPlayed = TRUE;
             g_timeout_add(3000, timedSwitchBooleanValue, game);
             g_print("==================================================================\n");
 
@@ -1677,12 +1691,13 @@ gboolean onBattle(gpointer data) {
             logStartAnimation("MISS", "fr5_dragon_name_common", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
             game->minigame->minigamePlayed = FALSE;
             strcpy(game->minigame->pAction, "");
+            game->doors.playerPlayed = TRUE;
             g_timeout_add(3000, timedSwitchBooleanValue, game);
         }
     }
     
     // Turno do Inimigo
-    if(game->battle->entityTurn == 2) {
+    if(game->battle->entityTurn == 2 && game->battle->EntityOne.entDragon.health > 0 && !game->doors.enemyPlayed) {
         gint enemyAttack = game->battle->EntityTwo.entDragon.attack;
         gint totalDamage = 0;
         gint appliedDebuff = -3;
@@ -1697,18 +1712,221 @@ gboolean onBattle(gpointer data) {
         gtk_fixed_move(game->fixed, game->actualTurn, 663, 165);
 
         // Comportamento inimigo
-        if(game->battle->difficult == 1) { // Dificuldade fácil
+        if(!game->doors.eAttackReady) {
+            gint currentlyAttack = 0;
+            if(game->battle->difficult == 1 && strcmp(game->minigame->eAction, "") == 0) { // Dificuldade fácil
+                currentlyAttack = random_choice(0, 3);
+                game->minigame->attackRecharge = 1;
+                while(game->battle->EntityTwo.skillsCooldown[currentlyAttack] != 0) {
+                    currentlyAttack = random_choice(0, 3);
+                }
+            }
+
+            if(game->battle->difficult == 2 && strcmp(game->minigame->eAction, "") == 0) { // Dificuldade Média
+                currentlyAttack = random_choice(0, 3);
+                game->minigame->attackRecharge = 0;
+                while(game->battle->EntityTwo.skillsCooldown[currentlyAttack] != 0) {
+                    currentlyAttack = random_choice(0, 3);
+                }
+                
+            }
+
+            if(game->battle->difficult == 3 && strcmp(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
+                currentlyAttack = 0;
+                game->minigame->attackRecharge = 0;
+                
+                // Inteligencia para quebrar armadura sempre
+                for(int i=0; i<4; i++) {
+                    if(strcmp(game->battle->EntityOne.entityDebuffs[i].type, "Broken-Armor") == 0) { // Verifica
+                        if(game->battle->EntityTwo.skillsCooldown[2] == 0) // Verifica se dracarys está disponivel
+                            currentlyAttack = 2;
+                        else
+                            if(game->battle->EntityTwo.skillsCooldown[1] == 0) // Verifica se mordida está dispónivel
+                                currentlyAttack = 1;
+                    }
+                }
+            }
+
+            if(game->battle->difficult == 4 && strcmp(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
+                currentlyAttack = 0;
+                game->minigame->attackRecharge = -1;
+                
+                // Inteligencia para quebrar armadura sempre
+                for(int i=0; i<4; i++) {
+                    if(strcmp(game->battle->EntityOne.entityDebuffs[i].type, "Broken-Armor") == 0) { // Verifica
+                        if(game->battle->EntityTwo.skillsCooldown[2] == 0) // Verifica se dracarys está disponivel
+                            currentlyAttack = 2;
+                        else
+                            if(game->battle->EntityTwo.skillsCooldown[1] == 0) // Verifica se mordida está dispónivel
+                                currentlyAttack = 1;
+                    }
+                }
+            }
             
+            if(currentlyAttack == 0) { strcpy(game->minigame->eAction, "scratch"); }
+            if(currentlyAttack == 1) { strcpy(game->minigame->eAction, "bite"); }
+            if(currentlyAttack == 2) { strcpy(game->minigame->eAction, "dracarys"); }
+            if(currentlyAttack == 3) { strcpy(game->minigame->eAction, "roar"); }
+            game->doors.eAttackReady = TRUE;
         }
-        
+        //g_print("Action: %s ///////////////////\n", game->minigame->pAction);
         // Início do minigame challenge
-        if(!game->minigame->isActive) { // Condicional
+        
+        if(!game->minigame->isActive && !game->doors.mgChallengerPlayed) { // Condicional
             settingTimedStackChange(1500, game->optionsStack, "fr6_battle_challenge");
             g_timeout_add(1500, timedStartChallengeGame, game);
             game->minigame->isActive = TRUE;
         }
-    }
 
+        // Realiza o ataque
+        //g_print("minigame played: %d || eAction: %s ******************\n", game->doors.mgChallengerPlayed, game->minigame->eAction);
+        //g_print("Attack ready: %d | %s ///////////////////\n", game->doors.eAttackReady, game->minigame->eAction);
+        if(game->doors.mgChallengerPlayed && game->doors.eAttackReady) {
+            //g_print("Cai no ataque //*/*/*/*/*/*/*/*\n");
+            gfloat attackDecrease = 0;
+            gint precision = 0;
+            gint criticalChance = 0;
+            if(game->minigame->minigameResultValue == 1) {
+                precision = -5;
+                attackDecrease = 0.25;
+            }
+            if(game->minigame->minigameResultValue == -1) {
+                precision = 100;
+                criticalChance = 25;
+                attackDecrease = 0;
+            }
+            *(game->minigame->minigameValue) = 0;
+
+            // Ataque mordida
+            if(strcmp(game->minigame->eAction, "bite") == 0) {
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                if(precision + 90 >= 100)
+                    precision = 100;
+                else
+                    precision += 90;
+                g_print("Precisão atual: %d | Bite\n", precision);
+                game->battle->EntityTwo.skillsCooldown[0] = 4 + game->minigame->attackRecharge;
+                totalDamage = causeDamage(enemyAttack, 1.2, precision, &game->battle->EntityOne.entDragon);
+                if(totalDamage != -1) {
+                    appliedDebuff =  applyDebuff("Bleeding", 2, &game->battle->EntityOne, &duplicated);
+                    if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
+                        updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 3, "bleeding_status");
+                    }
+                    if(duplicated == 1) {
+                        updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 3, "bleeding_status");
+                        g_print("Debuff reaplicado com sucesso.\n");
+                    }
+                        g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+                }
+            }
+            // Ataque Arranhão
+            if(strcmp(game->minigame->eAction, "scratch") == 0) {
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                if(precision + 100 >= 100)
+                    precision = 100;
+                else
+                    precision += 100;
+                g_print("Precisão atual: %d | scratch\n", precision);
+                game->battle->EntityTwo.skillsCooldown[1] = 0;
+                totalDamage = causeDamage(enemyAttack, 1.0, precision, &game->battle->EntityOne.entDragon);
+                if(totalDamage != -1) {
+                    appliedDebuff =  applyDebuff("Broken-Armor", 3, &game->battle->EntityOne, &duplicated);
+                    if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
+                        updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 5, "broken_status");
+                    }
+                    if(duplicated == 1) {
+                        updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 5, "broken_status");
+                        g_print("Debuff reaplicado com sucesso.\n");
+                    }
+                    g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+                }
+            }
+            // Ataque Rugido
+            if(strcmp(game->minigame->eAction, "roar") == 0) {
+                g_print("==================================================================\n");
+                g_print("Vida atual do player: %d\n", game->battle->EntityOne.entDragon.health);
+                game->battle->EntityTwo.skillsCooldown[2] = 6 + game->minigame->attackRecharge;
+                appliedDebuff =  applyDebuff("Terrified", 3, &game->battle->EntityOne, &duplicated);
+                if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
+                    updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
+                }
+                if(duplicated == 1) {
+                    updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
+                    g_print("Debuff reaplicado com sucesso.\n");
+                }
+                g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+                settingTimedStackChange(3000, game->optionsStack, "fr6_battle_buttons");
+                game->doors.enemyPlayed = TRUE;
+                g_timeout_add(3000, timedSwitchBooleanValue, game);
+            }
+            // Ataque Dracarys
+            if(strcmp(game->minigame->eAction, "dracarys") == 0) {
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                if(precision + 55 >= 100)
+                    precision = 100;
+                else
+                    precision += 55;
+                g_print("Precisão atual: %d | Dracarys\n", precision);
+                game->battle->EntityTwo.skillsCooldown[3] = 6 + game->minigame->attackRecharge;
+                totalDamage = causeDamage(enemyAttack, 2.0, precision, &game->battle->EntityOne.entDragon);
+                if(totalDamage != -1) {
+                    appliedDebuff =  applyDebuff("Burning", 2, &game->battle->EntityOne, &duplicated);
+                    if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
+                        updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 7, "burning_status");
+                    }
+                    if(duplicated == 1) {
+                        updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 7, "burning_status");
+                        g_print("Debuff reaplicado com sucesso.\n");
+                    }
+                    g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+                }
+
+            }
+            // Aplica o dano causado
+            if(totalDamage > 0) {
+                gchar *damageText = g_strdup_printf("-%d", totalDamage);
+                gint beforeHealth = game->battle->EntityOne.entDragon.health;
+                GtkLabel *fr6_life_value_ent1 = GTK_LABEL(gtk_builder_get_object(builder, "fr6_life_value_ent1"));
+                GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
+                totalDamage -= totalDamage * attackDecrease;
+
+                if(criticalChance != 0) { // Taxa crítica
+                    if(random_choice(1, 100) <= criticalChance) {
+                        logStartAnimation("CRITICAL", "color_FF0000", 500, 44, 175, 412, 360, 10, game->fixed);
+                        totalDamage *= 1.5;
+                    }
+                }
+                game->battle->EntityOne.entDragon.health -= totalDamage;
+                if(game->battle->EntityOne.entDragon.health < 0)
+                    game->battle->EntityOne.entDragon.health = 0;
+                retroBarAnimationStart(500, fr6_life_bar_ent1, beforeHealth, game->battle->EntityOne.entDragon.health);
+                logStartAnimation(damageText, "fr5_dragons_defeat", 500, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+                g_print("Dano total causado: %d\n", totalDamage);
+                g_print("Vida atual do Player pós dano: %d\n", game->battle->EntityOne.entDragon.health);
+                for(int i=0; i < 4; i++) 
+                    g_print("Debuff slot[%d]: type: %s | Turns left: %d\n", i,game->battle->EntityOne.entityDebuffs[i].type, game->battle->EntityOne.entityDebuffs[i].turns);
+                
+                labeltextModifier(fr6_life_value_ent1, g_strdup_printf("%d/%d", game->battle->EntityOne.entDragon.health, game->battle->EntityOne.fixedDragon.health));
+                settingTimedStackChange(3000, game->optionsStack, "fr6_battle_buttons");
+                game->doors.enemyPlayed = TRUE;
+                g_timeout_add(3000, timedSwitchBooleanValue, game);
+                g_print("==================================================================\n");
+            }
+
+            // Erra o ataque
+            if((strcmp(game->minigame->eAction, "bite") == 0 || strcmp(game->minigame->eAction, "dracarys") == 0 || strcmp(game->minigame->eAction, "scratch") == 0) && totalDamage == -1) {
+                logStartAnimation("MISS", "fr5_dragon_name_common", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+                game->doors.enemyPlayed = TRUE;
+                settingTimedStackChange(3000, game->optionsStack, "fr6_battle_buttons");
+                g_timeout_add(3000, timedSwitchBooleanValue, game);
+            }
+        }
+
+    }
+ 
     // Sessão de vitória ou derrota
     GtkStack *fr7_stack = GTK_STACK(gtk_builder_get_object(builder, "fr7_stack"));
     GtkLabel *fr7_result_xp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_xp_text"));
@@ -1791,6 +2009,17 @@ gboolean onBattle(gpointer data) {
     // Passagem de turnos
     if(game->battle->turnPlayed == TRUE) {
         startTurn(game->battle, game);
+        if(game->battle->entityTurn == 1) {
+            game->doors.mgMeterPlayed = FALSE;
+            game->doors.playerPlayed = FALSE;
+        }
+        else if(game->battle->entityTurn == 2) {
+            strcpy(game->minigame->eAction, "");
+            game->doors.eAttackReady = FALSE;
+            game->doors.enemyPlayed = FALSE;
+            game->doors.mgChallengerPlayed = FALSE;
+        }
+        
         labeltextModifier(fr6_tittle_label, g_strdup_printf("Turno: %d", game->battle->actualTurn));
     }
 
@@ -1814,43 +2043,45 @@ void sendRequest(GtkButton *btn, gpointer user_data) {
 
 void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status) {
     gchar *statusPath = g_strdup_printf("../assets/img_files/%s.png", status);
-    if(entityNumber == 1) {
+    GtkBox *fr6_enemydragon_box;
+    if(entityNumber == 1) 
+        fr6_enemydragon_box = GTK_BOX(gtk_builder_get_object(builder, "fr6_enemydragon_debuff_box"));
+    if(entityNumber == 2) 
+        fr6_enemydragon_box = GTK_BOX(gtk_builder_get_object(builder, "fr6_playerdragon_debuff_box"));
+    
+    if(strcmp(type, "apply") == 0) {
+        gchar *animationName = g_strdup_printf("%s_apply", status);
+        GtkFixed *fixed = GTK_FIXED(gtk_fixed_new());
+        GtkImage *fr6_enemydragon_debuff = GTK_IMAGE(gtk_image_new());
+        GtkWidget *fr6_enemydragon_animation_debuff = gtk_drawing_area_new();
+
+        gtk_widget_set_size_request(GTK_WIDGET(fr6_enemydragon_animation_debuff), 24, 24);
+        gtk_widget_set_size_request(GTK_WIDGET(fixed), 24, 24);
+
+        gtk_fixed_put(fixed, GTK_WIDGET(fr6_enemydragon_debuff), 0, 0);
+        gtk_fixed_put(fixed, fr6_enemydragon_animation_debuff, 0, 0);
         
-        if(strcmp(type, "apply") == 0) {
-            gchar *animationName = g_strdup_printf("%s_apply", status);
-            GtkBox *fr6_enemydragon_box = GTK_BOX(gtk_builder_get_object(builder, "fr6_enemydragon_debuff_box"));
-            GtkFixed *fixed = GTK_FIXED(gtk_fixed_new());
-            GtkImage *fr6_enemydragon_debuff = GTK_IMAGE(gtk_image_new());
-            GtkWidget *fr6_enemydragon_animation_debuff = gtk_drawing_area_new();
+        gtk_box_pack_start(fr6_enemydragon_box, GTK_WIDGET(fixed), FALSE, FALSE, 0);
+        gtk_widget_show_all(window);
 
-            gtk_widget_set_size_request(GTK_WIDGET(fr6_enemydragon_animation_debuff), 24, 24);
-            gtk_widget_set_size_request(GTK_WIDGET(fixed), 24, 24);
+        gtk_widget_realize(fr6_enemydragon_animation_debuff);
+        gtk_widget_queue_draw(fr6_enemydragon_animation_debuff);
 
-            gtk_fixed_put(fixed, GTK_WIDGET(fr6_enemydragon_debuff), 0, 0);
-            gtk_fixed_put(fixed, fr6_enemydragon_animation_debuff, 0, 0);
-            
-            gtk_box_pack_start(fr6_enemydragon_box, GTK_WIDGET(fixed), FALSE, FALSE, 0);
-            gtk_widget_show_all(window);
-
-            gtk_widget_realize(fr6_enemydragon_animation_debuff);
-            gtk_widget_queue_draw(fr6_enemydragon_animation_debuff);
-
-            debuff->image = fr6_enemydragon_debuff;
-            debuff->video = fr6_enemydragon_animation_debuff;
-            debuff->fixed = fixed;
-            settingTimedVideoPlay(GTK_WIDGET(fr6_enemydragon_animation_debuff), 0, 31, animationName, 0, NULL);
-            settingTimedImageModifier(500, GTK_WIDGET(debuff->image), statusPath);
-        }
-        else if(strcmp(type, "reapply") == 0) {
-            gchar *animationName = g_strdup_printf("%s_apply", status);
-            settingTimedVideoPlay(GTK_WIDGET(debuff->video), 0, 31, animationName, 0, NULL);
-        }
-        else if(strcmp(type, "finish") == 0) {
-            gchar *animationName = g_strdup_printf("%s_finish", status);
-            gtk_image_clear(GTK_IMAGE(debuff->image));
-            settingTimedVideoPlay(debuff->video, 0, 31, animationName, 0, NULL);
-            g_timeout_add(1000, timedGtkDestroyObject, debuff->fixed);
-        }
+        debuff->image = fr6_enemydragon_debuff;
+        debuff->video = fr6_enemydragon_animation_debuff;
+        debuff->fixed = fixed;
+        settingTimedVideoPlay(GTK_WIDGET(fr6_enemydragon_animation_debuff), 0, 31, animationName, 0, NULL);
+        settingTimedImageModifier(500, GTK_WIDGET(debuff->image), statusPath);
+    }
+    else if(strcmp(type, "reapply") == 0) {
+        gchar *animationName = g_strdup_printf("%s_apply", status);
+        settingTimedVideoPlay(GTK_WIDGET(debuff->video), 0, 31, animationName, 0, NULL);
+    }
+    else if(strcmp(type, "finish") == 0) {
+        gchar *animationName = g_strdup_printf("%s_finish", status);
+        gtk_image_clear(GTK_IMAGE(debuff->image));
+        settingTimedVideoPlay(debuff->video, 0, 31, animationName, 0, NULL);
+        g_timeout_add(1000, timedGtkDestroyObject, debuff->fixed);
     }
 }
 
@@ -1910,6 +2141,16 @@ gboolean timedSwitchBooleanValue(gpointer data) {
     else
         gData->battle->turnPlayed = 1;
     return FALSE;
+}
+
+gboolean timedInverseBooleanValue(gpointer data) {
+    gboolean *bData = (gboolean *) data;
+    if(bData)
+        *bData = 0;
+    else
+        *bData = 1;
+
+    return *bData;
 }
 
 gboolean timedGtkDestroyObject(gpointer data) {
@@ -2191,8 +2432,8 @@ gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data) {
     gint frameDuration = 1000000 / 60; // 60 FPS -> cada frame dura 16.67ms (16666µs)
     animData->currentFrame = elapsed / frameDuration;
     
-    if (animData->currentFrame >= animData->totalFrames || (animData->cancelAnimation && *(animData->cancelAnimation) == 1)) {
-        if(animData->cancelAnimation && *(animData->cancelAnimation) == 1)
+    if (animData->currentFrame >= animData->totalFrames || (animData->cancelAnimation && *(game->minigame->minigameValue) == 1)) {
+        if(animData->cancelAnimation && *(game->minigame->minigameValue) == 1)
             animData->isLoop = 0;
         //g_print("Animação: %s | isLoop: %d\n", animData->animationName, animData->isLoop);
         if(animData->isLoop == 1)

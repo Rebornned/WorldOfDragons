@@ -103,14 +103,24 @@ typedef struct {
 
 typedef struct {
     gchar pAction[100];
+    gchar eAction[100];
     gchar name[100];
     gboolean minigamePlayed;
+    gboolean isPlayable;
     gboolean isActive;
+    gint attackRecharge;
     gint *minigameValue;
     gint minigameResultValue;
     gint vectorRange[4][4];
 } MiniGame;
 
+typedef struct {
+    gboolean playerPlayed;
+    gboolean enemyPlayed;
+    gboolean mgChallengerPlayed;
+    gboolean mgMeterPlayed;
+    gboolean eAttackReady;
+} logicalDoors;
 typedef struct {
     Battle *battle;
     MiniGame *minigame;
@@ -123,7 +133,9 @@ typedef struct {
     GtkLabel *battleText;
     GtkLabel *turnsText;
     GtkBuilder *builder;
+    logicalDoors doors;
 } Game;
+
 // ###############################################################################
 
 // **********************************************************************************

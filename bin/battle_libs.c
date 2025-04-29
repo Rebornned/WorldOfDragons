@@ -170,6 +170,10 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
         retroBarAnimationStart(500, game->eHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
         logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
     }
+    if(entityNumber == 2 && totalDamage > 0) {
+        retroBarAnimationStart(500, game->pHealthBar, beforeHealth, game->battle->EntityOne.entDragon.health);
+        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+    }
     
     // Entidade player recebeu dano de debuff
     //if(entityNumber == 2 && totalDamage > 0) {
@@ -177,7 +181,7 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     //    logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
     //}
     debuff->turns -= 1;    
-    g_print("Debuff type: %s | debuff turns: %d\n", debuff->type, debuff->turns);
+    //g_print("Debuff type: %s | debuff turns: %d\n", debuff->type, debuff->turns);
 
     if(debuff->turns == 0) {
         if(strcmp(debuff->type, "Broken-Armor") == 0) {
