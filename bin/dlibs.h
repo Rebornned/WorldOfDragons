@@ -120,6 +120,8 @@ typedef struct {
     gboolean mgChallengerPlayed;
     gboolean mgMeterPlayed;
     gboolean eAttackReady;
+    gboolean finishedBattle;
+    gboolean cooldownChecked;
 } logicalDoors;
 typedef struct {
     Battle *battle;

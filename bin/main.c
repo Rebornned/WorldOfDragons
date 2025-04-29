@@ -1457,6 +1457,8 @@ gboolean settingBattleWindow(gpointer data) {
     game_pointer->doors.eAttackReady = FALSE;
     game_pointer->doors.enemyPlayed = FALSE;
     game_pointer->doors.mgChallengerPlayed = FALSE;
+    game_pointer->doors.finishedBattle = FALSE;
+    game_pointer->doors.cooldownChecked = FALSE;
     game = game_pointer;
     g_timeout_add(3000, startBattle, game);
 
@@ -1474,10 +1476,91 @@ gboolean onBattle(gpointer data) {
     GtkLabel *fr6_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr6_tittle_label"));
     //g_print("Informações de batalha turno %d\n", game->battle->actualTurn);
     //g_print("Nível do player: %d | Nível do inimigo: %d | Recompensa de Xp: %d\n", game->battle->EntityOne.entDragon.level, game->battle->EntityTwo.entDragon.level, game->battle->expReward);
+    
     // Início do round
+
+    // Sessão de vitória ou derrota
+    GtkStack *fr7_stack = GTK_STACK(gtk_builder_get_object(builder, "fr7_stack"));
+    GtkLabel *fr7_result_xp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_xp_text"));
+    GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
+    GtkWidget *fr7_result_animation = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_animation"));
+    GtkWidget *fr7_result_banner1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_banner1"));
+    GtkWidget *fr7_result_banner2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_banner2"));
+    GtkWidget *fr7_result_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_img"));
+    gtkLevelUpAnimationData *animData = g_malloc(sizeof(gtkLevelUpAnimationData));
+    GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr7_result"));
+    GtkWidget *fr7_level_bar = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_level_bar"));
+    GtkLabel *fr7_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_exp_text"));
+    GtkLabel *fr7_label_lvl = GTK_LABEL(gtk_builder_get_object(builder, "fr7_label_lvl"));
+    GtkWidget *fr7_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_levelup_text"));
+    GtkLabel *fr7_result_text2 = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_text2"));
+
+    animData->experience = game->battle->expReward;
+    animData->fixed = fixed;
+    animData->lbExpText = fr7_exp_text;
+    animData->wdLevelBar = fr7_level_bar;
+    animData->lbLvl = fr7_label_lvl;
+    animData->wdLvlUpText = fr7_levelup_text;
+
+     // Derrota do player
+     if(game->battle->EntityOne.entDragon.health <= 0) {
+        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL);
+        settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
+        labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
+        }
+    
+    // Vitória do player
+    else if(game->battle->EntityTwo.entDragon.health <= 0) {
+        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory", 0, NULL);
+        settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/victory.png");
+        //g_print("Index do dragão atual: %d | atual progresso do player %d\n", (fr5_actual_dragon_index-27)*-1, player.actualProgress);
+        if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-27) * -1 == player.actualProgress && player.actualProgress < 27) {
+            GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
+            labeltextModifier(fr7_result_text2, "Novo dragão adicionado ao Bestiário:                                ");
+            labeltextModifier(fr7_result_newbeast_legendary, pOriginalBeastVector[fr5_actual_dragon_index-1].name);
+            changePlayerStatus(playerFile, -1, -1, -1, -1, -1, player.actualProgress+1, NULL);
+            player = getPlayer(playerFile);
+        }
+        else {
+            labeltextModifier(fr7_result_text2, "Nenhum novo dragão foi descoberto após a batalha.");
+            labeltextModifier(fr7_result_newbeast_legendary, "");
+        }
+    }
+
+    // Fim de batalha
+    if(game->battle->EntityTwo.entDragon.health <= 0 || game->battle->EntityOne.entDragon.health <= 0) {
+        GtkWidget *fr7_btn_continue = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue"));
+        GtkWidget *fr7_btn_continue_label = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue_label"));
+        game->doors.finishedBattle = TRUE;
+        *(game->minigame->minigameValue) = -1;
+        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_press), game);
+        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_release), game);
+        settingTimedLabelModifier(4000, game->turnsText, "Combate");
+        settingTimedStackChange(3000, main_stack, "result_page");
+        gtk_image_clear(GTK_IMAGE(fr7_result_banner1));
+        gtk_image_clear(GTK_IMAGE(fr7_result_banner2));
+        gtk_image_clear(GTK_IMAGE(fr7_result_img));
+        settingTimedImageModifier(3750, fr7_result_banner1, "../assets/img_files/banner.png");
+        settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
+        labeltextModifier(fr7_result_xp_text, "");
+        settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
+        
+        gtk_widget_set_sensitive(fr7_btn_continue, FALSE);
+        gtk_widget_set_opacity(fr7_btn_continue_label, 0.5);
+        g_timeout_add(6700, turnOnButton, fr7_btn_continue);
+        g_timeout_add(6700, btn_animation_rest_opacity, fr7_btn_continue_label);
+
+        settingUpdatelvlBarAnimation(0, fr7_label_lvl, fr7_exp_text, fr7_level_bar, fixed, fr7_levelup_text);
+        g_timeout_add(4600, timedLvlBarUpdate, animData);
+        g_timeout_add(9000, timedgFree, game->battle);
+        g_timeout_add(9000, timedgFree, game->minigame->minigameValue);
+        g_timeout_add(9000, timedgFree, game->minigame);
+        g_timeout_add(10000, timedgFree, game);
+        return FALSE;
+    }
     
     // Turno do player
-    if(game->battle->entityTurn == 1 && !game->doors.playerPlayed) {
+    if(game->battle->entityTurn == 1 && !game->doors.playerPlayed && !game->doors.finishedBattle) {
         gint playerAttack = game->battle->EntityOne.entDragon.attack;
         gint totalDamage = 0;
         gint appliedDebuff = -3;
@@ -1489,8 +1572,10 @@ gboolean onBattle(gpointer data) {
         gtk_fixed_move(game->fixed, game->actualTurn, 17, 165);
         
         // Verificação de cooldowns das habilidades
-        if(game->battle->actualTurn == 1 || game->battle->turnPlayed == TRUE) {
+        if(!game->doors.cooldownChecked) {
+            game->doors.cooldownChecked = TRUE;
             for(int i=0; i<4; i++) {
+                g_print("Habilidade %d [] Cooldown %d ")
                 gchar *object = g_strdup_printf("fr6_btn_attack%d", i+1);
                 GtkWidget *fr6_btn_attack = GTK_WIDGET(gtk_builder_get_object(builder, object));
                 if(game->battle->EntityOne.skillsCooldown[i] > 0) {
@@ -1503,7 +1588,7 @@ gboolean onBattle(gpointer data) {
                 }
             }
         }
-        // Nessa parte vai o minigame mudando o request.
+        // Inicia o minigame mudando o request.
         if(strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) {
             GtkImage *fr6_battle_powerbar_img = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_battle_powerbar_img"));
             GtkWidget *fr6_battle_powerbar_pointer = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_battle_powerbar_pointer"));
@@ -1697,7 +1782,7 @@ gboolean onBattle(gpointer data) {
     }
     
     // Turno do Inimigo
-    if(game->battle->entityTurn == 2 && game->battle->EntityOne.entDragon.health > 0 && !game->doors.enemyPlayed) {
+    if(game->battle->entityTurn == 2 && game->battle->EntityOne.entDragon.health > 0 && !game->doors.enemyPlayed && !game->doors.finishedBattle) {
         gint enemyAttack = game->battle->EntityTwo.entDragon.attack;
         gint totalDamage = 0;
         gint appliedDebuff = -3;
@@ -1927,91 +2012,13 @@ gboolean onBattle(gpointer data) {
 
     }
  
-    // Sessão de vitória ou derrota
-    GtkStack *fr7_stack = GTK_STACK(gtk_builder_get_object(builder, "fr7_stack"));
-    GtkLabel *fr7_result_xp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_xp_text"));
-    GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
-    GtkWidget *fr7_result_animation = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_animation"));
-    GtkWidget *fr7_result_banner1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_banner1"));
-    GtkWidget *fr7_result_banner2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_banner2"));
-    GtkWidget *fr7_result_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_result_img"));
-    gtkLevelUpAnimationData *animData = g_malloc(sizeof(gtkLevelUpAnimationData));
-    GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr7_result"));
-    GtkWidget *fr7_level_bar = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_level_bar"));
-    GtkLabel *fr7_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_exp_text"));
-    GtkLabel *fr7_label_lvl = GTK_LABEL(gtk_builder_get_object(builder, "fr7_label_lvl"));
-    GtkWidget *fr7_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_levelup_text"));
-    GtkLabel *fr7_result_text2 = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_text2"));
-
-    animData->experience = game->battle->expReward;
-    animData->fixed = fixed;
-    animData->lbExpText = fr7_exp_text;
-    animData->wdLevelBar = fr7_level_bar;
-    animData->lbLvl = fr7_label_lvl;
-    animData->wdLvlUpText = fr7_levelup_text;
-
-    // Derrota do player
-    if(game->battle->EntityOne.entDragon.health <= 0) {
-        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL);
-        settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
-        labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
-        }
-    
-    // Vitória do player
-    else if(game->battle->EntityTwo.entDragon.health <= 0) {
-        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory", 0, NULL);
-        settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/victory.png");
-        //g_print("Index do dragão atual: %d | atual progresso do player %d\n", (fr5_actual_dragon_index-27)*-1, player.actualProgress);
-        if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-27) * -1 == player.actualProgress && player.actualProgress < 27) {
-            GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
-            labeltextModifier(fr7_result_text2, "Novo dragão adicionado ao Bestiário:                                ");
-            labeltextModifier(fr7_result_newbeast_legendary, pOriginalBeastVector[fr5_actual_dragon_index-1].name);
-            changePlayerStatus(playerFile, -1, -1, -1, -1, -1, player.actualProgress+1, NULL);
-            player = getPlayer(playerFile);
-        }
-        else {
-            labeltextModifier(fr7_result_text2, "Nenhum novo dragão foi descoberto após a batalha.");
-            labeltextModifier(fr7_result_newbeast_legendary, "");
-        }
-    }
-
-    // Fim de batalha
-    if(game->battle->EntityTwo.entDragon.health <= 0 || game->battle->EntityOne.entDragon.health <= 0) {
-        GtkWidget *fr7_btn_continue = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue"));
-        GtkWidget *fr7_btn_continue_label = GTK_WIDGET(gtk_builder_get_object(builder, "fr7_btn_continue_label"));
-        *(game->minigame->minigameValue) = -1;
-        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_press), game);
-        g_signal_handlers_disconnect_by_func(window, G_CALLBACK(on_key_release), game);
-        settingTimedLabelModifier(4000, game->turnsText, "Combate");
-        settingTimedStackChange(3000, main_stack, "result_page");
-        gtk_image_clear(GTK_IMAGE(fr7_result_banner1));
-        gtk_image_clear(GTK_IMAGE(fr7_result_banner2));
-        gtk_image_clear(GTK_IMAGE(fr7_result_img));
-        settingTimedImageModifier(3750, fr7_result_banner1, "../assets/img_files/banner.png");
-        settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
-        labeltextModifier(fr7_result_xp_text, "");
-        settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
-        
-        gtk_widget_set_sensitive(fr7_btn_continue, FALSE);
-        gtk_widget_set_opacity(fr7_btn_continue_label, 0.5);
-        g_timeout_add(6700, turnOnButton, fr7_btn_continue);
-        g_timeout_add(6700, btn_animation_rest_opacity, fr7_btn_continue_label);
-
-        settingUpdatelvlBarAnimation(0, fr7_label_lvl, fr7_exp_text, fr7_level_bar, fixed, fr7_levelup_text);
-        g_timeout_add(4600, timedLvlBarUpdate, animData);
-        g_timeout_add(9000, timedgFree, game->battle);
-        g_timeout_add(9000, timedgFree, game->minigame->minigameValue);
-        g_timeout_add(9000, timedgFree, game->minigame);
-        g_timeout_add(10000, timedgFree, game);
-        return FALSE;
-    }
-    
     // Passagem de turnos
     if(game->battle->turnPlayed == TRUE) {
         startTurn(game->battle, game);
         if(game->battle->entityTurn == 1) {
             game->doors.mgMeterPlayed = FALSE;
             game->doors.playerPlayed = FALSE;
+            game->doors.cooldownChecked = FALSE;
         }
         else if(game->battle->entityTurn == 2) {
             strcpy(game->minigame->eAction, "");
