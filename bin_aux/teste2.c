@@ -66,3 +66,13 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+// Função WinMain para compatibilidade com -mwindows no Windows
+#ifdef _WIN32
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                   LPSTR lpCmdLine, int nCmdShow) {
+    return main(__argc, __argv);
+}
+#endif

@@ -10,6 +10,8 @@
 #include <epoxy/gl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <sys/time.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 // **********************************************************************************
 // Structs Dictionary 
@@ -24,8 +26,20 @@ typedef struct {
     gint totalFrames;
     guint timeoutID;
     gboolean finished;
+    gboolean canDestroy;
     gint64 startTime;
 } AnimationData;
+
+typedef struct {
+    gint timeout;
+    gint totalFrames;
+    gchar *animationName;
+    GtkFixed *fixed;
+    gint posX;
+    gint posY;
+    gint width;
+    gint height;
+} WidgetAnimationData;
 
 typedef struct {
     char name[150];
@@ -93,6 +107,12 @@ typedef struct {
 typedef struct {
     Entity EntityOne;
     Entity EntityTwo;
+    gchar currentDebuffType[100];
+    gchar currentDebuffStatus[100];
+    gint currentDebuffAnimation;
+    gint debuffTurns;
+    gint duplicatedDebuff;
+    gint totalDamage;
     gint entityTurn;
     gint turnPlayed;
     gint actualTurn;
@@ -108,6 +128,7 @@ typedef struct {
     gboolean minigamePlayed;
     gboolean isPlayable;
     gboolean isActive;
+    gint criticalChance;
     gint attackRecharge;
     gint *minigameValue;
     gint minigameResultValue;
@@ -119,7 +140,9 @@ typedef struct {
     gboolean enemyPlayed;
     gboolean mgChallengerPlayed;
     gboolean mgMeterPlayed;
+    gboolean pAttackReady;
     gboolean eAttackReady;
+    gboolean eFinishedAttack;
     gboolean finishedBattle;
     gboolean cooldownChecked;
 } logicalDoors;
@@ -138,10 +161,44 @@ typedef struct {
     logicalDoors doors;
 } Game;
 
+typedef struct {
+    Mix_Music *music;
+    gchar name[20];
+} audioMusic;
+
+typedef struct {
+    Mix_Chunk *sound;
+    gchar name[20];
+} audioSound;
+
+typedef struct {
+    audioMusic musics[50];
+    audioSound sounds[50];
+} audioAssets;
+
 // ###############################################################################
 
 // **********************************************************************************
 // Functions Dictionary 
+//###################################################################################
+// File: audio_libs.c
+//###################################################################################
+extern audioAssets audioPointer; // Ponteiro global de onde estão todos os áudios
+
+void initAudio(); // Inicia e carrega todos os áudios
+
+// Lida com músicas
+void playMusicByIndex(gint timeout, gint index, audioAssets *assets, gint loop);
+void playMusicByName(gint timeout, gchar *name, audioAssets *assets, gint loop);
+void stopCurrentMusic();
+
+// Lida com efeitos sonoros
+void playSoundByIndex(gint timeout, gint index, audioAssets *assets, gint loop);
+void playSoundByName(gint timeout, gchar *name, audioAssets *assets, gint loop);
+void stopAllSounds();
+
+// Cancela todos os áudios e limpa a memória
+void cleanupAudio();
 //###################################################################################
 // File: account.c
 //###################################################################################
@@ -149,6 +206,7 @@ int newAccount(FILE *pFile, char user[], char email[], char pass[]);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int random_choice(int min, int max);
+void shuffle(int *v, int n);
 int containSpecialchar(char *email);
 
 //###################################################################################
@@ -210,11 +268,17 @@ int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated)
 void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
-void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation);
+void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation, gboolean canDestroy);
 gboolean delayedStartAnimation(gpointer data);
-void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName);
+void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName, gboolean canDestroy);
 void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
 void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
+void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint posX, gint posY, gint width, gint height);
+gboolean delayedNewWidgetAnimation(gpointer data);
+void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint size);
+
+// Modifiers
+void labeltextModifier(GtkLabel *label, const gchar *text);
 
 // Game
 gboolean onBattle(gpointer data);

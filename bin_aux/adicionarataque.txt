@@ -20,34 +20,34 @@ O dragão reúne o ar quente em seus pulmões, liberando um jato de chamas que e
 2
 
 Attack newAttack;
-    char string[] = "sim";
-    char inputStr[1500];
-    int inputInt;
-    float inputFloat;
+char string[] = "sim";
+char inputStr[1500];
+int inputInt;
+float inputFloat;
 
-    for(int i=0; i < 4; i++) {
-        scanf("%[^\n]", inputStr);
-        strcpy(newAttack.name, inputStr);
-        scanf(" %[^\n]" ,inputStr);
-        strcpy(newAttack.description, inputStr);
-        getchar();
-        scanf("%f", &inputFloat);
-        newAttack.multiplicator = inputFloat;
-        getchar();
-        scanf("%d", &inputInt);
-        newAttack.precision = inputInt;
-        getchar();
-        scanf("%d", &inputInt);
-        newAttack.cooldownAttack = inputInt;
-        getchar();
-        newAttack.recharge = 0;
+for(int i=0; i < 4; i++) {
+    scanf("%[^\n]", inputStr);
+    strcpy(newAttack.name, inputStr);
+    scanf(" %[^\n]" ,inputStr);
+    strcpy(newAttack.description, inputStr);
+    getchar();
+    scanf("%f", &inputFloat);
+    newAttack.multiplicator = inputFloat;
+    getchar();
+    scanf("%d", &inputInt);
+    newAttack.precision = inputInt;
+    getchar();
+    scanf("%d", &inputInt);
+    newAttack.cooldownAttack = inputInt;
+    getchar();
+    newAttack.recharge = 0;
 
-        addAttackinlist(&newAttack, attacksFile);
-    }
+    addAttackinlist(&newAttack, attacksFile);
+}
 
-    Attack *newvector = readAttackvector(attacksFile);
-    
-    for(int i=0; i < 4; i++) {
-        printf("Nome: %s\nDescrição: %s\n Multiplicador: %f\n Precisão: %d\n Cooldown: %d\n", newvector[i].name, 
-        newvector[i].description, newvector[i].multiplicator, newvector[i].precision, newvector[i].cooldownAttack);
-    }
+Attack *newvector = readAttackvector(attacksFile);
+
+for(int i=0; i < 4; i++) {
+    printf("Nome: %s\nDescrição: %s\n Multiplicador: %f\n Precisão: %d\n Cooldown: %d\n", newvector[i].name, 
+    newvector[i].description, newvector[i].multiplicator, newvector[i].precision, newvector[i].cooldownAttack);
+}

@@ -15,6 +15,7 @@
         "gdk-pixbuf.h": "c",
         "dirent.h": "c",
         "compare": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "typeinfo": "c"
     }
 }

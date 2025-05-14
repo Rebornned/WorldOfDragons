@@ -34,7 +34,7 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     int cooldownsVector[4] = {0, 0, 0, 0};
     battleInstance->actualTurn = 1;
     battleInstance->turnPlayed = 0;
-
+    battleInstance->totalDamage = 0;
     // Verifica a quantidade de xp recebida de acordo com o balanceamento
     //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
     //g_print("Xp requirido padrão: %d\n", player.requiredExp);
@@ -104,6 +104,7 @@ int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated)
     gint availableSlot = -1;
 
     // Verifica se o alvo já possui este status
+    *duplicated = 0;
     for(int j=0; j < 4; j++) {
         if(strcmp(debuffType, entity->entityDebuffs[j].type) == 0) {
             *duplicated = 1;
@@ -169,10 +170,13 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     if(entityNumber == 1 && totalDamage > 0) {
         retroBarAnimationStart(500, game->eHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
         logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+        playSoundByName(0, "damage_hit", &audioPointer, 0);
     }
     if(entityNumber == 2 && totalDamage > 0) {
         retroBarAnimationStart(500, game->pHealthBar, beforeHealth, game->battle->EntityOne.entDragon.health);
         logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+        labeltextModifier(GTK_LABEL(game->pHealthText), g_strdup_printf("%d/%d", game->battle->EntityOne.entDragon.health, game->battle->EntityOne.fixedDragon.health));
+        playSoundByName(0, "damage_hit", &audioPointer, 0);
     }
     
     // Entidade player recebeu dano de debuff
@@ -226,6 +230,8 @@ int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
     }
     if(canHit == True) {
         totalDamage = damage * multiplicator - enemy->defense*DEFENSE_SCALE;
+        if(totalDamage < 0)
+            return -1;
     }
     g_print("Totaldamage: %d\n", totalDamage);
     return totalDamage;
@@ -243,7 +249,7 @@ int startTurn(Battle *battleInstance, Game *game) {
         if(bI->EntityOne.skillsCooldown[i] > 0)
             bI->EntityOne.skillsCooldown[i]--;
         if(bI->EntityTwo.skillsCooldown[i] > 0)
-            bI->EntityOne.skillsCooldown[i]--;
+            bI->EntityTwo.skillsCooldown[i]--;
     }
 
     // Aplicando Efeitos de debuff e atualizando recarga

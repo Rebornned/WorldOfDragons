@@ -220,3 +220,12 @@ int containSpecialchar(char *email) {
 int random_choice(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
+
+void shuffle(int *v, int n) {
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = v[i];
+        v[i] = v[j];
+        v[j] = temp;
+    }
+}

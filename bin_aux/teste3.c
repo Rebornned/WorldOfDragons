@@ -1,80 +1,110 @@
-#include <gtk/gtk.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-// Função para inicializar SDL2
+static Mix_Music *current_music = NULL;
+static Mix_Chunk *current_sound = NULL;
+static int current_channel = -1;
+
+// Inicializa o sistema de áudio
 void init_audio() {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        printf("Erro ao inicializar SDL: %s\n", SDL_GetError());
+        fprintf(stderr, "Erro ao inicializar SDL: %s\n", SDL_GetError());
         exit(1);
     }
 
-    // Inicializa o SDL_mixer
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        printf("Erro ao inicializar SDL Mixer: %s\n", Mix_GetError());
+        fprintf(stderr, "Erro ao inicializar SDL_mixer: %s\n", Mix_GetError());
         exit(1);
     }
 }
 
-// Função para tocar a música de fundo
-void play_background_music(const char *filename) {
-    Mix_Music *music = Mix_LoadMUS(filename);
-    if (!music) {
-        printf("Erro ao carregar a música: %s\n", Mix_GetError());
+// Callback quando a música termina
+void on_music_finished() {
+    printf("Música terminou. Você pode carregar a próxima aqui.\n");
+    // Ex: tocar nova música aleatória
+}
+
+// Toca música de fundo (em loop infinito por padrão)
+void play_music(const char *filepath, int loop) {
+    if (current_music != NULL) {
+        Mix_FreeMusic(current_music);
+    }
+
+    current_music = Mix_LoadMUS(filepath);
+    if (!current_music) {
+        fprintf(stderr, "Erro ao carregar música: %s\n", Mix_GetError());
         return;
     }
-    Mix_PlayMusic(music, -1);  // -1 significa loop infinito
+
+    Mix_PlayMusic(current_music, loop);
+    Mix_HookMusicFinished(on_music_finished);  // Detecta fim da música
 }
 
-// Função para parar a música de fundo
-void stop_background_music() {
-    Mix_HaltMusic();  // Para a música atual
+// Para a música atual
+void stop_music() {
+    Mix_HaltMusic();
 }
 
-// Função chamada quando o botão "Mudar Música" é clicado
-void on_change_music(GtkWidget *widget, gpointer data) {
-    const char *new_music = (const char *)data;
-    stop_background_music();       // Para a música atual
-    play_background_music(new_music); // Toca a nova música
+// Toca um som (efeito curto)
+void play_sound(const char *filepath) {
+    if (current_sound != NULL) {
+        Mix_FreeChunk(current_sound);
+    }
+
+    current_sound = Mix_LoadWAV(filepath);
+    if (!current_sound) {
+        fprintf(stderr, "Erro ao carregar som: %s\n", Mix_GetError());
+        return;
+    }
+
+    current_channel = Mix_PlayChannel(-1, current_sound, 0); // -1 = qualquer canal livre
+    if (current_channel == -1) {
+        fprintf(stderr, "Erro ao tocar som: %s\n", Mix_GetError());
+    }
+}
+
+// Para o som atual
+void stop_sound() {
+    if (current_channel != -1) {
+        Mix_HaltChannel(current_channel);
+        current_channel = -1;
+    }
+}
+
+// Libera tudo ao final do programa
+void cleanup_audio() {
+    stop_music();
+    stop_sound();
+
+    if (current_music) Mix_FreeMusic(current_music);
+    if (current_sound) Mix_FreeChunk(current_sound);
+
+    Mix_CloseAudio();
+    SDL_Quit();
 }
 
 int main(int argc, char *argv[]) {
-    // Inicializa GTK
-    gtk_init(&argc, &argv);
-
-    // Inicializa SDL2 áudio
     init_audio();
 
-    // Cria uma janela GTK
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Trocar Música de Fundo");
-    gtk_window_set_default_size(GTK_WINDOW(window), 300, 200);
+    play_music("../assets/sounds/got_open.mp3", -1);          // Música em loop infinito
+    play_sound("../assets/sounds/common/click.mp3");              // Toca som por cima
 
-    // Cria um botão para mudar a música
-    GtkWidget *button = gtk_button_new_with_label("Mudar Música");
-    const char *new_music_file = "../assets/sounds/got_open.wav"; // Altere para o caminho do seu arquivo
-    g_signal_connect(button, "clicked", G_CALLBACK(on_change_music), (gpointer)new_music_file);
+    SDL_Delay(15000); // Espera 5s (substitua por lógica GTK)
 
-    // Adiciona o botão à janela
-    gtk_container_add(GTK_CONTAINER(window), button);
+    //stop_sound();    // Opcional: parar efeito antes de terminar
+    //stop_music();    // Parar música
 
-    // Sinal para fechar a janela
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
-    // Exibe todos os widgets
-    gtk_widget_show_all(window);
-
-    // Toca a música de fundo inicial (opcional)
-    play_background_music(".../assets/sounds/got_open.wav"); // Altere para o seu arquivo inicial
-
-    // Loop principal do GTK
-    gtk_main();
-
-    // Limpa recursos do SDL
-    Mix_CloseAudio();
-    SDL_Quit();
-
+    //cleanup_audio();
     return 0;
 }
+
+// Função WinMain para compatibilidade com -mwindows no Windows
+#ifdef _WIN32
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                   LPSTR lpCmdLine, int nCmdShow) {
+    return main(__argc, __argv);
+}
+#endif
