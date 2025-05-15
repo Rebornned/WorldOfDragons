@@ -146,6 +146,7 @@ typedef struct {
     gboolean finishedBattle;
     gboolean cooldownChecked;
 } logicalDoors;
+
 typedef struct {
     Battle *battle;
     MiniGame *minigame;
@@ -175,6 +176,12 @@ typedef struct {
     audioMusic musics[50];
     audioSound sounds[50];
 } audioAssets;
+
+typedef struct {
+    gint musicsAvailable[30];
+    gint currentMusic;
+    gboolean inBattle;
+} musicsBeastiary;
 
 // ###############################################################################
 

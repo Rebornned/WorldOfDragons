@@ -10,8 +10,7 @@
 audioAssets audioPointer;
 gint currentSound;
 gint soundsPlayed[10];
-gint musicsPlayed[MUSICS_AVAILABLE];
-gint currentMusic;
+musicsBeastiary musicsBackground;
 
 typedef struct {
     gint index;
@@ -36,11 +35,12 @@ void initAudio() {
     }
     // Preenchendo a lista de músicas dispóniveis
     for(int i=0; i<MUSICS_AVAILABLE; i++) {
-        musicsPlayed[i] = i;
+        musicsBackground.musicsAvailable[i] = i;
     }
     // Embaralha as músicas para ordem aleatória
-    currentMusic = 0;
-    shuffle(musicsPlayed, MUSICS_AVAILABLE);
+    musicsBackground.currentMusic = 0;
+    musicsBackground.inBattle = FALSE;
+    shuffle(musicsBackground.musicsAvailable, MUSICS_AVAILABLE);
 
     // Preenche as rotas de canais iniciais dos efeitos sonoros
     for(int i=0; i<10; i++)
@@ -101,7 +101,9 @@ gint loadAudio(gchar *path, gchar *name, gchar *type, gint indexSound, audioAsse
 }
 
 // Callback quando a música termina
-void on_music_finished() {
+void on_music_finished(musicsBeastiary *musicsBackground) {
+    musicsBeastiary *musicsBg = (musicsBeastiary *) musicsBackground;
+    if(!musicsBackground->inBattle)
     printf("Música terminou. Você pode carregar a próxima aqui.\n");
     // Ex: tocar nova música aleatória
 }

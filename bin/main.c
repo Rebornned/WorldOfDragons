@@ -107,6 +107,9 @@ Game *game;
 // Animations
 GdkPixbuf *pAnimationsFrameVector[20][500];  // Animations array
 
+// Audio
+gboolean finishedMusic;
+
 // Main window
 GtkWidget *window; 
 GtkBuilder *builder;
