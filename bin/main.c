@@ -1561,9 +1561,12 @@ gboolean onBattle(gpointer data) {
         settingTimedImageModifier(3750, fr7_result_banner1, "../assets/img_files/banner.png");
         settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
         labeltextModifier(fr7_result_xp_text, "");
-        settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
-        playSoundByName(4600, "exp_reward", &audioPointer, 0);
         
+        if(game->battle->expReward > 0) {
+            settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
+            playSoundByName(4600, "exp_reward", &audioPointer, 0);
+        }
+
         gtk_widget_set_sensitive(fr7_btn_continue, FALSE);
         gtk_widget_set_opacity(fr7_btn_continue_label, 0.5);
         g_timeout_add(6700, turnOnButton, fr7_btn_continue);
