@@ -236,6 +236,8 @@ gboolean logAnimation(gpointer data);
 int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "en_US.utf8");
     gtk_init(&argc, &argv); // Init gtk
+    
+    srand(time(NULL)); // Inicia a semente de randomização
 
     initAudio(); // Inicia o sdl e carrega os áudios
     
@@ -332,7 +334,10 @@ int main(int argc, char *argv[]) {
     totalBeasts = beastsLength(beastsFile);
     pBeastVector = readBeastvector(beastsFile);
     pOriginalBeastVector = readBeastvector(beastsFile);
-
+    
+    // Iniciando músicas
+    playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+    
     // Caverna do dragão
     GtkWidget *fr5_page_view2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view2"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view2), "../assets/img_files/beastiary_page2.png");
@@ -367,7 +372,6 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
-    srand(time(NULL));
     playerFile = getAccountfile("Rambo");
 
     initPlayer(playerFile, &player);
@@ -812,9 +816,10 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             strcpy(request, "");
             player = getPlayer(playerFile);
             strcpy(player.dragon.img_path, playerDragonImgPath);
-
             setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player, dragonIndex);
-            playMusicByIndex(0, 0, &audioPointer, -1);
+            stopCurrentMusic();
+            musicsBackground.inBattle = TRUE;
+            playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, -1);
             g_timeout_add(9420, settingBattleWindow, battleInstance);
         }
         else {
@@ -830,12 +835,14 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     if (g_strcmp0(button_name, "fr7_btn_continue") == 0) {
         GtkWidget *btn_detail = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_coliseum_battle_label1"));
         GtkStack *fr6_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_stack"));
-        btn_animation_clicked(GTK_WIDGET(btn_detail), NULL);
-        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        playSoundByName(0, "click", &audioPointer, 0);
         settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
         gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
         gtk_stack_set_visible_child_name(fr6_stack, "fr6_stared");
         sort_dragons_in_beastiary(NULL, GINT_TO_POINTER(1));
+        stopCurrentMusic();
+        musicsBackground.inBattle = FALSE;
+        playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
         updateColiseum();
     }   
 
@@ -1565,8 +1572,8 @@ gboolean onBattle(gpointer data) {
         settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
         labeltextModifier(fr7_result_xp_text, "");
         
+        settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
         if(game->battle->expReward > 0) {
-            settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
             playSoundByName(4600, "exp_reward", &audioPointer, 0);
         }
 

@@ -4,7 +4,7 @@
 #include <gtk/gtk.h>
 #include "dlibs.h"
 
-#define MUSICS_AVAILABLE 30 // Quantidade de músicas dispóniveis
+#define MUSICS_AVAILABLE 8 // Quantidade de músicas dispóniveis
 
 // Sounds
 audioAssets audioPointer;
@@ -70,7 +70,17 @@ void initAudio() {
 
     // Músicas
     Mix_VolumeMusic(64); // 50% de volume da música
-    loadAudio("../assets/sounds/got_open.mp3", "got_open", "music", 0, &audioPointer, 100);
+    //loadAudio("../assets/sounds/got_open.mp3", "got_open", "music", 0, &audioPointer, 100);
+    loadAudio("../assets/sounds/beastiary/after_the_storm.mp3", "after_the_storm", "music", 0, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/fields_of_ard_skellige.mp3", "fields_of_ard_skellige", "music", 1, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/hearts_of_stone.mp3", "hearts_of_stone", "music", 2, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/kaer_morhen.mp3", "kaer_morhen", "music", 3, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/lady_of_the_lake.mp3", "lady_of_the_lake", "music", 4, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/searching_for_cecilia.mp3", "searching_for_cecilia", "music", 5, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/syanna.mp3", "syanna", "music", 6, &audioPointer, 50);
+    loadAudio("../assets/sounds/beastiary/kingdom_dance.mp3", "kingdom_dance", "music", 7, &audioPointer, 50);
+
+    //loadAudio("../assets/sounds/beastiary/reign_of_targaryen.mp3", "reign_of_targaryen", "music", 1, &audioPointer, 50);
 
 }
 
@@ -101,11 +111,18 @@ gint loadAudio(gchar *path, gchar *name, gchar *type, gint indexSound, audioAsse
 }
 
 // Callback quando a música termina
-void on_music_finished(musicsBeastiary *musicsBackground) {
-    musicsBeastiary *musicsBg = (musicsBeastiary *) musicsBackground;
-    if(!musicsBackground->inBattle)
-    printf("Música terminou. Você pode carregar a próxima aqui.\n");
-    // Ex: tocar nova música aleatória
+void on_music_finished() {
+    if(!musicsBackground.inBattle && !musicsBackground.isFinished) {
+        musicsBackground.currentMusic++;
+        if(musicsBackground.currentMusic == MUSICS_AVAILABLE) {
+            shuffle(musicsBackground.musicsAvailable, MUSICS_AVAILABLE);
+            musicsBackground.currentMusic = 0;
+        }
+        playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+        g_print("Tocando música dos backgrounds\n");
+    }
+    g_print("Música terminou. Você pode carregar a próxima aqui.\n");
+    musicsBackground.isFinished = FALSE;
 }
 
 // =============================================================================================
@@ -119,7 +136,7 @@ void playMusicByIndex(gint timeout, gint index, audioAssets *assets, gint loop) 
     }
     if(timeout == 0) {
         g_print("%s -> Tocando agora...\n", assets->musics[index].name);
-        stopCurrentMusic();
+        Mix_HaltMusic();
         Mix_PlayMusic(assets->musics[index].music, loop);
         Mix_HookMusicFinished(on_music_finished);  // Signal que aciona ao finalizar a música
     }
@@ -160,6 +177,7 @@ void playMusicByName(gint timeout, gchar *name, audioAssets *assets, gint loop) 
 
 // Para a música atual
 void stopCurrentMusic() {
+    musicsBackground.isFinished = TRUE;
     Mix_HaltMusic();
 }
 //==========================================================================================

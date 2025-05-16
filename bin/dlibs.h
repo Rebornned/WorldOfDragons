@@ -181,6 +181,7 @@ typedef struct {
     gint musicsAvailable[30];
     gint currentMusic;
     gboolean inBattle;
+    gboolean isFinished;
 } musicsBeastiary;
 
 // ###############################################################################
@@ -191,6 +192,7 @@ typedef struct {
 // File: audio_libs.c
 //###################################################################################
 extern audioAssets audioPointer; // Ponteiro global de onde estão todos os áudios
+extern musicsBeastiary musicsBackground; // Ponteiro global
 
 void initAudio(); // Inicia e carrega todos os áudios
 
