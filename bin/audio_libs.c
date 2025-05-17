@@ -67,7 +67,9 @@ void initAudio() {
     loadAudio("../assets/sounds/battle/bleeding_status.wav", "bleeding_status", "sound", 16, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/turn_change.wav", "turn_change", "sound", 17, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/damage_hit.wav", "damage_hit", "sound", 18, &audioPointer, 100);
-
+    
+    
+    
     // Músicas
     Mix_VolumeMusic(64); // 50% de volume da música
     //loadAudio("../assets/sounds/got_open.mp3", "got_open", "music", 0, &audioPointer, 100);

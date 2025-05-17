@@ -284,6 +284,9 @@ void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
 void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
 void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint posX, gint posY, gint width, gint height);
 gboolean delayedNewWidgetAnimation(gpointer data);
+gboolean timedShakeScreen(gpointer data);
+gboolean shakeAnimation(gpointer user_data);
+void shakeScreen(gint timeout, GtkWindow *window, gint duration, gint intensity);
 void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint size);
 
 // Modifiers

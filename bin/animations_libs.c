@@ -5,6 +5,15 @@
 #include <string.h>
 #include "dlibs.h"
 
+typedef struct {
+    GtkWindow *window;
+    gint original_x, original_y;
+    gint duration;
+    gint intensity;
+    gint64 start_time;
+    guint timeout_id;
+} shakeAnimationData;
+
 void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName, gboolean canDestroy) {
     AnimationData *animData = g_malloc(sizeof(AnimationData));
     animData->widget = widget;
@@ -163,3 +172,45 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
 
 }
 
+gboolean shakeAnimation(gpointer user_data) {
+    shakeAnimationData *data = (shakeAnimationData *)user_data;
+    gint64 now = g_get_monotonic_time(); 
+    gint elapsed = (now - data->start_time) / 1000;
+
+    if (elapsed > data->duration) {
+        gtk_window_move(data->window, data->original_x, data->original_y);
+        g_free(data);
+        return FALSE;
+    }
+
+    gint dx = (rand() % (2 * data->intensity + 1)) - data->intensity;
+    gint dy = (rand() % (2 * data->intensity + 1)) - data->intensity;
+    gtk_window_move(data->window, data->original_x + dx, data->original_y + dy);
+
+    return TRUE;
+}
+
+void shakeScreen(gint timeout, GtkWindow *window, gint duration, gint intensity) {
+    shakeAnimationData *data = g_malloc(sizeof(shakeAnimationData));
+    data->window = window;
+    data->duration = duration;
+    data->intensity = intensity;
+    data->start_time = g_get_monotonic_time();
+    
+    gtk_window_get_position(window, &data->original_x, &data->original_y);
+    
+    if(timeout == 0) {
+        g_timeout_add(20, shakeAnimation, data);
+    }
+    else
+        g_timeout_add(timeout, timedShakeScreen, data);
+    
+}
+
+gboolean timedShakeScreen(gpointer data) {
+    shakeAnimationData *values = (shakeAnimationData *) data;
+    shakeScreen(0, values->window, values->duration, values->intensity);
+    g_free(values);
+
+    return FALSE;
+}

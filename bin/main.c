@@ -1733,22 +1733,6 @@ gboolean onBattle(gpointer data) {
             strcpy(game->battle->currentDebuffType, "Broken-Armor");
             strcpy(game->battle->currentDebuffStatus, "broken_status");
         }
-        // Ataque Rugido
-        if(strcmp(request, "roar") == 0) {
-            g_print("==================================================================\n");
-            g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
-            game->battle->EntityOne.skillsCooldown[2] = 6;
-            appliedDebuff =  applyDebuff("Terrified", 3, &game->battle->EntityTwo, &duplicated);
-            if(appliedDebuff >= 0 && appliedDebuff <= 4 && duplicated == 0) {
-                updateDebuffAnimation(1, "apply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], 9, "terrified_status");
-            }
-            if(duplicated == 1) {
-                updateDebuffAnimation(1, "reapply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], 9, "terrified_status");
-                g_print("Debuff reaplicado com sucesso.\n");
-            }
-            g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
-            g_timeout_add(3000, timedSwitchBooleanValue, game);
-        }
         // Ataque Dracarys
         if(strcmp(game->minigame->pAction, "dracarys") == 0 && game->doors.mgMeterPlayed) {
             strcpy(game->minigame->pAction, "");
@@ -1769,11 +1753,42 @@ gboolean onBattle(gpointer data) {
             strcpy(game->battle->currentDebuffType, "Burning");
             strcpy(game->battle->currentDebuffStatus, "burning_status");
         }
+        // Ataque Rugido
+        if(strcmp(request, "roar") == 0 && strcmp(game->minigame->pAction, "roar") != 0) {
+            strcpy(game->minigame->pAction, "roar");
+            game->battle->EntityOne.skillsCooldown[2] = 6;
+            g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
+            shakeScreen(0, GTK_WINDOW(window), 2000, game->battle->difficult * 2 + 6);
+
+            game->battle->debuffTurns = 5;
+            game->battle->currentDebuffAnimation = 9;
+            strcpy(game->battle->currentDebuffType, "Terrified");
+            strcpy(game->battle->currentDebuffStatus, "terrified_status");
+        }
         // Fuga
         if(strcmp(request, "run") == 0) {
             game->battle->EntityOne.entDragon.health = 0;
             game->battle->expReward = 0;
         }
+        
+        // Aplica o rugido
+        if(game->doors.pAttackReady && strcmp(game->minigame->pAction, "roar") == 0) {
+            // Aplicação de debuff
+            appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityTwo, &game->battle->duplicatedDebuff);
+            if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
+                updateDebuffAnimation(1, "apply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+            }
+            if(game->battle->duplicatedDebuff == 1) {
+                updateDebuffAnimation(1, "reapply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                g_print("Debuff reaplicado com sucesso.\n");
+            }
+            g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+            strcpy(game->minigame->pAction, "");
+            game->doors.playerPlayed = TRUE;
+            g_timeout_add(3000, timedSwitchBooleanValue, game);
+            g_print("==================================================================\n");
+        }
+
         // Aplica o dano causado
         if(game->doors.pAttackReady && game->battle->totalDamage > 0) {
             gchar *damageText = g_strdup_printf("-%d", game->battle->totalDamage);
@@ -1804,7 +1819,6 @@ gboolean onBattle(gpointer data) {
             game->doors.playerPlayed = TRUE;
             g_timeout_add(3000, timedSwitchBooleanValue, game);
             g_print("==================================================================\n");
-
         }
         // Erra o ataque
         if(game->doors.pAttackReady && game->battle->totalDamage == -1) {
