@@ -92,6 +92,12 @@
     color: #FFFDD0;
 }
 
+.fr5_logoutbutton {
+    border: 2px solid #FFFBA9;
+    border-radius: 6px; 
+    background-image: linear-gradient(#262626, #262626);
+}
+
 .fr5_advancebutton {
     box-shadow: none;
     font-size: 0px;
@@ -589,6 +595,12 @@ Frame 5 - Colíseu
     background-image: linear-gradient(transparent, transparent);
 }
 
+/* Font-size */
+
+.font_size_20px {
+    font-size: 20px;
+}
+
 /* Colors */
 .fr5_dragon_name_epic {
     color: #7300FF;
@@ -636,4 +648,8 @@ Frame 5 - Colíseu
 
 .color_FFFFFF {
     color: #FFFFFF;
+}
+
+.color_FFDDA6 {
+    color: #FFDDA6;
 }

@@ -125,6 +125,7 @@ typedef struct {
     gchar pAction[100];
     gchar eAction[100];
     gchar name[100];
+    gboolean enemyRoars;
     gboolean minigamePlayed;
     gboolean isPlayable;
     gboolean isActive;

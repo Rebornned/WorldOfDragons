@@ -39,8 +39,8 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
     //g_print("Xp requirido padrão: %d\n", player.requiredExp);
 
-    if(playerEnt.level > enemyEnt.level)
-        if(playerEnt.level - enemyEnt.level > 1)
+    if(playerEnt.level > enemyEnt.level) {
+        if(playerEnt.level - enemyEnt.level >= 1)
             battleInstance->expReward = player.requiredExp * 0.5;
         if(playerEnt.level - enemyEnt.level >= 4)
             battleInstance->expReward = player.requiredExp * 0.25;
@@ -48,6 +48,7 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
             battleInstance->expReward = player.requiredExp * 0.1;
         if(playerEnt.level - enemyEnt.level >= 16)
             battleInstance->expReward = player.requiredExp * 0;
+    }
     else if(enemyEnt.level >= playerEnt.level)
         battleInstance->expReward = player.requiredExp * 4 + 200;
     

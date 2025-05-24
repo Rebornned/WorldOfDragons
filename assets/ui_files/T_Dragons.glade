@@ -2324,6 +2324,28 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="y">26</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="fr5_btn_logout">
+                <property name="label" translatable="yes">Sair</property>
+                <property name="name">fr5_btn_logout</property>
+                <property name="width-request">126</property>
+                <property name="height-request">44</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="universal_font"/>
+                  <class name="color_FFDDA6"/>
+                  <class name="font_size_20px"/>
+                  <class name="fr5_logoutbutton"/>
+                  <class name="fr5_drop_shadow"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">57</property>
+                <property name="y">34</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="name">bestiary_page</property>
@@ -3789,7 +3811,7 @@ Tempo de recarga: 1 turno(s)</property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">574</property>
+                        <property name="x">566</property>
                         <property name="y">342</property>
                       </packing>
                     </child>
@@ -3807,8 +3829,8 @@ Tempo de recarga: 1 turno(s)</property>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">460</property>
-                        <property name="y">398</property>
+                        <property name="x">457</property>
+                        <property name="y">399</property>
                       </packing>
                     </child>
                     <child>

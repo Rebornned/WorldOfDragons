@@ -67,12 +67,14 @@ void initAudio() {
     loadAudio("../assets/sounds/battle/bleeding_status.wav", "bleeding_status", "sound", 16, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/turn_change.wav", "turn_change", "sound", 17, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/damage_hit.wav", "damage_hit", "sound", 18, &audioPointer, 100);
-    
-    
+    loadAudio("../assets/sounds/battle/dragon_start_roar.wav", "dragon_start_roar", "sound", 19, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/dragon_middle_roar.wav", "dragon_middle_roar", "sound", 20, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/dragon_end_roar.wav", "dragon_end_roar", "sound", 21, &audioPointer, 100);
+
     
     // Músicas
     Mix_VolumeMusic(64); // 50% de volume da música
-    //loadAudio("../assets/sounds/got_open.mp3", "got_open", "music", 0, &audioPointer, 100);
+    // Bestiário Background
     loadAudio("../assets/sounds/beastiary/after_the_storm.mp3", "after_the_storm", "music", 0, &audioPointer, 50);
     loadAudio("../assets/sounds/beastiary/fields_of_ard_skellige.mp3", "fields_of_ard_skellige", "music", 1, &audioPointer, 50);
     loadAudio("../assets/sounds/beastiary/hearts_of_stone.mp3", "hearts_of_stone", "music", 2, &audioPointer, 50);
@@ -81,9 +83,22 @@ void initAudio() {
     loadAudio("../assets/sounds/beastiary/searching_for_cecilia.mp3", "searching_for_cecilia", "music", 5, &audioPointer, 50);
     loadAudio("../assets/sounds/beastiary/syanna.mp3", "syanna", "music", 6, &audioPointer, 50);
     loadAudio("../assets/sounds/beastiary/kingdom_dance.mp3", "kingdom_dance", "music", 7, &audioPointer, 50);
-
-    //loadAudio("../assets/sounds/beastiary/reign_of_targaryen.mp3", "reign_of_targaryen", "music", 1, &audioPointer, 50);
-
+    
+    // Músicas de batalha
+    gchar *dragonsNames[] = {
+        "Arrax", "Balerion", "Cannibal", "Caraxes", "Dreamfyre",
+        "Drogon", "Greyghost", "Lyrax", "Meleys", "Meraxes",
+        "Moondancer", "Morning", "Quicksilver", "Rhaegal", "Seasmoke",
+        "Sheepstealer", "Shrykos", "Silverwing", "Stormcloud", "Sunfyre",
+        "Syrax", "Tessarion", "Tyraxes", "Vermax", "Vermithor",
+        "Vhagar", "Viserion"
+    };
+    // Registra todas as músicas de batalha
+    for(int i=0; i < 27; i++) {
+        gchar *musicPath = g_strdup_printf("../assets/sounds/battle_musics/battle_%s.mp3", dragonsNames[i]);
+        loadAudio(musicPath, dragonsNames[i], "music", i+23, &audioPointer, 50);
+    }
+    
 }
 
 gint loadAudio(gchar *path, gchar *name, gchar *type, gint indexSound, audioAssets *audioAssets, gint volume) {
@@ -162,7 +177,7 @@ gboolean timedPlayMusicByIndex(gpointer data) {
 void playMusicByName(gint timeout, gchar *name, audioAssets *assets, gint loop) {
     gint index = -1;
     for(int i=0; i < 50; i++) {
-        g_print("Musica verificada: %s\n", assets->musics[i].name);
+        //g_print("Musica verificada: %s\n", assets->musics[i].name);
         if(assets->musics[i].name && strcmp(assets->musics[i].name, name) == 0) {
             index = i;
             break;

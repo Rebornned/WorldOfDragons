@@ -372,10 +372,15 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
+    //FILE *accountsFile = createAccountslistfile();
+    //g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
+    //newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
+    player = getPlayer(playerFile);
+    settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
 
-    initPlayer(playerFile, &player);
-    changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
+    //initPlayer(playerFile, &player);
+    //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
@@ -412,7 +417,7 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
             playSoundByName(0, "meterbar_click", &audioPointer, 0);
         }
         if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->doors.mgChallengerPlayed && strcmp(game->minigame->name, "challenge") == 0) {     
-            gint playerForce = 8 + ( 22.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
+            gint playerForce = 14 + ( 18.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
             //g_print("Força do player: %d\n", playerForce);
             *(game->minigame->minigameValue) += playerForce;
         }  
@@ -575,38 +580,6 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         gtk_stack_set_visible_child_name(main_stack, "login_page");
     }
 
-    // Frame 2
-    if (g_strcmp0(button_name, "fr2_btn_recover") == 0) {
-        gtk_stack_set_visible_child_name(main_stack, "recover_page");
-        clean_elements(fr2_input_elements, fr2_label_elements);
-    }
-
-    if (g_strcmp0(button_name, "fr2_btn_create") == 0) {
-        gtk_stack_set_visible_child_name(main_stack, "account_page");
-        clean_elements(fr2_input_elements, fr2_label_elements);
-    }
-
-    // Frame 3
-
-    if (g_strcmp0(button_name, "fr3_btn_back") == 0) {
-        gtk_stack_set_visible_child_name(main_stack, "login_page");
-    }
-
-    // Frame 4
-
-    if (g_strcmp0(button_name, "fr4_btn_back") == 0) {
-        gtk_stack_set_visible_child_name(main_stack, "login_page");
-        gtk_stack_set_visible_child_name(fr4_stack, "fr4_send");
-    }
-
-    if (g_strcmp0(button_name, "fr4_btn_send") == 0) {
-        gtk_stack_set_visible_child_name(fr4_stack, "fr4_code");
-    }
-
-    if (g_strcmp0(button_name, "fr4_btn_advance") == 0) {
-        gtk_stack_set_visible_child_name(fr4_stack, "fr4_change");
-    }
-
     // Frame 5 Main
     if (g_strcmp0(button_name, "fr5_btn_next") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
@@ -662,7 +635,10 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         if(strlen(dragonName) >= 1) {
             gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
             getplayerDragon(playerFile, dragonName);
-            //updatelvlBar(NULL, GINT_TO_POINTER(1));            
+            settingUpdatelvlBarAnimation(1, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
+            //changePlayerStatus(playerFile, -1, -1, -1, -1, 1, 1, NULL);
+            updateColiseum();
+            updateDataCave();
         }
         else
             labeltextModifier(fr5_cave_dragon_name_error, "O nome deve possuir entre 1 e 30 caracteres.");
@@ -710,8 +686,9 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     if (g_strcmp0(button_name, "fr5_btn_battle") == 0) {
         gint dragonIndex = fr5_actual_dragon_index;
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        //g_print("Name: %s | Unlock id: %d | actual progress: %d\n", pOriginalBeastVector[dragonIndex].name, pOriginalBeastVector[dragonIndex].unlock_id, player.actualProgress);
 
-        if(((pOriginalBeastVector[dragonIndex].unlock_id-27) * -1) <= player.actualProgress) {
+        if(((pOriginalBeastVector[dragonIndex].unlock_id-26) * -1) <= player.actualProgress && strlen(player.dragon.name) > 0 && player.dragon.level > 0) {
             GtkStack *fr6_stack = GTK_STACK(gtk_builder_get_object(builder, "fr6_stack"));
             GtkLabel *fr6_dragon_name = GTK_LABEL(gtk_builder_get_object(builder, "fr6_dragon_name"));
             GtkLabel *fr6_enemy_name_common = GTK_LABEL(gtk_builder_get_object(builder, "fr6_enemy_name_common"));
@@ -819,10 +796,12 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player, dragonIndex);
             stopCurrentMusic();
             musicsBackground.inBattle = TRUE;
-            playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, -1);
+            playMusicByName(0, pOriginalBeastVector[dragonIndex].name, &audioPointer, -1);
             g_timeout_add(9420, settingBattleWindow, battleInstance);
         }
         else {
+            GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr5_coliseum"));
+            logStartAnimation("Você não pode batalhar.", "color_FF0000", 1000, 44, 175, 710, 292, 10, fixed);
             g_print("Não pode batalhar\n");
         }
     }
@@ -842,6 +821,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         sort_dragons_in_beastiary(NULL, GINT_TO_POINTER(1));
         stopCurrentMusic();
         musicsBackground.inBattle = FALSE;
+        musicsBackground.isFinished = FALSE;
         playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
         updateColiseum();
     }   
@@ -1072,7 +1052,7 @@ void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
         char actBtnName[100];
         sprintf(actBtnName, "fr5_btn_dragon%d", i+1);
         GtkButton *actual_btn = GTK_BUTTON(gtk_builder_get_object(builder, actBtnName));
-        if(((pBeastVector[i].unlock_id-27) * -1) <= player.actualProgress) {
+        if(((pBeastVector[i].unlock_id-26) * -1) < player.actualProgress) {
             gtk_button_set_label(GTK_BUTTON(actual_btn), pBeastVector[i].name);
             gtk_widget_set_sensitive(GTK_WIDGET(actual_btn), TRUE);
         }
@@ -1134,6 +1114,10 @@ void updatelvlDragon(GtkButton *btn, gpointer data) {
         playSoundByName(0, "level_up_dragon", &audioPointer, 0);
         changePlayerStatus(playerFile, -1, player.trainPoints-1, -1, -1, -1, -1, &player.dragon);
         player = getPlayer(playerFile);
+        GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr5_cave_actualdragon"));
+        if(player.dragon.level == 1 || player.dragon.level == 10 || player.dragon.level == 50 || player.dragon.level == 80)
+            settingTimedNewWidgetAnimation(0, 61, "dragon_grow_animation", fixed, 0, 0, 295, 283);
+
         updateDataCave();
     }
 
@@ -1283,7 +1267,7 @@ void updateColiseum() {
     else if(levelDiff < 0)
         labeltextModifier(fr5_coliseum_rec_easy, lvlReq);
 
-    if(((pOriginalBeastVector[dragonIndex].unlock_id-27) * -1) > player.actualProgress) {
+    if(((pOriginalBeastVector[dragonIndex].unlock_id-26) * -1) > player.actualProgress || player.dragon.level == 0) {
         labeltextModifier(fr5_dragon_name_legendary, "");
         labeltextModifier(fr5_dragon_name_epic, "");
         labeltextModifier(fr5_dragon_name_rare, "");
@@ -1471,7 +1455,8 @@ gboolean settingBattleWindow(gpointer data) {
     game_pointer->builder = builder;
     MiniGame *minigame = g_malloc(sizeof(MiniGame));
     minigame->minigameValue = (gint *) g_malloc(sizeof(gint));
-    game_pointer->minigame = minigame;    
+    game_pointer->minigame = minigame;
+    game_pointer->minigame->enemyRoars = FALSE;    
     game_pointer->minigame->isActive = FALSE;
     game_pointer->doors.mgMeterPlayed = FALSE;
     game_pointer->doors.playerPlayed = FALSE;
@@ -1482,6 +1467,7 @@ gboolean settingBattleWindow(gpointer data) {
     game_pointer->doors.mgChallengerPlayed = FALSE;
     game_pointer->doors.finishedBattle = FALSE;
     game_pointer->doors.cooldownChecked = FALSE;
+    strcpy(game_pointer->minigame->pAction, "");
     game = game_pointer;
     g_timeout_add(3000, startBattle, game);
 
@@ -1540,16 +1526,19 @@ gboolean onBattle(gpointer data) {
 
         settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/victory.png");
         //g_print("Index do dragão atual: %d | atual progresso do player %d\n", (fr5_actual_dragon_index-27)*-1, player.actualProgress);
-        if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-27) * -1 == player.actualProgress && player.actualProgress < 27) {
+        if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-26) * -1 == player.actualProgress && player.actualProgress < 27) {
             GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
             labeltextModifier(fr7_result_text2, "Novo dragão adicionado ao Bestiário:                                ");
-            labeltextModifier(fr7_result_newbeast_legendary, pOriginalBeastVector[fr5_actual_dragon_index-1].name);
+            labeltextModifier(fr7_result_newbeast_legendary, pOriginalBeastVector[fr5_actual_dragon_index].name);
             changePlayerStatus(playerFile, -1, -1, -1, -1, -1, player.actualProgress+1, NULL);
             player = getPlayer(playerFile);
         }
         else {
             labeltextModifier(fr7_result_text2, "Nenhum novo dragão foi descoberto após a batalha.");
             labeltextModifier(fr7_result_newbeast_legendary, "");
+        }
+        if(fr5_actual_dragon_index == 0) {
+            labeltextModifier(fr7_result_text2, "Não há mais dragões, sua jornada acaba aqui.     ");
         }
     }
 
@@ -1622,7 +1611,7 @@ gboolean onBattle(gpointer data) {
             settingTimedStackChange(0, game->optionsStack, "fr6_battle_buttons");
         }
         // Inicia o minigame mudando o request.
-        if(strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) {
+        if((strcmp(request, "bite") == 0 || strcmp(request, "dracarys") == 0 || strcmp(request, "scratch") == 0) && strcmp(game->minigame->pAction, "") == 0) {
             GtkImage *fr6_battle_powerbar_img = GTK_IMAGE(gtk_builder_get_object(builder, "fr6_battle_powerbar_img"));
             GtkWidget *fr6_battle_powerbar_pointer = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_battle_powerbar_pointer"));
             GtkFixed *fr6_battle_powerbar = GTK_FIXED(gtk_builder_get_object(builder, "fr6_battle_powerbar"));
@@ -1757,8 +1746,10 @@ gboolean onBattle(gpointer data) {
         if(strcmp(request, "roar") == 0 && strcmp(game->minigame->pAction, "roar") != 0) {
             strcpy(game->minigame->pAction, "roar");
             game->battle->EntityOne.skillsCooldown[2] = 6;
-            g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
-            shakeScreen(0, GTK_WINDOW(window), 2000, game->battle->difficult * 2 + 6);
+            g_timeout_add(3000, timedInverseBooleanValue, &game->doors.pAttackReady);
+            playSoundByName(0, "dragon_start_roar", &audioPointer, 0);
+            playSoundByName(2000, "dragon_end_roar", &audioPointer, 0);
+            shakeScreen(0, GTK_WINDOW(window), 2500, game->battle->difficult * 2 + 6);
 
             game->battle->debuffTurns = 5;
             game->battle->currentDebuffAnimation = 9;
@@ -1927,6 +1918,29 @@ gboolean onBattle(gpointer data) {
                 precision = 100;
                 game->minigame->criticalChance += 15;
                 attackDecrease = 0;
+                gint randomShake = 0;
+                if(game->battle->difficult >= 3  && !game->minigame->enemyRoars) {
+                    randomShake = random_choice(1, 100);
+                    game->minigame->enemyRoars = TRUE;
+                }
+
+                if((game->battle->difficult == 3 && randomShake >= 50) || ((game->battle->difficult == 4 && randomShake >= 25))) { // Rugido passivo
+                    playSoundByName(0, "dragon_start_roar", &audioPointer, 0);
+                    playSoundByName(2000, "dragon_end_roar", &audioPointer, 0);
+
+                    shakeScreen(0, GTK_WINDOW(window), 2500, game->battle->difficult * 2 + 6);
+                    
+                    appliedDebuff =  applyDebuff("Terrified", 5, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
+                    if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
+                        updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
+                    }
+                    if(game->battle->duplicatedDebuff == 1) {
+                        updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
+                        g_print("Debuff reaplicado com sucesso.\n");
+                    }
+                    g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+                
+                }
             }
             *(game->minigame->minigameValue) = 0;
 
@@ -1942,7 +1956,7 @@ gboolean onBattle(gpointer data) {
                 g_print("Precisão atual: %d | Bite\n", precision);
                 settingAttackAnimation(500, 2, 30, "bite_crunch_animation", game->fixed, 252);
                 g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
-                game->battle->EntityTwo.skillsCooldown[0] = 4 + game->minigame->attackRecharge;
+                game->battle->EntityTwo.skillsCooldown[1] = 4 + game->minigame->attackRecharge;
                 game->battle->totalDamage = causeDamage(enemyAttack, 1.2, precision, &game->battle->EntityOne.entDragon);
                 
                 game->battle->debuffTurns = 2;
@@ -1962,31 +1976,13 @@ gboolean onBattle(gpointer data) {
                 g_print("Precisão atual: %d | scratch\n", precision);
                 g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 2, 40, "scratch_claw_animation", game->fixed, 252);
-                game->battle->EntityTwo.skillsCooldown[1] = 0;
+                game->battle->EntityTwo.skillsCooldown[0] = 0;
                 game->battle->totalDamage = causeDamage(enemyAttack, 1.0, precision, &game->battle->EntityOne.entDragon);
                 
                 game->battle->debuffTurns = 3;
                 game->battle->currentDebuffAnimation = 5;
                 strcpy(game->battle->currentDebuffType, "Broken-Armor");
                 strcpy(game->battle->currentDebuffStatus, "broken_status");
-            }
-            // Ataque Rugido
-            if(strcmp(game->minigame->eAction, "roar") == 0) {
-                strcpy(game->minigame->eAction, "");
-                g_print("==================================================================\n");
-                g_print("Vida atual do player: %d\n", game->battle->EntityOne.entDragon.health);
-                game->battle->EntityTwo.skillsCooldown[2] = 6 + game->minigame->attackRecharge;
-                appliedDebuff =  applyDebuff("Terrified", 3, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
-                if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
-                    updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
-                }
-                if(game->battle->duplicatedDebuff == 1) {
-                    updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], 9, "terrified_status");
-                    g_print("Debuff reaplicado com sucesso.\n");
-                }
-                g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
-                game->doors.enemyPlayed = TRUE;
-                g_timeout_add(3000, timedSwitchBooleanValue, game);
             }
             // Ataque Dracarys
             if(strcmp(game->minigame->eAction, "dracarys") == 0) {
@@ -2000,13 +1996,46 @@ gboolean onBattle(gpointer data) {
                 g_print("Precisão atual: %d | Dracarys\n", precision);
                 settingAttackAnimation(500, 2, 39, "fire_breath_animation", game->fixed, 192);
                 g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
-                game->battle->EntityTwo.skillsCooldown[3] = 6 + game->minigame->attackRecharge;
+                game->battle->EntityTwo.skillsCooldown[2] = 6 + game->minigame->attackRecharge;
                 game->battle->totalDamage = causeDamage(enemyAttack, 2.0, precision, &game->battle->EntityOne.entDragon);
                 
                 game->battle->debuffTurns = 2;
                 game->battle->currentDebuffAnimation = 7;
                 strcpy(game->battle->currentDebuffType, "Burning");
                 strcpy(game->battle->currentDebuffStatus, "burning_status");
+            }
+            
+            // Ataque Rugido
+            if(strcmp(game->minigame->eAction, "roar") == 0) {
+                strcpy(game->minigame->eAction, "");
+                game->battle->EntityTwo.skillsCooldown[3] = 6 + game->minigame->attackRecharge;
+                game->battle->totalDamage = 0;
+                g_timeout_add(3000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                playSoundByName(0, "dragon_start_roar", &audioPointer, 0);
+                playSoundByName(2000, "dragon_end_roar", &audioPointer, 0);
+
+                shakeScreen(0, GTK_WINDOW(window), 2500, game->battle->difficult * 2 + 6);
+
+                game->battle->debuffTurns = 5;
+                game->battle->currentDebuffAnimation = 9;
+                strcpy(game->battle->currentDebuffType, "Terrified");
+                strcpy(game->battle->currentDebuffStatus, "terrified_status");
+            }
+            // Aplica o Rugido
+            if(game->doors.eFinishedAttack && game->battle->totalDamage == 0) {
+                 // Aplicação de debuff
+                appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
+                if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
+                    updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                }
+                if(game->battle->duplicatedDebuff == 1) {
+                    updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                    g_print("Debuff reaplicado com sucesso.\n");
+                }
+                g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
+
+                game->doors.enemyPlayed = TRUE;
+                g_timeout_add(3000, timedSwitchBooleanValue, game);
             }
             // Aplica o dano causado
             if(game->battle->totalDamage > 0 && game->doors.eFinishedAttack) {
@@ -2072,6 +2101,7 @@ gboolean onBattle(gpointer data) {
         }
         else if(game->battle->entityTurn == 2) {
             strcpy(game->minigame->eAction, "");
+            game->minigame->enemyRoars = FALSE;
             game->doors.eFinishedAttack = FALSE;
             game->doors.eAttackReady = FALSE;
             game->doors.enemyPlayed = FALSE;
@@ -2466,6 +2496,7 @@ void registerTexturesAnimations() {
     loadAnimationFrames("../assets/img_files/animations/battle_animations/scratch_claw_animation_ent1", 36, 15); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/battle_animations/bite_crunch_animation", 30, 16); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/battle_animations/scratch_claw_animation_ent2", 40, 17); // Arranhão
+    loadAnimationFrames("../assets/img_files/animations/common/dragon_grow_animation/dragon_grow_animation", 61, 18); // Animação de Evolução
 
 }
 

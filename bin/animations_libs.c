@@ -58,6 +58,7 @@ void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gc
     else if (g_strcmp0(animationName, "scratch_claw_animation_ent1") == 0) animationIndex = 15;
     else if (g_strcmp0(animationName, "bite_crunch_animation") == 0) animationIndex = 16;
     else if (g_strcmp0(animationName, "scratch_claw_animation_ent2") == 0) animationIndex = 17;
+    else if (g_strcmp0(animationName, "dragon_grow_animation") == 0) animationIndex = 18;
 
     if (animationIndex == -1) {
         g_print("Erro: Nome da animação inválido!\n");
