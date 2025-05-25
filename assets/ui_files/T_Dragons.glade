@@ -3649,6 +3649,25 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="y">178</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Jogar</property>
+                        <property name="width-request">295</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="fr1_btns"/>
+                          <class name="color_FFDDA6"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">40</property>
+                        <property name="y">92</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="name">menu_page</property>

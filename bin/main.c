@@ -343,14 +343,14 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
-    //FILE *accountsFile = createAccountslistfile();
-    //g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
-    //newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
+    FILE *accountsFile = createAccountslistfile();
+    g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
+    newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
     player = getPlayer(playerFile);
     settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
 
-    //initPlayer(playerFile, &player);
+    initPlayer(playerFile, &player);
     //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
