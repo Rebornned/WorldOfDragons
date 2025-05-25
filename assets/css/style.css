@@ -33,6 +33,31 @@
     box-shadow: 2px 0px 5px rgba(255, 251, 169, 0.3);
 }
 
+.fr1_border_background {
+    background-color: rgba(38, 38, 38, 0.65);
+    border: 6px solid rgba(38, 38, 38, 0.4);
+    border-radius: 20px;
+}
+
+.fr1_border_background_menu {
+    border: 3px solid #FFFBA9;
+    background-color: rgba(12, 12, 12, 0.4);
+    border-radius: 10px;
+    box-shadow: 2px 0px 5px rgba(255, 251, 169, 0.3);
+}
+
+.fr1_slot_border {
+    border-top: 3px solid #FFFBA9;
+    box-shadow: 2px 0px 5px rgba(255, 251, 169, 0.3);
+}
+
+.fr1_btns {
+    border: 2px solid #FFFBA9;
+    background-image: linear-gradient(transparent, transparent);
+    border-radius: 20px;
+    box-shadow: 2px 0px 5px rgba(255, 251, 169, 0.3);
+}
+
 /* Css Referente ao frame 2 -> Login */
 
 .fr2_entry {
@@ -597,8 +622,28 @@ Frame 5 - Colíseu
 
 /* Font-size */
 
+.font_size_16px {
+    font-size: 16px;
+}
+
 .font_size_20px {
     font-size: 20px;
+}
+
+.font_size_28px {
+    font-size: 28px;
+}
+
+.font_size_32px {
+    font-size: 32px;
+}
+
+.font_size_40px {
+    font-size: 40px;
+}
+
+.font_size_96px {
+    font-size: 96px;
 }
 
 /* Colors */
@@ -652,4 +697,8 @@ Frame 5 - Colíseu
 
 .color_FFDDA6 {
     color: #FFDDA6;
+}
+
+.color_FFFDD0 {
+    color: #FFFDD0;
 }

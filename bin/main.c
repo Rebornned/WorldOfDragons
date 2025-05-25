@@ -117,13 +117,6 @@ GtkStack *main_stack;
 
 // Frame 1
 
-// Frame 2
-GtkEntry *fr2_inp_user;
-GtkEntry *fr2_inp_pass;
-
-// Frame 4
-GtkStack *fr4_stack;
-
 // Frame 5
 Dragon * pBeastVector;
 Dragon * pOriginalBeastVector;
@@ -275,28 +268,6 @@ int main(int argc, char *argv[]) {
     // Imagem background
     GtkWidget *fr1_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr1_img"));
     gtk_image_set_from_file(GTK_IMAGE(fr1_image), "../assets/img_files/background_start.png");
-
-    // Frame 2 Login
-    // Imagem background
-    GtkWidget *fr2_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_img"));
-    gtk_image_set_from_file(GTK_IMAGE(fr2_image), "../assets/img_files/background_login.png");
-
-    // Input entry
-    fr2_inp_user = GTK_ENTRY(gtk_builder_get_object(builder, "fr2_inp_name"));
-    fr2_inp_pass = GTK_ENTRY(gtk_builder_get_object(builder, "fr2_inp_pass"));
-
-    // Frame 3 Cadastro
-    // Imagem background
-    GtkWidget *fr3_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr3_img"));
-    gtk_image_set_from_file(GTK_IMAGE(fr3_image), "../assets/img_files/background_login.png");
-
-    // Frame 4 Recuperação
-    // Imagem background
-    GtkWidget *fr4_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr4_img"));
-    gtk_image_set_from_file(GTK_IMAGE(fr4_image), "../assets/img_files/background_login.png");
-
-    // Stack
-    fr4_stack = GTK_STACK(gtk_builder_get_object(builder, "fr4_stack"));
 
     // Frame 5 Principal
     // Imagem background
@@ -562,14 +533,6 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     // Obtém o nome do botão clicado
     const gchar *button_name = gtk_widget_get_name(GTK_WIDGET(btn));
 
-    // Frame 2 Elementos para limpar
-    GtkLabel *fr2_label_elements[] = {NULL};
-    GtkEntry *fr2_input_elements[] = {fr2_inp_user, fr2_inp_pass, NULL};
-
-    // Frame 3 Elementos para limpar
-    GtkLabel *fr3_label_elements[] = {NULL};
-    GtkEntry *fr3_input_elements[] = {NULL};
-
     // Frame 5 Elementos para analisar e limpar
     GtkEntry *fr5_cave_inp_name = GTK_ENTRY(gtk_builder_get_object(builder, "fr5_cave_inp_name"));
     GtkLabel *fr5_cave_dragon_name_error = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_dragon_name_error"));
@@ -632,7 +595,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         char dragonName[100];
         strcpy(dragonName, gtk_entry_get_text(fr5_cave_inp_name));
-        if(strlen(dragonName) >= 1) {
+        if(strlen(dragonName) >= 1 && strlen(dragonName) <= 14) {
             gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
             getplayerDragon(playerFile, dragonName);
             settingUpdatelvlBarAnimation(1, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
@@ -641,7 +604,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             updateDataCave();
         }
         else
-            labeltextModifier(fr5_cave_dragon_name_error, "O nome deve possuir entre 1 e 30 caracteres.");
+            labeltextModifier(fr5_cave_dragon_name_error, "O nome deve possuir entre 1 e 14 caracteres.");
         
     }
 
@@ -837,29 +800,12 @@ void registerSignals(GtkBuilder *builder) {
     // Passa a main_stack como user_data
 
     // Frame 1 Botões
-    GObject *fr1_btn_iniciar = gtk_builder_get_object(builder, "fr1_btn_start");
-    g_signal_connect(fr1_btn_iniciar, "clicked", G_CALLBACK(switchPage), main_stack);
+    GObject *fr1_btn_play = gtk_builder_get_object(builder, "fr1_btn_play");
+    g_signal_connect(fr1_btn_play, "clicked", G_CALLBACK(switchPage), NULL);
 
-    // Frame 2 Botões
-    GObject *fr2_btn_create = gtk_builder_get_object(builder, "fr2_btn_create");
-    g_signal_connect(fr2_btn_create, "clicked", G_CALLBACK(switchPage), main_stack);
+    GObject *fr1_btn_exit = gtk_builder_get_object(builder, "fr1_btn_exit");
+    g_signal_connect(fr1_btn_exit, "clicked", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
 
-    GObject *fr2_btn_recover = gtk_builder_get_object(builder, "fr2_btn_recover");
-    g_signal_connect(fr2_btn_recover, "clicked", G_CALLBACK(switchPage), main_stack);
-
-    // Frame 3 Botões
-    GObject *fr3_btn_back = gtk_builder_get_object(builder, "fr3_btn_back");
-    g_signal_connect(fr3_btn_back, "clicked", G_CALLBACK(switchPage), main_stack);
-
-    // Frame 4 Botões
-    GObject *fr4_btn_back = gtk_builder_get_object(builder, "fr4_btn_back");
-    g_signal_connect(fr4_btn_back, "clicked", G_CALLBACK(switchPage), main_stack);
-
-    GObject *fr4_btn_send = gtk_builder_get_object(builder, "fr4_btn_send");
-    g_signal_connect(fr4_btn_send, "clicked", G_CALLBACK(switchPage), main_stack);
-
-    GObject *fr4_btn_advance = gtk_builder_get_object(builder, "fr4_btn_advance");
-    g_signal_connect(fr4_btn_advance, "clicked", G_CALLBACK(switchPage), main_stack);
 
     // Frame 5 Botões
 
