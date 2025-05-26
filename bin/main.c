@@ -308,7 +308,7 @@ int main(int argc, char *argv[]) {
     pOriginalBeastVector = readBeastvector(beastsFile);
     
     // Iniciando músicas
-    playMusicByName(0, "reign_of_targaryen", &audioPointer, 1);
+    playMusicByName(0, "reign_of_targaryen", &audioPointer, -1);
 
     // Caverna do dragão
     GtkWidget *fr5_page_view2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view2"));
@@ -560,11 +560,15 @@ void updateAccounts() {
         Account *vector = readAccountvector(accountsFile);
         for(int i=0; i < 3; i++) {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+            GtkWidget *removeButton = GTK_WIDGET(gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_remove_slot%d", i)));
             if(i >= accountLength) {
                 g_print("Conta vazia\n");
                 gtk_stack_set_visible_child_name(currentStack, "empty_page");
+                gtk_widget_set_visible(removeButton, FALSE);
             }
             else {
+                gtk_stack_set_visible_child_name(currentStack, "save_slot");
+                gtk_widget_set_visible(removeButton, TRUE);
                 g_print("Nome da conta %d: %s\n", i, vector[i].username);
                 GtkLabel *fr1_lvl_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_lvl_slot%d", i)));
                 GtkLabel *fr1_name_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_name_slot%d", i)));
@@ -614,35 +618,58 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     if (g_strcmp0(button_name, "fr1_btn_newgame") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         gint accountLength = accountsLength(accountsFile);
-        gchar *newSave = g_strdup_printf("save%d", accountLength);
-    
-        // Setar os apontadores de páginas
-        fr5_actual_page = 2;
-        fr5_actual_dragon_index = 26;
-
-        // Inicializar novo player
-        newAccount(accountsFile, newSave);
-        playerFile = getAccountfile(newSave);
-        initPlayer(playerFile, &player);
-        settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
+        if(accountLength < 3) {
+            gchar *newSave = g_strdup_printf("save%d", accountLength);
         
-        // Inicializar ações na tela 5
-        GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
+            // Setar os apontadores de páginas
+            fr5_actual_page = 2;
+            fr5_actual_dragon_index = 26;
 
-        sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
-        set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
-        set_attack_in_cave(NULL, GINT_TO_POINTER(0));
-        updateDataCave();
-        updateColiseum();
+            // Inicializar novo player
+            newAccount(accountsFile, newSave);
+            playerFile = getAccountfile(newSave);
+            initPlayer(playerFile, &player);
+            settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
+            
+            // Inicializar ações na tela 5
+            GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
 
-        stopCurrentMusic();
-        playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+            sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
+            set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+            set_attack_in_cave(NULL, GINT_TO_POINTER(0));
+            updateDataCave();
+            updateColiseum();
 
-        // Mudança de abas
-        gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
-        gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+            stopCurrentMusic();
+            playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+
+            // Mudança de abas
+            gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
+            gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+        }
+        else {
+            GtkFixed *fr1_start = GTK_FIXED(gtk_builder_get_object(builder, "fr1_start"));
+            logStartAnimation("Você pode ter apenas 3 saves.", "color_FF0000", 1000, 44, 175, 248, 185, 10, fr1_start);
+        }
+
     }
 
+    for(int i=0; i<3; i++) {
+        GtkStack *fr1_stack_slot = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+        if (g_strcmp0(button_name, g_strdup_printf("fr1_btn_remove_slot%d", i)) == 0) {
+            btn_animation_clicked(GTK_WIDGET(btn), NULL);
+            gtk_stack_set_visible_child_name(fr1_stack_slot, "remove_page");        
+        }
+        if (g_strcmp0(button_name, g_strdup_printf("fr1_btn_cancel_slot%d", i)) == 0) {
+            btn_animation_clicked(GTK_WIDGET(btn), NULL);
+            gtk_stack_set_visible_child_name(fr1_stack_slot, "save_slot");
+        }
+        if (g_strcmp0(button_name, g_strdup_printf("fr1_btn_confirm_slot%d", i)) == 0) {
+            btn_animation_clicked(GTK_WIDGET(btn), NULL);
+            delAccountinlist(accountsFile, g_strdup_printf("save%d", i));
+            updateAccounts();
+        }
+    }
     // Frame 5 Main
 
     if (g_strcmp0(button_name, "fr5_btn_logout") == 0) {
@@ -651,7 +678,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
         gtk_stack_set_visible_child_name(main_stack, "start_page");
         stopCurrentMusic();
-        playMusicByName(0, "reign_of_targaryen", &audioPointer, 1);
+        playMusicByName(0, "reign_of_targaryen", &audioPointer, -1);
 
         fclose(playerFile);
     }
@@ -930,6 +957,16 @@ void registerSignals(GtkBuilder *builder) {
     for(int i=0; i<3; i++) {
         GObject *fr1_btn_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_slot%d", i));
         g_signal_connect(fr1_btn_slot, "clicked", G_CALLBACK(loadingSave), GINT_TO_POINTER(i));
+
+        GObject *fr1_btn_remove_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_remove_slot%d", i));
+        g_signal_connect(fr1_btn_remove_slot, "clicked", G_CALLBACK(switchPage), NULL);
+        g_print("Botão: %s conectado //////////\n", g_strdup_printf("fr1_btn_remove_slot%d", i));
+
+        GObject *fr1_btn_cancel_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_cancel_slot%d", i));
+        g_signal_connect(fr1_btn_cancel_slot, "clicked", G_CALLBACK(switchPage), NULL);
+
+        GObject *fr1_btn_confirm_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_confirm_slot%d", i));
+        g_signal_connect(fr1_btn_confirm_slot, "clicked", G_CALLBACK(switchPage), NULL);
     }
 
     // Frame 5 Botões

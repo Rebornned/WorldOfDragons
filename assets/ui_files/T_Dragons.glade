@@ -145,6 +145,8 @@
                           <class name="fr1_btns"/>
                           <class name="color_FFDDA6"/>
                           <class name="font_size_40px"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -166,6 +168,8 @@
                           <class name="fr1_btns"/>
                           <class name="color_FFDDA6"/>
                           <class name="font_size_40px"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -249,6 +253,8 @@
                           <class name="fr1_btns"/>
                           <class name="color_FFDDA6"/>
                           <class name="font_size_40px"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -263,6 +269,36 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-type">crossfade</property>
+                        <child>
+                          <object class="GtkFixed" id="fr1_empty_slot0">
+                            <property name="name">fr1_empty_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">98</property>
+                                <property name="height-request">44</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Vazio</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFDDA6"/>
+                                  <class name="font_size_40px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">123</property>
+                                <property name="y">12</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">empty_page</property>
+                            <property name="title" translatable="yes">empty_page</property>
+                          </packing>
+                        </child>
                         <child>
                           <object class="GtkFixed" id="fr1_save_slot0">
                             <property name="name">fr1_save_slot0</property>
@@ -355,6 +391,8 @@
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -363,38 +401,85 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="name">page1</property>
-                            <property name="title" translatable="yes">page1</property>
+                            <property name="name">save_slot</property>
+                            <property name="title" translatable="yes">save_slot</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFixed" id="fr1_empty_slot0">
-                            <property name="name">fr1_empty_slot0</property>
+                          <object class="GtkFixed" id="fr1_remove_slot0">
+                            <property name="name">fr1_remove_slot0</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
                               <object class="GtkLabel">
-                                <property name="width-request">98</property>
-                                <property name="height-request">44</property>
+                                <property name="width-request">304</property>
+                                <property name="height-request">17</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes">Vazio</property>
+                                <property name="label" translatable="yes">Você tem certeza que quer apagar o save?</property>
                                 <style>
                                   <class name="universal_font"/>
-                                  <class name="color_FFDDA6"/>
-                                  <class name="font_size_40px"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
                                 </style>
                               </object>
                               <packing>
-                                <property name="x">123</property>
-                                <property name="y">12</property>
+                                <property name="x">20</property>
+                                <property name="y">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_cancel_slot0">
+                                <property name="label" translatable="yes">Cancelar</property>
+                                <property name="name">fr1_btn_cancel_slot0</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                  <class name="fr1_btns_delsave"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">77</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_confirm_slot0">
+                                <property name="label" translatable="yes">Confirmar</property>
+                                <property name="name">fr1_btn_confirm_slot0</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="fr1_btns_delsave"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">178</property>
+                                <property name="y">30</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
-                            <property name="name">empty_page</property>
-                            <property name="title" translatable="yes">empty_page</property>
-                            <property name="position">1</property>
+                            <property name="name">remove_page</property>
+                            <property name="title" translatable="yes">remove_page</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <style>
@@ -413,6 +498,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr1_save_slot1">
                             <property name="name">fr1_save_slot0</property>
@@ -505,6 +591,8 @@
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -513,8 +601,8 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="name">page1</property>
-                            <property name="title" translatable="yes">page1</property>
+                            <property name="name">save_slot</property>
+                            <property name="title" translatable="yes">save_slot</property>
                           </packing>
                         </child>
                         <child>
@@ -547,6 +635,82 @@
                             <property name="position">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkFixed" id="fr1_remove_slot1">
+                            <property name="name">fr1_remove_slot1</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">304</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Você tem certeza que quer apagar o save?</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">20</property>
+                                <property name="y">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_cancel_slot1">
+                                <property name="label" translatable="yes">Cancelar</property>
+                                <property name="name">fr1_btn_cancel_slot1</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                  <class name="fr1_btns_delsave"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">77</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_confirm_slot1">
+                                <property name="label" translatable="yes">Confirmar</property>
+                                <property name="name">fr1_btn_confirm_slot1</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="fr1_btns_delsave"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">178</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">remove_page</property>
+                            <property name="title" translatable="yes">remove_page</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                         <style>
                           <class name="fr1_slot_border"/>
                         </style>
@@ -563,6 +727,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr1_save_slot2">
                             <property name="name">fr1_save_slot0</property>
@@ -655,6 +820,8 @@
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -663,8 +830,8 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="name">page1</property>
-                            <property name="title" translatable="yes">page1</property>
+                            <property name="name">save_slot</property>
+                            <property name="title" translatable="yes">save_slot</property>
                           </packing>
                         </child>
                         <child>
@@ -697,6 +864,82 @@
                             <property name="position">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkFixed" id="fr1_remove_slot2">
+                            <property name="name">fr1_remove_slot1</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">304</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Você tem certeza que quer apagar o save?</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">20</property>
+                                <property name="y">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_cancel_slot2">
+                                <property name="label" translatable="yes">Cancelar</property>
+                                <property name="name">fr1_btn_cancel_slot2</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                  <class name="fr1_btns_delsave"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">77</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr1_btn_confirm_slot2">
+                                <property name="label" translatable="yes">Confirmar</property>
+                                <property name="name">fr1_btn_confirm_slot2</property>
+                                <property name="width-request">90</property>
+                                <property name="height-request">25</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="fr1_btns_delsave"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">178</property>
+                                <property name="y">30</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">remove_page</property>
+                            <property name="title" translatable="yes">remove_page</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                         <style>
                           <class name="fr1_slot_border"/>
                         </style>
@@ -724,6 +967,57 @@
                       <packing>
                         <property name="x">382</property>
                         <property name="y">51</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_remove_slot0">
+                        <property name="name">fr1_btn_remove_slot0</property>
+                        <property name="width-request">41</property>
+                        <property name="height-request">41</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr1_btn_remove"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">363</property>
+                        <property name="y">137</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_remove_slot1">
+                        <property name="name">fr1_btn_remove_slot1</property>
+                        <property name="width-request">41</property>
+                        <property name="height-request">41</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr1_btn_remove"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">363</property>
+                        <property name="y">204</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_remove_slot2">
+                        <property name="name">fr1_btn_remove_slot2</property>
+                        <property name="width-request">41</property>
+                        <property name="height-request">41</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="fr1_btn_remove"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">363</property>
+                        <property name="y">270</property>
                       </packing>
                     </child>
                   </object>
@@ -974,6 +1268,8 @@ Dificuldade: </property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_btn_battle"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -1415,6 +1711,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_legendary"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1433,6 +1731,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_legendary"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1452,6 +1752,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_legendary"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1471,6 +1773,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_epic"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1490,6 +1794,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_epic"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1509,6 +1815,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_epic"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1528,6 +1836,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_epic"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1547,6 +1857,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_epic"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1566,6 +1878,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1585,6 +1899,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1604,6 +1920,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1623,6 +1941,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1642,6 +1962,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1661,6 +1983,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1680,6 +2004,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1699,6 +2025,8 @@ Dificuldade: </property>
                                     <style>
                                       <class name="fr5_btns_list"/>
                                       <class name="fr5_btns_rare"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1717,6 +2045,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1735,6 +2065,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1753,6 +2085,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1771,6 +2105,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1789,6 +2125,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1807,6 +2145,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1825,6 +2165,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1843,6 +2185,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1861,6 +2205,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1879,6 +2225,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -1897,6 +2245,8 @@ Dificuldade: </property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
+                                      <class name="btn_animations_transition"/>
+                                      <class name="btn_animation_hover"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -2263,6 +2613,8 @@ Tamanho: 100-120 metros</property>
                                   <class name="fr5_btn_confirm_new"/>
                                   <class name="fr5_btn_confirm"/>
                                   <class name="fr5_drop_shadow"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -2284,6 +2636,8 @@ Tamanho: 100-120 metros</property>
                                   <class name="fr5_btn_train"/>
                                   <class name="fr5_btn_confirm"/>
                                   <class name="fr5_drop_shadow"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -2414,6 +2768,8 @@ Tamanho: 100-120 metros</property>
                         <style>
                           <class name="fr5_cave_font"/>
                           <class name="fr5_btn_attacks"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -2433,6 +2789,8 @@ Tamanho: 100-120 metros</property>
                         <style>
                           <class name="fr5_cave_font"/>
                           <class name="fr5_btn_attacks"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -2452,6 +2810,8 @@ Tamanho: 100-120 metros</property>
                         <style>
                           <class name="fr5_cave_font"/>
                           <class name="fr5_btn_attacks"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -2471,6 +2831,8 @@ Tamanho: 100-120 metros</property>
                         <style>
                           <class name="fr5_cave_font"/>
                           <class name="fr5_btn_attacks"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -2490,6 +2852,8 @@ Tamanho: 100-120 metros</property>
                         <style>
                           <class name="fr5_cave_font"/>
                           <class name="fr5_btn_train"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
@@ -3068,6 +3432,8 @@ Tempo de recarga: 1 turno(s)</property>
                   <class name="font_size_20px"/>
                   <class name="fr5_logoutbutton"/>
                   <class name="fr5_drop_shadow"/>
+                  <class name="btn_animation_hover"/>
+                  <class name="btn_animations_transition"/>
                 </style>
               </object>
               <packing>
@@ -3823,6 +4189,8 @@ Tempo de recarga: 1 turno(s)</property>
                                   <class name="fr7_btn_attacks"/>
                                   <class name="fr5_dragon_name_common"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -3844,6 +4212,8 @@ Tempo de recarga: 1 turno(s)</property>
                                   <class name="fr7_btn_attacks"/>
                                   <class name="fr5_dragon_name_common"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -3865,6 +4235,8 @@ Tempo de recarga: 1 turno(s)</property>
                                   <class name="fr7_btn_attacks"/>
                                   <class name="fr5_difficulty_tier_hard"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -3886,6 +4258,8 @@ Tempo de recarga: 1 turno(s)</property>
                                   <class name="fr7_btn_attacks"/>
                                   <class name="fr5_dragon_name_rare"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -3907,6 +4281,8 @@ Tempo de recarga: 1 turno(s)</property>
                                   <class name="fr7_btn_attacks"/>
                                   <class name="fr5_dragons_defeat"/>
                                   <class name="fr6_combat_frame_font_hp"/>
+                                  <class name="btn_animations_transition"/>
+                                  <class name="btn_animation_hover"/>
                                 </style>
                               </object>
                               <packing>
@@ -4571,6 +4947,8 @@ Tempo de recarga: 1 turno(s)</property>
                         <style>
                           <class name="fr5_btn_battle"/>
                           <class name="fr7_btn_continue"/>
+                          <class name="btn_animations_transition"/>
+                          <class name="btn_animation_hover"/>
                         </style>
                       </object>
                       <packing>
