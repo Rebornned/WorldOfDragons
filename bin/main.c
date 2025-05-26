@@ -344,7 +344,15 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
+    FILE *accountsFile = createAccountslistfile();
+    newAccount(accountsFile, "player2");
+    newAccount(accountsFile, "player0");
+    getAccountfile("player2");
+    getAccountfile("player0");
+    initPlayer(, )
+
     /*
+    
     FILE *accountsFile = createAccountslistfile();
     newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
@@ -534,6 +542,8 @@ gboolean timedStartChallengeGame(gpointer data) {
 void updateAccounts() {
     FILE *accountsFile = createAccountslistfile();
     gint accountLength = accountsLength(accountsFile);
+    g_print("Contas totais: %d\n", accountLength);
+
     if(accountLength == 0) {
         for(int i=0; i<3; i++) {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
@@ -545,9 +555,12 @@ void updateAccounts() {
         Account *vector = readAccountvector(accountsFile);
         for(int i=0; i < 3; i++) {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
-            if(i >= accountLength)
+            if(i >= accountLength) {
+                g_print("Conta vazia\n");
                 gtk_stack_set_visible_child_name(currentStack, "empty_page");
+            }
             else {
+                g_print("Nome da conta %d: %s\n", i, vector[i].username);
                 GtkLabel *fr1_lvl_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_lvl_slot%d", i)));
                 GtkLabel *fr1_name_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_name_slot%d", i)));
                 GtkLabel *fr1_defeat_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_defeat_slot%d", i)));
@@ -585,13 +598,14 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         updateAccounts();
         /*
         FILE *accountsFile = createAccountslistfile();
+        newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
+
         if(accountsLength(accountsFile) == 0) {
             for(int i=0; i<3; i++) {
                 GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
                 gtk_stack_set_visible_child_name(currentStack, "empty_page");
             }
         }
-        newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
         playerFile = getAccountfile("Rambo");
         //player = getPlayer(playerFile);
         initPlayer(playerFile, &player);*/

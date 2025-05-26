@@ -52,6 +52,7 @@
                   <class name="universal_font"/>
                   <class name="font_size_96px"/>
                   <class name="color_FFFDD0"/>
+                  <class name="text_border_4px"/>
                 </style>
               </object>
               <packing>
@@ -279,6 +280,7 @@
                                   <class name="universal_font"/>
                                   <class name="color_FFFFFF"/>
                                   <class name="font_size_28px"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -298,6 +300,7 @@
                                   <class name="universal_font"/>
                                   <class name="font_size_28px"/>
                                   <class name="color_FF0000"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -343,7 +346,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkButton" id="fr1_btn_slot0">
+                                <property name="name">fr1_btn_slot0</property>
                                 <property name="width-request">338</property>
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>
@@ -416,7 +420,7 @@
                             <property name="can-focus">False</property>
                             <child>
                               <object class="GtkLabel" id="fr1_lvl_slot1">
-                                <property name="name">fr1_lvl_slot0</property>
+                                <property name="name">fr1_lvl_slot1</property>
                                 <property name="width-request">36</property>
                                 <property name="height-request">31</property>
                                 <property name="visible">True</property>
@@ -426,6 +430,7 @@
                                   <class name="universal_font"/>
                                   <class name="color_FFFFFF"/>
                                   <class name="font_size_28px"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -434,8 +439,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="fr1_name_slot2">
-                                <property name="name">fr1_name_slot0</property>
+                              <object class="GtkLabel" id="fr1_name_slot1">
+                                <property name="name">fr1_name_slot1</property>
                                 <property name="width-request">70</property>
                                 <property name="height-request">31</property>
                                 <property name="visible">True</property>
@@ -445,6 +450,7 @@
                                   <class name="universal_font"/>
                                   <class name="font_size_28px"/>
                                   <class name="color_FF0000"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -472,7 +478,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel" id="fr1_defeat_slot1">
-                                <property name="name">fr1_defeat_slot0</property>
+                                <property name="name">fr1_defeat_slot1</property>
                                 <property name="width-request">12</property>
                                 <property name="height-request">17</property>
                                 <property name="visible">True</property>
@@ -490,7 +496,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkButton" id="fr1_btn_slot1">
+                                <property name="name">fr1_btn_slot1</property>
                                 <property name="width-request">338</property>
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>
@@ -563,7 +570,7 @@
                             <property name="can-focus">False</property>
                             <child>
                               <object class="GtkLabel" id="fr1_lvl_slot2">
-                                <property name="name">fr1_lvl_slot0</property>
+                                <property name="name">fr1_lvl_slot2</property>
                                 <property name="width-request">36</property>
                                 <property name="height-request">31</property>
                                 <property name="visible">True</property>
@@ -573,6 +580,7 @@
                                   <class name="universal_font"/>
                                   <class name="color_FFFFFF"/>
                                   <class name="font_size_28px"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -581,8 +589,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="fr1_name_slot3">
-                                <property name="name">fr1_name_slot0</property>
+                              <object class="GtkLabel" id="fr1_name_slot2">
+                                <property name="name">fr1_name_slot2</property>
                                 <property name="width-request">70</property>
                                 <property name="height-request">31</property>
                                 <property name="visible">True</property>
@@ -592,6 +600,7 @@
                                   <class name="universal_font"/>
                                   <class name="font_size_28px"/>
                                   <class name="color_FF0000"/>
+                                  <class name="text_border_3px"/>
                                 </style>
                               </object>
                               <packing>
@@ -619,7 +628,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel" id="fr1_defeat_slot2">
-                                <property name="name">fr1_defeat_slot0</property>
+                                <property name="name">fr1_defeat_slot2</property>
                                 <property name="width-request">12</property>
                                 <property name="height-request">17</property>
                                 <property name="visible">True</property>
@@ -637,7 +646,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton">
+                              <object class="GtkButton" id="fr1_btn_slot2">
+                                <property name="name">fr1_btn_slot2</property>
                                 <property name="width-request">338</property>
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>

@@ -1,12 +1,48 @@
 /* Universals */
 .universal_font {
     font-family: 'Pixellari';
+    text-shadow:
+    2px 0 0 #000,
+   -2px 0 0 #000,
+    0 2px 0 #000,
+    0 -2px 0 #000,
+    2px 2px 0 #000,
+   -2px -2px 0 #000,
+    2px -2px 0 #000,
+   -2px 2px 0 #000;
+
+}
+
+.text_border_2px {
+    text-shadow:
+    2px 0 0 #000,
+   -2px 0 0 #000,
+    0 2px 0 #000,
+    0 -2px 0 #000,
+    2px 2px 0 #000,
+   -2px -2px 0 #000,
+    2px -2px 0 #000,
+   -2px 2px 0 #000;
+
+}
+
+.text_border_3px {
     text-shadow: 
-        1px 1px 0px #000000,   /* Sombra preta no canto inferior direito */
-        -1px -1px 0px #000000, /* Sombra preta no canto superior esquerdo */
-        -1px 1px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
-        1px -1px 0px #000000,  /* Sombra preta no canto superior direito */
-        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+    3px 0 0 #000, -3px 0 0 #000,
+    0 3px 0 #000, 0 -3px 0 #000,
+    3px 3px 0 #000, -3px -3px 0 #000,
+    3px -3px 0 #000, -3px 3px 0 #000;
+
+}
+
+.text_border_4px {
+    text-shadow: 
+    4px 0 0 #000, -4px 0 0 #000,
+    0 4px 0 #000, 0 -4px 0 #000,
+    3px 3px 0 #000, -3px -3px 0 #000,
+    3px -3px 0 #000, -3px 3px 0 #000,
+    2px 4px 0 #000, -2px -4px 0 #000,
+    4px 2px 0 #000, -4px -2px 0 #000;
 }
 
 .background {
