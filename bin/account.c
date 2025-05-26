@@ -8,7 +8,8 @@
 // Compilation: gcc -o account account.c files_libs.c sorts_libs.c
 // Cd bin: cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 
-int newAccount(FILE *pFile, char *user, char *email, char *pass);
+//int newAccount(FILE *pFile, char *user, char *email, char *pass);
+int newAccount(FILE *pFile, char *user);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int containSpecialchar(char *email);
@@ -122,7 +123,7 @@ int main() {
     return 0;
 }
 */
-
+/* Old new Account
 int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     Account account;
     Player newPlayer;
@@ -140,6 +141,13 @@ int newAccount(FILE *pFile, char *user, char *email, char *pass) {
     }
     else
         return -2;
+    return 0;
+}*/
+
+int newAccount(FILE *pFile, char *user) {
+    Account account;
+    strcpy(account.username, user);
+    addAccountinlist(&account, pFile);
     return 0;
 }
 

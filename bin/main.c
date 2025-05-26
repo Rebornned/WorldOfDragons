@@ -180,6 +180,7 @@ gboolean levelUpAnimation(gpointer data);
 gboolean atributeUpAnimation(gpointer data);
 void updateDataCave();
 void updateColiseum();
+void updateAccounts();
 void updatelvlDragon(GtkButton *btn, gpointer data);
 void labelTextAnimation(GtkLabel *label, gchar *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
@@ -343,15 +344,15 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
+    /*
     FILE *accountsFile = createAccountslistfile();
-    //g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
     newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
     //player = getPlayer(playerFile);
     initPlayer(playerFile, &player);
 
     settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
-
+    */
     //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
@@ -530,6 +531,42 @@ gboolean timedStartChallengeGame(gpointer data) {
     return FALSE;
 }
 
+void updateAccounts() {
+    FILE *accountsFile = createAccountslistfile();
+    gint accountLength = accountsLength(accountsFile);
+    if(accountLength == 0) {
+        for(int i=0; i<3; i++) {
+            GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+            gtk_stack_set_visible_child_name(currentStack, "empty_page");
+        }
+        return;
+    }
+    else {
+        Account *vector = readAccountvector(accountsFile);
+        for(int i=0; i < 3; i++) {
+            GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+            if(i >= accountLength)
+                gtk_stack_set_visible_child_name(currentStack, "empty_page");
+            else {
+                GtkLabel *fr1_lvl_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_lvl_slot%d", i)));
+                GtkLabel *fr1_name_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_name_slot%d", i)));
+                GtkLabel *fr1_defeat_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_defeat_slot%d", i)));
+                FILE *currentPlayerFile = getAccountfile(vector[i].username);
+                Player currentPlayer = getPlayer(currentPlayerFile);
+                if(currentPlayer.dragon.level > 100 || currentPlayer.dragon.level < 0)
+                    labeltextModifier(fr1_lvl_slot, "Lvl.0");
+                else
+                    labeltextModifier(fr1_lvl_slot, g_strdup_printf("Lvl.%d", currentPlayer.dragon.level));
+                if(currentPlayer.dragon.name == NULL || strlen(currentPlayer.dragon.name) == 0)
+                    labeltextModifier(fr1_name_slot, "???");
+                else
+                    labeltextModifier(fr1_name_slot, currentPlayer.dragon.name);
+                labeltextModifier(fr1_defeat_slot, g_strdup_printf("%d", currentPlayer.actualProgress));
+            }
+        }
+    }
+}
+
 void switchPage(GtkButton *btn, gpointer user_data) {
     // Obtém o nome do botão clicado
     const gchar *button_name = gtk_widget_get_name(GTK_WIDGET(btn));
@@ -545,7 +582,20 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     if (g_strcmp0(button_name, "fr1_btn_play") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         gtk_stack_set_visible_child_name(fr1_menu_stack, "saves_page");
-        
+        updateAccounts();
+        /*
+        FILE *accountsFile = createAccountslistfile();
+        if(accountsLength(accountsFile) == 0) {
+            for(int i=0; i<3; i++) {
+                GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+                gtk_stack_set_visible_child_name(currentStack, "empty_page");
+            }
+        }
+        newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
+        playerFile = getAccountfile("Rambo");
+        //player = getPlayer(playerFile);
+        initPlayer(playerFile, &player);*/
+
     }
     if (g_strcmp0(button_name, "fr1_btn_close") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);

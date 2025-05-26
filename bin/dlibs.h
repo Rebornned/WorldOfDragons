@@ -212,7 +212,8 @@ void cleanupAudio();
 //###################################################################################
 // File: account.c
 //###################################################################################
-int newAccount(FILE *pFile, char user[], char email[], char pass[]);
+//int newAccount(FILE *pFile, char user[], char email[], char pass[]);
+int newAccount(FILE *pFile, char *user);
 int stringCount(char *string, char *substring, int lower);
 int checkEmail(char *email);
 int random_choice(int min, int max);
