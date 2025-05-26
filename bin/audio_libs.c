@@ -84,6 +84,9 @@ void initAudio() {
     loadAudio("../assets/sounds/beastiary/syanna.mp3", "syanna", "music", 6, &audioPointer, 50);
     loadAudio("../assets/sounds/beastiary/kingdom_dance.mp3", "kingdom_dance", "music", 7, &audioPointer, 50);
     
+    // Música menu
+    loadAudio("../assets/sounds/beastiary/reign_of_targaryen.mp3", "reign_of_targaryen", "music", 22, &audioPointer, 50);
+
     // Músicas de batalha
     gchar *dragonsNames[] = {
         "Arrax", "Balerion", "Cannibal", "Caraxes", "Dreamfyre",
@@ -272,6 +275,7 @@ void cleanupAudio() {
     Mix_CloseAudio();
     SDL_Quit();
 }
+
 /*
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);

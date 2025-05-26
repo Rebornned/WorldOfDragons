@@ -114,6 +114,7 @@ gboolean finishedMusic;
 GtkWidget *window; 
 GtkBuilder *builder;
 GtkStack *main_stack;
+FILE *accountsFile;
 
 // Frame 1
 
@@ -181,6 +182,7 @@ gboolean atributeUpAnimation(gpointer data);
 void updateDataCave();
 void updateColiseum();
 void updateAccounts();
+void loadingSave(GtkButton *btn, gpointer data);
 void updatelvlDragon(GtkButton *btn, gpointer data);
 void labelTextAnimation(GtkLabel *label, gchar *text, int timer);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
@@ -306,8 +308,8 @@ int main(int argc, char *argv[]) {
     pOriginalBeastVector = readBeastvector(beastsFile);
     
     // Iniciando músicas
-    playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
-    
+    playMusicByName(0, "reign_of_targaryen", &audioPointer, 1);
+
     // Caverna do dragão
     GtkWidget *fr5_page_view2 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view2"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view2), "../assets/img_files/beastiary_page2.png");
@@ -335,24 +337,10 @@ int main(int argc, char *argv[]) {
     // Gtk Stack
     fr5_coliseum_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_coliseum_stack"));
 
-
-    //GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
-    //retroBarAnimationStart(1000 ,fr6_life_bar_ent1, 2046, 1200);
-
-    // Inicializar player
+    // Inicializar arquivos de save
     strcpy(request, "");
-    
-    /*
-    FILE *accountsFile = createAccountslistfile();
-    newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
-    playerFile = getAccountfile("Rambo");
-    //player = getPlayer(playerFile);
-    initPlayer(playerFile, &player);
-
-    settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
-    */
-    //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
-
+    accountsFile = createAccountslistfile();
+  
     // Registra todas as animações no sistema    
     registerTexturesAnimations();
 
@@ -365,6 +353,7 @@ int main(int argc, char *argv[]) {
     
     gtk_main();
 
+    fclose(accountsFile);
     cleanupAudio();
 }
 
@@ -523,11 +512,43 @@ gboolean timedStartChallengeGame(gpointer data) {
     return FALSE;
 }
 
+void loadingSave(GtkButton *btn, gpointer data) {
+    gint saveIndex = GPOINTER_TO_INT(data);
+    Account *vector = readAccountvector(accountsFile);
+    gchar *currentSave = g_strdup_printf("save%d", saveIndex);
+        
+    // Setar os apontadores de páginas
+    fr5_actual_page = 2;
+    fr5_actual_dragon_index = 26;
+
+    // Inicializar save do player
+    playerFile = getAccountfile(currentSave);
+    player = getPlayer(playerFile);
+    settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
+    g_print("Acessando conta: %s ****************\n", currentSave);
+    // Inicializar ações na tela 5
+    GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
+
+    sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
+    set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+    set_attack_in_cave(NULL, GINT_TO_POINTER(0));
+
+    updateDataCave();
+    updateColiseum();
+    stopCurrentMusic();
+    playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+
+    // Mudança de abas
+    gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
+    gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+    
+    free(vector);
+}
+
 void updateAccounts() {
-    FILE *accountsFile = createAccountslistfile();
     gint accountLength = accountsLength(accountsFile);
     g_print("Contas totais: %d\n", accountLength);
-
+    
     if(accountLength == 0) {
         for(int i=0; i<3; i++) {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
@@ -560,8 +581,10 @@ void updateAccounts() {
                 else
                     labeltextModifier(fr1_name_slot, currentPlayer.dragon.name);
                 labeltextModifier(fr1_defeat_slot, g_strdup_printf("%d", currentPlayer.actualProgress));
+                fclose(currentPlayerFile);
             }
         }
+        free(vector);
     }
 }
 
@@ -581,21 +604,8 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         gtk_stack_set_visible_child_name(fr1_menu_stack, "saves_page");
         updateAccounts();
-        /*
-        FILE *accountsFile = createAccountslistfile();
-        newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
-
-        if(accountsLength(accountsFile) == 0) {
-            for(int i=0; i<3; i++) {
-                GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
-                gtk_stack_set_visible_child_name(currentStack, "empty_page");
-            }
-        }
-        playerFile = getAccountfile("Rambo");
-        //player = getPlayer(playerFile);
-        initPlayer(playerFile, &player);*/
-
     }
+
     if (g_strcmp0(button_name, "fr1_btn_close") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
@@ -603,10 +613,9 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
     if (g_strcmp0(button_name, "fr1_btn_newgame") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
-        FILE *accountsFile = createAccountslistfile();
         gint accountLength = accountsLength(accountsFile);
         gchar *newSave = g_strdup_printf("save%d", accountLength);
-        
+    
         // Setar os apontadores de páginas
         fr5_actual_page = 2;
         fr5_actual_dragon_index = 26;
@@ -622,16 +631,31 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
         sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
         set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+        set_attack_in_cave(NULL, GINT_TO_POINTER(0));
         updateDataCave();
         updateColiseum();
-        
+
+        stopCurrentMusic();
+        playMusicByIndex(0, musicsBackground.musicsAvailable[musicsBackground.currentMusic], &audioPointer, 0);
+
         // Mudança de abas
         gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
         gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
-
-        updateAccounts();
     }
+
     // Frame 5 Main
+
+    if (g_strcmp0(button_name, "fr5_btn_logout") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        updateAccounts();
+        gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
+        gtk_stack_set_visible_child_name(main_stack, "start_page");
+        stopCurrentMusic();
+        playMusicByName(0, "reign_of_targaryen", &audioPointer, 1);
+
+        fclose(playerFile);
+    }
+
     if (g_strcmp0(button_name, "fr5_btn_next") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         playSoundByName(0, "menu_change", &audioPointer, 0);
@@ -687,7 +711,6 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
             getplayerDragon(playerFile, dragonName);
             settingUpdatelvlBarAnimation(1, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
-            //changePlayerStatus(playerFile, -1, -1, -1, -1, 1, 1, NULL);
             updateColiseum();
             updateDataCave();
         }
@@ -901,11 +924,17 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr1_btn_newgame = gtk_builder_get_object(builder, "fr1_btn_newgame");
     g_signal_connect(fr1_btn_newgame, "clicked", G_CALLBACK(switchPage), NULL);
     
-
     GObject *fr1_btn_exit = gtk_builder_get_object(builder, "fr1_btn_exit");
     g_signal_connect(fr1_btn_exit, "clicked", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
 
+    for(int i=0; i<3; i++) {
+        GObject *fr1_btn_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_slot%d", i));
+        g_signal_connect(fr1_btn_slot, "clicked", G_CALLBACK(loadingSave), GINT_TO_POINTER(i));
+    }
+
     // Frame 5 Botões
+    GObject *fr5_btn_logout = gtk_builder_get_object(builder, "fr5_btn_logout");
+    g_signal_connect(fr5_btn_logout, "clicked", G_CALLBACK(switchPage), NULL);
 
     GObject *fr5_btn_next = gtk_builder_get_object(builder, "fr5_btn_next");
     g_signal_connect(fr5_btn_next, "clicked", G_CALLBACK(switchPage), fr5_stack);
@@ -1005,9 +1034,11 @@ void labeltextModifier(GtkLabel *label, const gchar *text) {
 }
 
 void btn_animation_clicked(GtkWidget *widget, gpointer data) {
-    gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
-    g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
-    playSoundByName(0, "click", &audioPointer, 0);
+    if(GTK_IS_WIDGET(widget)) {
+        gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
+        g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
+        playSoundByName(0, "click", &audioPointer, 0);
+    }
 }
 
 void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
@@ -1111,6 +1142,7 @@ void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
 
 void set_attack_in_cave(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
+
     int index = GPOINTER_TO_INT(data);
     char attackDetails[400];
     int xPosVector[] = {42, 204, 362, 526};
@@ -1121,7 +1153,7 @@ void set_attack_in_cave(GtkButton *btn, gpointer data) {
     GtkLabel *fr5_cave_attack_details = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack_details"));
     GtkWidget *fr5_btn_cave_marker = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_btn_cave_marker"));
 
-    sprintf(attackDetails, "Dano: ( Ataque x %.1f )\nTaxa de acerto: %d%\nTempo de recarga: %d turno(s)",
+    sprintf(attackDetails, "Dano: ( Ataque x %.1f )\nTaxa de acerto: %d\nTempo de recarga: %d turno(s)",
     actualAttack.multiplicator, actualAttack.precision, actualAttack.cooldownAttack);
     gtk_fixed_move(fr5_cave, GTK_WIDGET(fr5_btn_cave_marker), xPosVector[index], 410);
     gtk_widget_set_size_request(GTK_WIDGET(fr5_btn_cave_marker), widthVector[index], 36);
@@ -1226,11 +1258,29 @@ void updateDataCave() {
 
         sprintf(textVar, "%s ( %s )", player.dragon.name, dragonStage);
         labeltextModifier(fr5_cave_name_label, textVar);
-
-        //g_print("Player tem dragão.\n");
     }
-    else
-        g_print("Player não tem dragão.\n");
+    else {
+        gchar textVar[300];
+        gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_newdragon");
+        GtkWidget *fr5_cave_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_cave_dragon_img"));
+        GtkLabel *fr5_cave_lvl_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_lvl_label"));
+        GtkLabel *fr5_cave_name_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_name_label"));
+        GtkLabel *fr5_cave_points = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_points"));
+        GtkLabel *fr5_cave_health = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_health"));
+        GtkLabel *fr5_cave_attack = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack"));
+        GtkLabel *fr5_cave_defense = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_defense"));
+        GtkLabel *fr5_cave_speed = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_speed"));
+
+        labeltextModifier(fr5_cave_lvl_label, "Lvl.??");
+        sprintf(textVar, "Pontos restantes: %d", player.trainPoints);
+        labeltextModifier(fr5_cave_points, textVar);
+        labeltextModifier(fr5_cave_health, "Vida: ???                        ");
+        labeltextModifier(fr5_cave_attack, "Ataque: ???                        ");
+        labeltextModifier(fr5_cave_defense, "Defesa: ???                        ");
+        labeltextModifier(fr5_cave_speed, "Velocidade: ???                        ");
+        gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/egg_wyvern_1.png");    
+        labeltextModifier(fr5_cave_name_label, "???");
+    }
 }
 
 void updateColiseum() {
