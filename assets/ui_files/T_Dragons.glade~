@@ -238,7 +238,7 @@
                     <child>
                       <object class="GtkButton" id="fr1_btn_newgame">
                         <property name="label" translatable="yes">Novo Jogo</property>
-                        <property name="name">fr1_btn_play</property>
+                        <property name="name">fr1_btn_newgame</property>
                         <property name="width-request">246</property>
                         <property name="height-request">68</property>
                         <property name="visible">True</property>

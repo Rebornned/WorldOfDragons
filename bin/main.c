@@ -281,7 +281,6 @@ int main(int argc, char *argv[]) {
     fr5_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_tittle_label"));
     
     // Barra de experiência
-    fr5_actual_page = 1;
     fr5_levelup_text = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_levelup_text"));
     fr5_label_lvl = GTK_LABEL(gtk_builder_get_object(builder, "fr5_label_lvl"));
     fr5_exp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr5_exp_text"));
@@ -291,7 +290,6 @@ int main(int argc, char *argv[]) {
     GtkWidget *fr5_page_view1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_page_view1"));
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view1), "../assets/img_files/beastiary_page1.png");
 
-    GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
     fr5_history_container = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_history_container"));
     fr5_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_dragon_img"));
     fr5_label_dragon_history = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_history"));
@@ -336,7 +334,6 @@ int main(int argc, char *argv[]) {
     
     // Gtk Stack
     fr5_coliseum_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_coliseum_stack"));
-    fr5_actual_dragon_index = 26;
 
 
     //GtkWidget *fr6_life_bar_ent1 = GTK_WIDGET(gtk_builder_get_object(builder, "fr6_life_bar_ent1"));
@@ -344,15 +341,8 @@ int main(int argc, char *argv[]) {
 
     // Inicializar player
     strcpy(request, "");
-    FILE *accountsFile = createAccountslistfile();
-    newAccount(accountsFile, "player2");
-    newAccount(accountsFile, "player0");
-    getAccountfile("player2");
-    getAccountfile("player0");
-    initPlayer(, )
-
-    /*
     
+    /*
     FILE *accountsFile = createAccountslistfile();
     newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
@@ -362,12 +352,6 @@ int main(int argc, char *argv[]) {
     settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
     */
     //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
-
-    // Inicializar ações na tela 5
-    sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
-    set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
-    updateDataCave();
-    updateColiseum();
 
     // Registra todas as animações no sistema    
     registerTexturesAnimations();
@@ -566,12 +550,13 @@ void updateAccounts() {
                 GtkLabel *fr1_defeat_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_defeat_slot%d", i)));
                 FILE *currentPlayerFile = getAccountfile(vector[i].username);
                 Player currentPlayer = getPlayer(currentPlayerFile);
-                if(currentPlayer.dragon.level > 100 || currentPlayer.dragon.level < 0)
-                    labeltextModifier(fr1_lvl_slot, "Lvl.0");
-                else
+                if(currentPlayer.dragon.name && strlen(currentPlayer.dragon.name) > 0)
                     labeltextModifier(fr1_lvl_slot, g_strdup_printf("Lvl.%d", currentPlayer.dragon.level));
-                if(currentPlayer.dragon.name == NULL || strlen(currentPlayer.dragon.name) == 0)
+
+                if(currentPlayer.dragon.name == NULL || strlen(currentPlayer.dragon.name) == 0) {
                     labeltextModifier(fr1_name_slot, "???");
+                    labeltextModifier(fr1_lvl_slot, "Lvl.0");
+                }
                 else
                     labeltextModifier(fr1_name_slot, currentPlayer.dragon.name);
                 labeltextModifier(fr1_defeat_slot, g_strdup_printf("%d", currentPlayer.actualProgress));
@@ -616,6 +601,36 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
     }
 
+    if (g_strcmp0(button_name, "fr1_btn_newgame") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        FILE *accountsFile = createAccountslistfile();
+        gint accountLength = accountsLength(accountsFile);
+        gchar *newSave = g_strdup_printf("save%d", accountLength);
+        
+        // Setar os apontadores de páginas
+        fr5_actual_page = 2;
+        fr5_actual_dragon_index = 26;
+
+        // Inicializar novo player
+        newAccount(accountsFile, newSave);
+        playerFile = getAccountfile(newSave);
+        initPlayer(playerFile, &player);
+        settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
+        
+        // Inicializar ações na tela 5
+        GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
+
+        sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
+        set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+        updateDataCave();
+        updateColiseum();
+        
+        // Mudança de abas
+        gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
+        gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
+
+        updateAccounts();
+    }
     // Frame 5 Main
     if (g_strcmp0(button_name, "fr5_btn_next") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
@@ -882,6 +897,10 @@ void registerSignals(GtkBuilder *builder) {
 
     GObject *fr1_btn_close = gtk_builder_get_object(builder, "fr1_btn_close");
     g_signal_connect(fr1_btn_close, "clicked", G_CALLBACK(switchPage), NULL);
+
+    GObject *fr1_btn_newgame = gtk_builder_get_object(builder, "fr1_btn_newgame");
+    g_signal_connect(fr1_btn_newgame, "clicked", G_CALLBACK(switchPage), NULL);
+    
 
     GObject *fr1_btn_exit = gtk_builder_get_object(builder, "fr1_btn_exit");
     g_signal_connect(fr1_btn_exit, "clicked", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
