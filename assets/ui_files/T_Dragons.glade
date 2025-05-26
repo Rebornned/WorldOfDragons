@@ -17,6 +17,725 @@
         <property name="can-focus">False</property>
         <property name="transition-type">crossfade</property>
         <child>
+          <object class="GtkFixed" id="fr1_start">
+            <property name="name">fr1_start</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkOverlay">
+                <property name="width-request">1000</property>
+                <property name="height-request">600</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="fr1_img">
+                    <property name="name">fr1_img</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="pixbuf">../img_files\background_start.png</property>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="fr1_tittle_label">
+                <property name="name">fr1_tittle_label</property>
+                <property name="width-request">847</property>
+                <property name="height-request">108</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Targaryen Dragons</property>
+                <style>
+                  <class name="universal_font"/>
+                  <class name="font_size_96px"/>
+                  <class name="color_FFFDD0"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">76</property>
+                <property name="y">17</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">../img_files\targaryen_symbol.png</property>
+              </object>
+              <packing>
+                <property name="x">109</property>
+                <property name="y">318</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="width-request">100</property>
+                <property name="height-request">80</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">../img_files\targaryen_symbol.png</property>
+              </object>
+              <packing>
+                <property name="x">777</property>
+                <property name="y">318</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="fr1_menu_stack">
+                <property name="width-request">446</property>
+                <property name="height-request">350</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-type">crossfade</property>
+                <child>
+                  <object class="GtkFixed" id="fr1_menu_page">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">307</property>
+                        <property name="height-request">93</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">
+</property>
+                        <style>
+                          <class name="fr1_border_background"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">34</property>
+                        <property name="y">85</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">307</property>
+                        <property name="height-request">93</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">
+</property>
+                        <style>
+                          <class name="fr1_border_background"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">34</property>
+                        <property name="y">190</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_play">
+                        <property name="label" translatable="yes">Jogar</property>
+                        <property name="name">fr1_btn_play</property>
+                        <property name="width-request">295</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="fr1_btns"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_40px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">40</property>
+                        <property name="y">92</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_exit">
+                        <property name="label" translatable="yes">Sair</property>
+                        <property name="name">fr1_btn_exit</property>
+                        <property name="width-request">295</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="fr1_btns"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_40px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">41</property>
+                        <property name="y">196</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">menu_page</property>
+                    <property name="title" translatable="yes">menu_page</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed" id="fr1_saves_page">
+                    <property name="name">fr1_saves_page</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">258</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">
+</property>
+                        <style>
+                          <class name="fr1_border_background"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">62</property>
+                        <property name="y">37</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">366</property>
+                        <property name="height-request">330</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">
+</property>
+                        <style>
+                          <class name="fr1_border_background"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">8</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">344</property>
+                        <property name="height-request">301</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">
+</property>
+                        <style>
+                          <class name="fr1_border_background_menu"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">19</property>
+                        <property name="y">30</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_newgame">
+                        <property name="label" translatable="yes">Novo Jogo</property>
+                        <property name="name">fr1_btn_play</property>
+                        <property name="width-request">246</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="fr1_btns"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_40px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">68</property>
+                        <property name="y">43</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="fr1_stack_slot0">
+                        <property name="name">fr1_stack_slot0</property>
+                        <property name="width-request">344</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkFixed" id="fr1_save_slot0">
+                            <property name="name">fr1_save_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr1_lvl_slot0">
+                                <property name="name">fr1_lvl_slot0</property>
+                                <property name="width-request">36</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Lvl.100</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_28px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_name_slot0">
+                                <property name="name">fr1_name_slot0</property>
+                                <property name="width-request">70</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Rabo-Corneo</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_28px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">115</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">100</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Dragoes derrotados:</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_defeat_slot0">
+                                <property name="name">fr1_defeat_slot0</property>
+                                <property name="width-request">12</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">27</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">170</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="width-request">338</property>
+                                <property name="height-request">64</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr6_transparent_bg"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">3</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">page1</property>
+                            <property name="title" translatable="yes">page1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr1_empty_slot0">
+                            <property name="name">fr1_empty_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">98</property>
+                                <property name="height-request">44</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Vazio</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFDDA6"/>
+                                  <class name="font_size_40px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">123</property>
+                                <property name="y">12</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">empty_page</property>
+                            <property name="title" translatable="yes">empty_page</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <style>
+                          <class name="fr1_slot_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">19</property>
+                        <property name="y">123</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="fr1_stack_slot1">
+                        <property name="name">fr1_stack_slot0</property>
+                        <property name="width-request">344</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkFixed" id="fr1_save_slot1">
+                            <property name="name">fr1_save_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr1_lvl_slot1">
+                                <property name="name">fr1_lvl_slot0</property>
+                                <property name="width-request">36</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Lvl.100</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_28px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_name_slot2">
+                                <property name="name">fr1_name_slot0</property>
+                                <property name="width-request">70</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Rabo-Corneo</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_28px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">115</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">100</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Dragoes derrotados:</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_defeat_slot1">
+                                <property name="name">fr1_defeat_slot0</property>
+                                <property name="width-request">12</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">27</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">170</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="width-request">338</property>
+                                <property name="height-request">64</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr6_transparent_bg"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">3</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">page1</property>
+                            <property name="title" translatable="yes">page1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr1_empty_slot1">
+                            <property name="name">fr1_empty_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">98</property>
+                                <property name="height-request">44</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Vazio</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFDDA6"/>
+                                  <class name="font_size_40px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">123</property>
+                                <property name="y">12</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">empty_page</property>
+                            <property name="title" translatable="yes">empty_page</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <style>
+                          <class name="fr1_slot_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">19</property>
+                        <property name="y">191</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkStack" id="fr1_stack_slot2">
+                        <property name="name">fr1_stack_slot0</property>
+                        <property name="width-request">344</property>
+                        <property name="height-request">68</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkFixed" id="fr1_save_slot2">
+                            <property name="name">fr1_save_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="fr1_lvl_slot2">
+                                <property name="name">fr1_lvl_slot0</property>
+                                <property name="width-request">36</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Lvl.100</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_28px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_name_slot3">
+                                <property name="name">fr1_name_slot0</property>
+                                <property name="width-request">70</property>
+                                <property name="height-request">31</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Rabo-Corneo</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_28px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">115</property>
+                                <property name="y">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">100</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Dragoes derrotados:</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFFFFF"/>
+                                  <class name="font_size_16px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">15</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="fr1_defeat_slot2">
+                                <property name="name">fr1_defeat_slot0</property>
+                                <property name="width-request">12</property>
+                                <property name="height-request">17</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">27</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="font_size_16px"/>
+                                  <class name="color_FF0000"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">170</property>
+                                <property name="y">45</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="width-request">338</property>
+                                <property name="height-request">64</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="fr6_transparent_bg"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">3</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">page1</property>
+                            <property name="title" translatable="yes">page1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="fr1_empty_slot2">
+                            <property name="name">fr1_empty_slot0</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="width-request">98</property>
+                                <property name="height-request">44</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Vazio</property>
+                                <style>
+                                  <class name="universal_font"/>
+                                  <class name="color_FFDDA6"/>
+                                  <class name="font_size_40px"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">123</property>
+                                <property name="y">12</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">empty_page</property>
+                            <property name="title" translatable="yes">empty_page</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <style>
+                          <class name="fr1_slot_border"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">19</property>
+                        <property name="y">259</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fr1_btn_close">
+                        <property name="name">fr1_btn_close</property>
+                        <property name="width-request">52</property>
+                        <property name="height-request">52</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <style>
+                          <class name="fr1_btn_close"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">382</property>
+                        <property name="y">51</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">saves_page</property>
+                    <property name="title" translatable="yes">saves_page</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="x">305</property>
+                <property name="y">216</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">start_page</property>
+            <property name="title" translatable="yes">start_page</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkFixed" id="fr5_beastiary">
             <property name="name">fr5_beastiary</property>
             <property name="visible">True</property>
@@ -2350,6 +3069,7 @@ Tempo de recarga: 1 turno(s)</property>
           <packing>
             <property name="name">bestiary_page</property>
             <property name="title" translatable="yes">bestiary_page</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -3535,155 +4255,6 @@ Tempo de recarga: 1 turno(s)</property>
           <packing>
             <property name="name">combat_page</property>
             <property name="title" translatable="yes">combat_page</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFixed" id="fr1_start">
-            <property name="name">fr1_start</property>
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkOverlay">
-                <property name="width-request">1000</property>
-                <property name="height-request">600</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <child>
-                  <object class="GtkImage" id="fr1_img">
-                    <property name="name">fr1_img</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="pixbuf">../img_files\background_start.png</property>
-                  </object>
-                  <packing>
-                    <property name="index">-1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="fr1_tittle_label">
-                <property name="name">fr1_tittle_label</property>
-                <property name="width-request">847</property>
-                <property name="height-request">108</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Targaryen Dragons</property>
-                <style>
-                  <class name="tittle_labels"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">76</property>
-                <property name="y">17</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage">
-                <property name="width-request">100</property>
-                <property name="height-request">80</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="pixbuf">../img_files\targaryen_symbol.png</property>
-              </object>
-              <packing>
-                <property name="x">109</property>
-                <property name="y">318</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage">
-                <property name="width-request">100</property>
-                <property name="height-request">80</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="pixbuf">../img_files\targaryen_symbol.png</property>
-              </object>
-              <packing>
-                <property name="x">777</property>
-                <property name="y">318</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStack" id="fr1_menu_stack">
-                <property name="width-request">446</property>
-                <property name="height-request">350</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <child>
-                  <object class="GtkFixed">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="width-request">307</property>
-                        <property name="height-request">93</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">
-</property>
-                        <style>
-                          <class name="fr1_border_background"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">34</property>
-                        <property name="y">85</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="width-request">307</property>
-                        <property name="height-request">93</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">
-</property>
-                        <style>
-                          <class name="fr1_border_background"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">34</property>
-                        <property name="y">178</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">Jogar</property>
-                        <property name="width-request">295</property>
-                        <property name="height-request">80</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                        <style>
-                          <class name="universal_font"/>
-                          <class name="fr1_btns"/>
-                          <class name="color_FFDDA6"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">40</property>
-                        <property name="y">92</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="name">menu_page</property>
-                    <property name="title" translatable="yes">menu_page</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="x">305</property>
-                <property name="y">216</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="name">start_page</property>
-            <property name="title" translatable="yes">start_page</property>
             <property name="position">2</property>
           </packing>
         </child>

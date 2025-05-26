@@ -344,13 +344,14 @@ int main(int argc, char *argv[]) {
     // Inicializar player
     strcpy(request, "");
     FILE *accountsFile = createAccountslistfile();
-    g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
+    //g_print("Conta deletada: %d\n", delAccountinlist(accountsFile, "Rambo"));
     newAccount(accountsFile, "Rambo", "rahs@gmail.com", "1234");
     playerFile = getAccountfile("Rambo");
-    player = getPlayer(playerFile);
+    //player = getPlayer(playerFile);
+    initPlayer(playerFile, &player);
+
     settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
 
-    initPlayer(playerFile, &player);
     //changePlayerStatus(playerFile, 0, 0, 0, 1, 27, 27, NULL);
 
     // Inicializar ações na tela 5
@@ -538,9 +539,17 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     GtkLabel *fr5_cave_dragon_name_error = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_dragon_name_error"));
 
     // Altera a página visível da GtkStack com base no nome do botão
+    GtkStack *fr1_menu_stack = GTK_STACK(gtk_builder_get_object(builder, "fr1_menu_stack"));
+
     // Frame 1
-    if (g_strcmp0(button_name, "fr1_btn_start") == 0) {
-        gtk_stack_set_visible_child_name(main_stack, "login_page");
+    if (g_strcmp0(button_name, "fr1_btn_play") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        gtk_stack_set_visible_child_name(fr1_menu_stack, "saves_page");
+        
+    }
+    if (g_strcmp0(button_name, "fr1_btn_close") == 0) {
+        btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
     }
 
     // Frame 5 Main
@@ -595,7 +604,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         char dragonName[100];
         strcpy(dragonName, gtk_entry_get_text(fr5_cave_inp_name));
-        if(strlen(dragonName) >= 1 && strlen(dragonName) <= 14) {
+        if(strlen(dragonName) >= 1 && strlen(dragonName) <= 12) {
             gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
             getplayerDragon(playerFile, dragonName);
             settingUpdatelvlBarAnimation(1, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
@@ -792,7 +801,11 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
     GtkWidget *dummy = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_dummy"));
-    gtk_widget_grab_focus(dummy); 
+    if(dummy != NULL ) {
+        gtk_widget_show(dummy);
+        gtk_widget_realize(dummy);
+        gtk_widget_grab_focus(GTK_WIDGET(dummy)); 
+    }
 }
 
 void registerSignals(GtkBuilder *builder) {
@@ -803,9 +816,11 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr1_btn_play = gtk_builder_get_object(builder, "fr1_btn_play");
     g_signal_connect(fr1_btn_play, "clicked", G_CALLBACK(switchPage), NULL);
 
+    GObject *fr1_btn_close = gtk_builder_get_object(builder, "fr1_btn_close");
+    g_signal_connect(fr1_btn_close, "clicked", G_CALLBACK(switchPage), NULL);
+
     GObject *fr1_btn_exit = gtk_builder_get_object(builder, "fr1_btn_exit");
     g_signal_connect(fr1_btn_exit, "clicked", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
-
 
     // Frame 5 Botões
 
