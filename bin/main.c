@@ -249,21 +249,29 @@ int main(int argc, char *argv[]) {
 
     // Inicialização de objetos principais da interface
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+    gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
+    
+    GdkGeometry hints;
+    hints.min_width = 1000;
+    hints.min_height = 600;
+    hints.max_width = 1000;
+    hints.max_height = 600;
+
+    gtk_window_set_geometry_hints(GTK_WINDOW(window), NULL, &hints, GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 
     // desativa a decoração nativa e usa a headerbar
-    GtkHeaderBar *hb = GTK_HEADER_BAR(gtk_builder_get_object(builder, "header_bar"));
-    gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
-    gtk_window_set_titlebar(GTK_WINDOW(window), GTK_WIDGET(hb));
     g_object_set(gtk_settings_get_default(),"gtk-application-prefer-dark-theme", TRUE, NULL); // Deixa em tema escuro
+    GtkWidget *hb = gtk_header_bar_new();
+    gtk_header_bar_set_title(GTK_HEADER_BAR(hb), "World of Dragons");
+    gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(hb), TRUE);
+    gtk_widget_show(hb);
 
+    gtk_window_set_titlebar(GTK_WINDOW(window), GTK_WIDGET(hb));
+    gtk_window_set_decorated(GTK_WINDOW(window), TRUE);
 
     gtk_window_set_icon_from_file(GTK_WINDOW(window), "../assets/img_files/T_dragons_icon.png", NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
-    
-    GdkGeometry hints_window;
-    hints_window.max_width = 1000;  
-    hints_window.max_height = 600; 
-    gtk_window_set_geometry_hints(GTK_WINDOW(window), NULL, &hints_window, GDK_HINT_MAX_SIZE);
+
 
     // Carregar e aplicar o arquivo CSS
     css_provider = gtk_css_provider_new();
@@ -558,7 +566,7 @@ void loadingSave(GtkButton *btn, gpointer data) {
 
 void updateAccounts() {
     gint accountLength = accountsLength(accountsFile);
-    g_print("Contas totais: %d\n", accountLength);
+    //g_print("Contas totais: %d\n", accountLength);
     
     if(accountLength == 0) {
         for(int i=0; i<3; i++) {
@@ -575,14 +583,14 @@ void updateAccounts() {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
             GtkWidget *removeButton = GTK_WIDGET(gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_remove_slot%d", i)));
             if(i >= accountLength) {
-                g_print("Conta vazia\n");
+                //g_print("Conta vazia\n");
                 gtk_stack_set_visible_child_name(currentStack, "empty_page");
                 gtk_widget_set_visible(removeButton, FALSE);
             }
             else {
                 gtk_stack_set_visible_child_name(currentStack, "save_slot");
                 gtk_widget_set_visible(removeButton, TRUE);
-                g_print("Nome da conta %d: %s\n", i, vector[i].username);
+                //g_print("Nome da conta %d: %s\n", i, vector[i].username);
                 GtkLabel *fr1_lvl_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_lvl_slot%d", i)));
                 GtkLabel *fr1_name_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_name_slot%d", i)));
                 GtkLabel *fr1_defeat_slot = GTK_LABEL(gtk_builder_get_object(builder, g_strdup_printf("fr1_defeat_slot%d", i)));
@@ -975,7 +983,6 @@ void registerSignals(GtkBuilder *builder) {
 
         GObject *fr1_btn_remove_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_remove_slot%d", i));
         g_signal_connect(fr1_btn_remove_slot, "clicked", G_CALLBACK(switchPage), NULL);
-        g_print("Botão: %s conectado //////////\n", g_strdup_printf("fr1_btn_remove_slot%d", i));
 
         GObject *fr1_btn_cancel_slot = gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_cancel_slot%d", i));
         g_signal_connect(fr1_btn_cancel_slot, "clicked", G_CALLBACK(switchPage), NULL);
