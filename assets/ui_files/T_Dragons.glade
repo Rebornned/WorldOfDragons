@@ -7,9 +7,9 @@
     <property name="width-request">1000</property>
     <property name="height-request">600</property>
     <property name="can-focus">True</property>
-    <property name="title" translatable="yes">Targaryens dragons</property>
     <property name="default-width">1000</property>
     <property name="default-height">600</property>
+    <property name="icon">../img_files\T_dragons_icon.png</property>
     <child>
       <object class="GtkStack" id="main_stack">
         <property name="name">main_stack</property>
@@ -5081,6 +5081,17 @@ Tempo de recarga: 1 turno(s)</property>
             <property name="position">3</property>
           </packing>
         </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="name">header_bar</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="title" translatable="yes">Targaryen Dragons</property>
+        <property name="has-subtitle">False</property>
+        <property name="spacing">0</property>
+        <property name="show-close-button">True</property>
       </object>
     </child>
   </object>

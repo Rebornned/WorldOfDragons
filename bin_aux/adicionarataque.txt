@@ -2,52 +2,107 @@ Mordida
 O dragão avança ferozmente contra o inimigo, abrindo suas enormes mandíbulas e cravando os dentes na carne do adversário. A mordida é um ataque simples, mas brutal, causando dano direto sem efeitos extras. O som dos ossos estalando e a força da mordida demonstram o poder devastador do atacante, que não dá chances de recuperação ao oponente.
 1.2
 90
-1
+4
 Arranhão
 Com um salto ágil, o dragão se aproxima do inimigo e desfere um golpe rápido com suas garras afiadas. O arranhão atinge diretamente o alvo, causando apenas dano físico, sem efeitos adicionais. No entanto, o impacto das garras rasga as escamas do oponente, deixando cicatrizes profundas e mostrando a força física do atacante.
 1.0
-80
+100
 0
 Rugido
 Com um rugido ensurdecedor, o dragão faz o solo tremer. O som ecoa pela arena, atingindo o dragão inimigo e abalando sua confiança. O rugido não causa dano direto, mas reduz o ataque atual do oponente em 20% por 3 turnos. O poder desse grito ancestral faz o inimigo hesitar, deixando-o temporariamente mais fraco e vulnerável.
 0
 100
-5
+6
 Sopro de fogo
 O dragão reúne o ar quente em seus pulmões, liberando um jato de chamas que envolve o dragão inimigo. O fogo consome o oponente, causando dano bruto com uma taxa de acerto mediana. As chamas corroem as escamas do inimigo, reduzindo sua armadura em 20% por 2 turnos. O calor intenso transforma o campo de batalha em uma fornalha devastadora.
 2.0
 55
-2
+6
 
-Attack newAttack;
-char string[] = "sim";
-char inputStr[1500];
-int inputInt;
-float inputFloat;
+// Compatibilidade para rodar a main
 
-for(int i=0; i < 4; i++) {
-    scanf("%[^\n]", inputStr);
-    strcpy(newAttack.name, inputStr);
-    scanf(" %[^\n]" ,inputStr);
-    strcpy(newAttack.description, inputStr);
-    getchar();
-    scanf("%f", &inputFloat);
-    newAttack.multiplicator = inputFloat;
-    getchar();
-    scanf("%d", &inputInt);
-    newAttack.precision = inputInt;
-    getchar();
-    scanf("%d", &inputInt);
-    newAttack.cooldownAttack = inputInt;
-    getchar();
-    newAttack.recharge = 0;
+/*
+#define N_ATTACKS 4
+#define MAX_NAME_LEN 150
+#define MAX_DESC_LEN 600
+int main(int argc, char *argv[]) {
+    Attack attacks[N_ATTACKS];
+    char  linebuf[MAX_DESC_LEN];
+    FILE *fin  = fopen("../bin_aux/adicionarataque.txt", "r");
+    FILE *fbin = fopen("../files/attacksList.bin", "wb");
 
-    addAttackinlist(&newAttack, attacksFile);
+    if (!fin) {
+        perror("Erro ao abrir adicionarataque.txt");
+        return 1;
+    }
+    if (!fbin) {
+        perror("Erro ao criar attacksList.bin");
+        fclose(fin);
+        return 1;
+    }
+
+    for (int i = 0; i < N_ATTACKS; i++) {
+        // 1) Nome 
+        if (!fgets(linebuf, sizeof(linebuf), fin)) {
+            fprintf(stderr, "Faltou nome do ataque %d\n", i+1);
+            return 1;
+        }
+        linebuf[strcspn(linebuf, "\r\n")] = '\0';
+        strncpy(attacks[i].name, linebuf, MAX_NAME_LEN-1);
+        attacks[i].name[MAX_NAME_LEN-1] = '\0';
+
+        // 2) Descrição
+        if (!fgets(linebuf, sizeof(linebuf), fin)) {
+            fprintf(stderr, "Faltou descrição do ataque %d\n", i+1);
+            return 1;
+        }
+        linebuf[strcspn(linebuf, "\r\n")] = '\0';
+        strncpy(attacks[i].description, linebuf, MAX_DESC_LEN-1);
+        attacks[i].description[MAX_DESC_LEN-1] = '\0';
+
+        // 3) Multiplicador
+        if (!fgets(linebuf, sizeof(linebuf), fin)) {
+            fprintf(stderr, "Faltou multiplicador do ataque %d\n", i+1);
+            return 1;
+        }
+        attacks[i].multiplicator = strtof(linebuf, NULL);
+
+        // 4) Precisão 
+        if (!fgets(linebuf, sizeof(linebuf), fin)) {
+            fprintf(stderr, "Faltou precisão do ataque %d\n", i+1);
+            return 1;
+        }
+        attacks[i].precision = (int)strtol(linebuf, NULL, 10);
+
+        // 5) Cooldown 
+        if (!fgets(linebuf, sizeof(linebuf), fin)) {
+            fprintf(stderr, "Faltou cooldown do ataque %d\n", i+1);
+            return 1;
+        }
+        attacks[i].cooldownAttack = (int)strtol(linebuf, NULL, 10);
+
+        // recharge sempre começa em zero 
+        attacks[i].recharge = 0;
+    }
+
+    // grava todos os ataques sequencialmente no arquivo binário 
+    if (fwrite(attacks, sizeof(Attack), N_ATTACKS, fbin) != N_ATTACKS) {
+        perror("Erro ao escrever no arquivo binário");
+        fclose(fin);
+        fclose(fbin);
+        return 1;
+    }
+
+    fclose(fin);
+    fclose(fbin);
+    return 0;
 }
 
-Attack *newvector = readAttackvector(attacksFile);
-
-for(int i=0; i < 4; i++) {
-    printf("Nome: %s\nDescrição: %s\n Multiplicador: %f\n Precisão: %d\n Cooldown: %d\n", newvector[i].name, 
-    newvector[i].description, newvector[i].multiplicator, newvector[i].precision, newvector[i].cooldownAttack);
+#ifdef _WIN32
+#include <windows.h>
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow) {
+    return SDL_main(__argc, __argv);
 }
+#endif
+
+*/

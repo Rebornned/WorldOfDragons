@@ -249,7 +249,15 @@ int main(int argc, char *argv[]) {
 
     // Inicialização de objetos principais da interface
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
-    gtk_window_set_icon_from_file(GTK_WINDOW(window), "../assets/img_files/T_dragons.ico", NULL);
+
+    // desativa a decoração nativa e usa a headerbar
+    GtkHeaderBar *hb = GTK_HEADER_BAR(gtk_builder_get_object(builder, "header_bar"));
+    gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
+    gtk_window_set_titlebar(GTK_WINDOW(window), GTK_WIDGET(hb));
+    g_object_set(gtk_settings_get_default(),"gtk-application-prefer-dark-theme", TRUE, NULL); // Deixa em tema escuro
+
+
+    gtk_window_set_icon_from_file(GTK_WINDOW(window), "../assets/img_files/T_dragons_icon.png", NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
     
     GdkGeometry hints_window;
