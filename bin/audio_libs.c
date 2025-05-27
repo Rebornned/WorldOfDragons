@@ -90,7 +90,7 @@ void initAudio() {
     // Músicas de batalha
     gchar *dragonsNames[] = {
         "Arrax", "Balerion", "Cannibal", "Caraxes", "Dreamfyre",
-        "Drogon", "Greyghost", "Lyrax", "Meleys", "Meraxes",
+        "Drogon", "GreyGhost", "Lyrax", "Meleys", "Meraxes",
         "Moondancer", "Morning", "Quicksilver", "Rhaegal", "Seasmoke",
         "Sheepstealer", "Shrykos", "Silverwing", "Stormcloud", "Sunfyre",
         "Syrax", "Tessarion", "Tyraxes", "Vermax", "Vermithor",

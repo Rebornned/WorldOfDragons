@@ -276,7 +276,7 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 
 // Animations
-void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
+void logStartAnimation(gchar *text, gchar *color, gchar *font_size, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
 void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation, gboolean canDestroy);

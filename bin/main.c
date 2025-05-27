@@ -224,7 +224,7 @@ gboolean settingBattleWindow(gpointer data);
 gboolean startBattle(gpointer data);
 
 // Animações
-void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
+void logStartAnimation(gchar *text, gchar *color, gchar *font_size, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
 gboolean logAnimation(gpointer data);
 
 // ********************************************************************************************************
@@ -372,6 +372,9 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
         }
         if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->doors.mgChallengerPlayed && strcmp(game->minigame->name, "challenge") == 0) {     
             gint playerForce = 14 + ( 18.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
+            if(game->battle->EntityOne.entDragon.level >= 92) {
+                playerForce = 38;
+            }
             //g_print("Força do player: %d\n", playerForce);
             *(game->minigame->minigameValue) += playerForce;
         }  
@@ -552,6 +555,8 @@ void updateAccounts() {
     if(accountLength == 0) {
         for(int i=0; i<3; i++) {
             GtkStack *currentStack = GTK_STACK(gtk_builder_get_object(builder, g_strdup_printf("fr1_stack_slot%d", i)));
+            GtkWidget *removeButton = GTK_WIDGET(gtk_builder_get_object(builder, g_strdup_printf("fr1_btn_remove_slot%d", i)));
+            gtk_widget_set_visible(removeButton, FALSE);
             gtk_stack_set_visible_child_name(currentStack, "empty_page");
         }
         return;
@@ -649,7 +654,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         }
         else {
             GtkFixed *fr1_start = GTK_FIXED(gtk_builder_get_object(builder, "fr1_start"));
-            logStartAnimation("Você pode ter apenas 3 saves.", "color_FF0000", 1000, 44, 175, 248, 185, 10, fr1_start);
+            logStartAnimation("Você pode ter apenas 3 saves.", "color_FF0000", "font_size_32px", 1000, 44, 175, 273, 185, 10, fr1_start);
         }
 
     }
@@ -666,7 +671,9 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         }
         if (g_strcmp0(button_name, g_strdup_printf("fr1_btn_confirm_slot%d", i)) == 0) {
             btn_animation_clicked(GTK_WIDGET(btn), NULL);
-            delAccountinlist(accountsFile, g_strdup_printf("save%d", i));
+            Account *vector = readAccountvector(accountsFile);
+            delAccountinlist(accountsFile,vector[i].username );
+            free(vector);
             updateAccounts();
         }
     }
@@ -902,7 +909,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         }
         else {
             GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr5_coliseum"));
-            logStartAnimation("Você não pode batalhar.", "color_FF0000", 1000, 44, 175, 710, 292, 10, fixed);
+            logStartAnimation("Alvo desconhecido.", "color_FF0000", "font_size_28px", 1000, 44, 175, 705, 305, 10, fixed);
             g_print("Não pode batalhar\n");
         }
     }
@@ -1644,19 +1651,25 @@ gboolean onBattle(gpointer data) {
 
      // Derrota do player
      if(game->battle->EntityOne.entDragon.health <= 0) {
+        GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
         settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL, FALSE);
         playSoundByName(3000, "defeat", &audioPointer, 0);
+        game->battle->expReward *= 0.1;
         settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
         labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
+        labeltextModifier(fr7_result_newbeast_legendary, "");
         }
     
     // Vitória do player
     else if(game->battle->EntityTwo.entDragon.health <= 0) {
         settingTimedVideoPlay(fr7_result_animation, 3000, 91, "victory", 0, NULL, FALSE);
         playSoundByName(3000, "victory", &audioPointer, 0);
-
         settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/victory.png");
-        //g_print("Index do dragão atual: %d | atual progresso do player %d\n", (fr5_actual_dragon_index-27)*-1, player.actualProgress);
+        
+        if(fr5_actual_dragon_index == 0 && player.actualProgress == 27) {
+            labeltextModifier(fr7_result_text2, "Não há mais dragões, sua jornada acaba aqui.     ");
+            labeltextModifier(fr7_result_newbeast_legendary, "");
+        }
         if((pOriginalBeastVector[fr5_actual_dragon_index].unlock_id-26) * -1 == player.actualProgress && player.actualProgress < 27) {
             GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
             labeltextModifier(fr7_result_text2, "Novo dragão adicionado ao Bestiário:                                ");
@@ -1667,9 +1680,6 @@ gboolean onBattle(gpointer data) {
         else {
             labeltextModifier(fr7_result_text2, "Nenhum novo dragão foi descoberto após a batalha.");
             labeltextModifier(fr7_result_newbeast_legendary, "");
-        }
-        if(fr5_actual_dragon_index == 0) {
-            labeltextModifier(fr7_result_text2, "Não há mais dragões, sua jornada acaba aqui.     ");
         }
     }
 
@@ -1691,9 +1701,11 @@ gboolean onBattle(gpointer data) {
         settingTimedImageModifier(3750, fr7_result_banner1, "../assets/img_files/banner.png");
         settingTimedImageModifier(3750, fr7_result_banner2, "../assets/img_files/banner.png");
         labeltextModifier(fr7_result_xp_text, "");
-        
-        settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
-        if(game->battle->expReward > 0) {
+        if(player.level < 100)
+            settingTimedNumbersAnimation(4600, fr7_result_xp_text, game->battle->expReward, 2);
+        else
+            labeltextModifier(fr7_result_xp_text, "MAX");
+        if(game->battle->expReward > 0 && player.level < 100) {
             playSoundByName(4600, "exp_reward", &audioPointer, 0);
         }
 
@@ -1798,7 +1810,7 @@ gboolean onBattle(gpointer data) {
             if(barResult == 3) { // Critico - parte verde da barra
                 playerAttack += playerAttack * 0.5;
                 precision = 100;
-                logStartAnimation("CRITICAL", "color_FF0000", 1000, 44, 175, 412, 360, 10, game->fixed);
+                logStartAnimation("CRITICAL", "color_FF0000", "font_size_40px", 1000, 44, 175, 412, 360, 10, game->fixed);
             }
             if(barResult == 2) { // Ataque normal - parte laranja da barra
                 precision = 0;
@@ -1931,7 +1943,7 @@ gboolean onBattle(gpointer data) {
             }
             g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
             retroBarAnimationStart(500, fr6_life_bar_ent2, beforeHealth, game->battle->EntityTwo.entDragon.health);
-            logStartAnimation(damageText, "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+            logStartAnimation(damageText, "fr5_dragons_defeat", "font_size_40px", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
             g_print("Dano total causado: %d\n", game->battle->totalDamage);
             g_print("Vida atual do inimigo pós dano: %d\n", game->battle->EntityTwo.entDragon.health);
             for(int i=0; i < 4; i++) 
@@ -1944,7 +1956,7 @@ gboolean onBattle(gpointer data) {
         }
         // Erra o ataque
         if(game->doors.pAttackReady && game->battle->totalDamage == -1) {
-            logStartAnimation("MISS", "fr5_dragon_name_common", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+            logStartAnimation("MISS", "fr5_dragon_name_common", "font_size_40px", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
             game->minigame->minigamePlayed = FALSE;
             strcpy(game->minigame->pAction, "");
             game->doors.playerPlayed = TRUE;
@@ -2041,9 +2053,9 @@ gboolean onBattle(gpointer data) {
             gfloat attackDecrease = 0;
             gint precision = 0;
             if(game->minigame->minigameResultValue == 1) {
-                precision = -5;
+                precision = -10;
                 game->minigame->criticalChance -= 25;
-                attackDecrease = 0.25;
+                attackDecrease = 0.30;
             }
             if(game->minigame->minigameResultValue == -1) {
                 precision = 100;
@@ -2176,7 +2188,7 @@ gboolean onBattle(gpointer data) {
                 game->battle->totalDamage -= totalDamage * attackDecrease;
                 if(game->minigame->criticalChance > 0) { // Taxa crítica
                     if(random_choice(1, 100) <= game->minigame->criticalChance) {
-                        logStartAnimation("CRITICAL", "color_FF0000", 1000, 44, 175, 412, 360, 10, game->fixed);
+                        logStartAnimation("CRITICAL", "color_FF0000", "font_size_40px", 1000, 44, 175, 412, 360, 10, game->fixed);
                         game->battle->totalDamage *= 1.5;
                     }
                 }
@@ -2197,7 +2209,7 @@ gboolean onBattle(gpointer data) {
                 if(game->battle->EntityOne.entDragon.health < 0)
                     game->battle->EntityOne.entDragon.health = 0;
                 retroBarAnimationStart(500, fr6_life_bar_ent1, beforeHealth, game->battle->EntityOne.entDragon.health);
-                logStartAnimation(damageText, "fr5_dragons_defeat", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+                logStartAnimation(damageText, "fr5_dragons_defeat", "font_size_40px", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
                 g_print("Dano total causado: %d | Taxa crítica %d\n", game->battle->totalDamage, game->minigame->criticalChance);
                 g_print("Vida atual do Player pós dano: %d\n", game->battle->EntityOne.entDragon.health);
                 for(int i=0; i < 4; i++) 
@@ -2211,7 +2223,7 @@ gboolean onBattle(gpointer data) {
 
             // Erra o ataque
             if(game->battle->totalDamage == -1 && game->doors.eFinishedAttack) {
-                logStartAnimation("MISS", "fr5_dragon_name_common", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+                logStartAnimation("MISS", "fr5_dragon_name_common", "font_size_40px", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
                 game->doors.enemyPlayed = TRUE;
                 g_timeout_add(3000, timedSwitchBooleanValue, game);
             }
@@ -2686,7 +2698,7 @@ gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data) {
     return FALSE;
 }
 
-void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed) {
+void logStartAnimation(gchar *text, gchar *color, gchar *font_size, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed) {
     gchar colorText[100];
     GtkWidget *label = gtk_label_new(text);
     GtkStyleContext *label_context = gtk_widget_get_style_context(label);
@@ -2695,7 +2707,7 @@ void logStartAnimation(gchar *text, gchar *color, gint duration, gint height, gi
     gtk_fixed_put(GTK_FIXED(fixed), label, x, y); 
     gtk_widget_set_size_request(label, width, height);     
     gtk_style_context_add_class(label_context, "fr5_exp_label");
-    gtk_style_context_add_class(label_context, "fr6_stared_font_size");
+    gtk_style_context_add_class(label_context, font_size);
     gtk_style_context_add_class(label_context, colorText);
     gtk_widget_show(label);
     

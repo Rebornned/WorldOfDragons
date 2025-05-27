@@ -269,6 +269,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-duration">0</property>
                         <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr1_empty_slot0">
@@ -284,7 +285,7 @@
                                 <property name="label" translatable="yes">Vazio</property>
                                 <style>
                                   <class name="universal_font"/>
-                                  <class name="color_FFDDA6"/>
+                                  <class name="color_FFFFFF"/>
                                   <class name="font_size_40px"/>
                                 </style>
                               </object>
@@ -498,6 +499,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-duration">0</property>
                         <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr1_save_slot1">
@@ -619,7 +621,7 @@
                                 <property name="label" translatable="yes">Vazio</property>
                                 <style>
                                   <class name="universal_font"/>
-                                  <class name="color_FFDDA6"/>
+                                  <class name="color_FFFFFF"/>
                                   <class name="font_size_40px"/>
                                 </style>
                               </object>
@@ -727,6 +729,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="transition-duration">0</property>
                         <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr1_save_slot2">
@@ -848,7 +851,7 @@
                                 <property name="label" translatable="yes">Vazio</property>
                                 <style>
                                   <class name="universal_font"/>
-                                  <class name="color_FFDDA6"/>
+                                  <class name="color_FFFFFF"/>
                                   <class name="font_size_40px"/>
                                 </style>
                               </object>
@@ -3391,9 +3394,10 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="name">fr5_add_experience</property>
                 <property name="width-request">73</property>
                 <property name="height-request">39</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">False</property>
                 <property name="receives-default">True</property>
+                <property name="opacity">0</property>
               </object>
               <packing>
                 <property name="x">210</property>

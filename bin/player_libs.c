@@ -21,6 +21,7 @@ int initPlayer(FILE *pFile, Player *newPlayer) {
     newPlayer->actualExp = 0;
     newPlayer->requiredExp = reqExp;
     newPlayer->trainPoints = 0;
+    memset(&newPlayer->dragon, 0, sizeof(newPlayer->dragon));  // Reseta o dragão do player
     if(fwrite(newPlayer, sizeof(Player), 1, pFile) != 0)
         return 1;
     fflush(pFile);

@@ -39,18 +39,18 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
     //g_print("Xp requirido padrão: %d\n", player.requiredExp);
 
-    if(playerEnt.level > enemyEnt.level) {
-        if(playerEnt.level - enemyEnt.level >= 1)
+    if(player.level > enemyEnt.level) {
+        if(player.level - enemyEnt.level >= 2)
             battleInstance->expReward = player.requiredExp * 0.5;
-        if(playerEnt.level - enemyEnt.level >= 4)
+        if(player.level - enemyEnt.level >= 4)
             battleInstance->expReward = player.requiredExp * 0.25;
-        if(playerEnt.level - enemyEnt.level >= 10)
+        if(player.level - enemyEnt.level >= 10)
             battleInstance->expReward = player.requiredExp * 0.1;
-        if(playerEnt.level - enemyEnt.level >= 16)
+        if(player.level - enemyEnt.level >= 16)
             battleInstance->expReward = player.requiredExp * 0;
     }
-    else if(enemyEnt.level >= playerEnt.level)
-        battleInstance->expReward = player.requiredExp * 4 + 200;
+    else if(enemyEnt.level >= player.level || player.level-enemyEnt.level == 1)
+        battleInstance->expReward = player.requiredExp * 4.5 + random_choice(200, 400);
     
     // Seta os cooldowns de todos os ataques para 0 inicialmente 
     battleInstance->EntityOne.entDragon = playerEnt;
@@ -170,21 +170,16 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     // Entidade inimiga recebeu dano de debuff
     if(entityNumber == 1 && totalDamage > 0) {
         retroBarAnimationStart(500, game->eHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
-        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
+        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", "font_size_40px", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
         playSoundByName(0, "damage_hit", &audioPointer, 0);
     }
     if(entityNumber == 2 && totalDamage > 0) {
         retroBarAnimationStart(500, game->pHealthBar, beforeHealth, game->battle->EntityOne.entDragon.health);
-        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
+        logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", "font_size_40px", 1000, 45, 116, random_choice(27, 180), random_choice(270, 310), 30, game->fixed);
         labeltextModifier(GTK_LABEL(game->pHealthText), g_strdup_printf("%d/%d", game->battle->EntityOne.entDragon.health, game->battle->EntityOne.fixedDragon.health));
         playSoundByName(0, "damage_hit", &audioPointer, 0);
     }
     
-    // Entidade player recebeu dano de debuff
-    //if(entityNumber == 2 && totalDamage > 0) {
-    //    retroBarAnimationStart(500, game->pHealthBar, beforeHealth, game->battle->EntityTwo.entDragon.health);
-    //    logStartAnimation(g_strdup_printf("-%d", totalDamage), "fr5_dragons_defeat", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
-    //}
     debuff->turns -= 1;    
     //g_print("Debuff type: %s | debuff turns: %d\n", debuff->type, debuff->turns);
 
