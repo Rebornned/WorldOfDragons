@@ -7,7 +7,7 @@ Inclui minigames interativos que influenciam o combate!
 
 ## 📸 Screenshot
 
-<img src="assets/screenshots/menu.png" width="600" alt="Tela principal do jogo"/>
+<img src="./assets/screenshots/menu.png" width="600" alt="Tela principal do jogo"/>
 
 ---
 
@@ -45,43 +45,53 @@ O jogo é dividido em alguns componentes principais:
 ---
 
 ## 📁 Estrutura do Projeto
-├── accounts/
-│ ├── accountsList.bin # Arquivo de controle de save
-│ └── saves.bin... # Arquivos de save
-├── assets/
-│ ├── css/ # Arquivo de design referente a tela principal
-│ ├── fonts/ # Arquivo de fonte de texto utilizada na interface
-│ └── img_files/ # Imagens utilizadas e frames de animações dentro do jogo organizado em pastas
-│ └── screenshots/ # Fotos do jogo em funcionamento
-│ └── sounds/ # Está organizado em pastas com todos os arquivos de áudio
-│ └── ui_files/ # Guarda os arquivos .glade que contém o a interface gráfica
-├── bin/ # Código fonte do projeto
-│ ├── main.c # Função principal
-│ ├── account.c # Lida com os saves
-│ ├── animation_libs.c # Lida com animações
-│ └── battle_libs.c # Lida com mecânicas de luta
-│ └── dlibs.h # Cabeçalho das funções e estruturas
-│ └── files_libs.c # Lida com todos os arquivos principais
-│ └── player_libs.c # Lida com atributos do jogador
-├── files/ # Contém arquivos dos dados dos dragões, pontos de experiência e os ataques
-│ ├── attacksList.bin
-│ ├── beastsList.bin
-│ └── lvls_experience.txt
-├── docs/ # Documentação detalhada
-│ ├── arquitetura.md
-│ ├── funcoes.md
-│ └── eventos_gtk.md
-├── lib/ # Loaders gtk
-│ ├── loaders/ # Contém os loaders gtk para exibição correta e funcionamento da interface
-│ ├── loaders.cache # Arquivos de loaders compilados
-│ └── desktop.ini
-├── share/ # ícones e temas para o funcionamento correto da tela
-│ ├── glib-2.0/ # Contém os schemas que compõe a interface
-│ ├── themes/ # Temas
-│ └── icons/ # ícones
-├── dlls/ # Contém todos os arquivos de dlls para o funcionamento do programa
-├── README.md # Este arquivo
-└── .gitignore
+```
+accounts/              # Contém os arquivos de save
+├── accountsList.bin   # Arquivo de controle de save
+└── saves.bin          # Arquivos de save individuais
+
+assets/                # Arquivos estáticos usados no jogo
+├── css/               # Estilos da interface
+├── fonts/             # Fontes utilizadas
+├── img_files/         # Imagens e animações
+├── screenshots/       # Capturas de tela do jogo
+├── sounds/            # Efeitos sonoros e músicas
+└── ui_files/          # Arquivos .glade da interface GTK
+
+bin/                   # Código-fonte principal do jogo
+├── main.c             # Função principal
+├── account.c          # Gerencia saves
+├── animation_libs.c   # Gerencia animações
+├── battle_libs.c      # Mecânicas de combate
+├── dlibs.h            # Cabeçalhos e structs
+├── files_libs.c       # Manipulação de arquivos
+└── player_libs.c      # Atributos e progresso do jogador
+
+files/                 # Dados dos dragões e progressão
+├── attacksList.bin
+├── beastsList.bin
+└── lvls_experience.txt
+
+docs/                  # Documentação do projeto
+├── arquitetura.md
+├── funcoes.md
+└── eventos_gtk.md
+
+lib/                   # Loaders e arquivos GTK
+├── loaders/
+├── loaders.cache
+└── desktop.ini
+
+share/                 # Ícones e temas da interface
+├── glib-2.0/
+├── themes/
+└── icons/
+
+dlls/                  # Dependências DLL para execução no Windows
+
+README.md              # Este arquivo
+.gitignore             # Arquivos ignorados pelo Git
+```
 
 ---
 
@@ -121,10 +131,10 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
 --- 
 
 ## 📦 Instalação no Windows
-- O projeto acompanha um instalador .exe gerado com Inno Setup, que inclui:
+- O projeto acompanha um instalador .exe gerado com Inno Setup.
 
 - Para instalar basta abrir o executavel: "T_Dragons_setup.exe", você pode baixá-lo na seção de releases..
-- Siga os passos e instale, marque a opção de criar atalho, e rode o jogo normalmente, ele não precisa de permissões para funcionar.
+- Siga os passos e instale, marque a opção de criar atalho, e rode o jogo normalmente, ele não precisa de permissões extras para funcionar.
 
 ---
 
@@ -136,8 +146,8 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
 
 ## 📜 Licença
 - Este projeto está licenciado sob a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).  
-Consulte o arquivo [`LICENSE`](LICENSE) para mais detalhes.
-📌 **Este projeto é educativo e não deve ser utilizado com fins comerciais.**  
-Alguns assets (áudios, imagens etc.) não são de minha autoria e foram usados apenas para fins de estudo.
+- Consulte o arquivo [`LICENSE`](LICENSE) para mais detalhes.
+- 📌 **Este projeto é educativo e não deve ser utilizado com fins comerciais.**  
+- Alguns assets (áudios, imagens etc.) não são de minha autoria e foram usados apenas para fins de estudo.
 
 ---
