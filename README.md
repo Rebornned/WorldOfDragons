@@ -7,7 +7,7 @@ Inclui minigames interativos que influenciam o combate!
 
 ## 📸 Screenshot
 
-![Tela principal do jogo](assets/screenshots/menu.png)
+![Tela principal do jogo](assets/screenshots/menu.PNG)
 
 ---
 
