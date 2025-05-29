@@ -404,7 +404,7 @@ gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer data) {
         if((strcmp(keyval_name, "x") == 0 || strcmp(keyval_name, "X") == 0) && !game->doors.mgChallengerPlayed && strcmp(game->minigame->name, "challenge") == 0) {     
             gint playerForce = 14 + ( 18.0 / 92.0 ) * game->battle->EntityOne.entDragon.level;
             if(game->battle->EntityOne.entDragon.level >= 92) {
-                playerForce = 38;
+                playerForce = 34;
             }
             //g_print("Força do player: %d\n", playerForce);
             *(game->minigame->minigameValue) += playerForce;
@@ -574,8 +574,11 @@ void loadingSave(GtkButton *btn, gpointer data) {
 
     // Mudança de abas
     gtk_stack_set_visible_child_name(main_stack, "bestiary_page");
+    gtk_stack_set_transition_duration(fr5_stack, 0);
     gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
-    
+    gtk_stack_set_transition_duration(fr5_stack, 600);
+    labeltextModifier(fr5_tittle_label, "Caverna");
+
     free(vector);
 }
 
@@ -2085,7 +2088,7 @@ gboolean onBattle(gpointer data) {
             if(game->minigame->minigameResultValue == 1) {
                 precision = -10;
                 game->minigame->criticalChance -= 25;
-                attackDecrease = 0.30;
+                attackDecrease = 0.25;
             }
             if(game->minigame->minigameResultValue == -1) {
                 precision = 100;
