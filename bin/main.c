@@ -231,6 +231,7 @@ gboolean logAnimation(gpointer data);
 
 int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "en_US.utf8");
+
     gtk_init(&argc, &argv); // Init gtk
     
     srand(time(NULL)); // Inicia a semente de randomização
@@ -238,7 +239,7 @@ int main(int argc, char *argv[]) {
     initAudio(); // Inicia o sdl e carrega os áudios
     
     // Inicialização dos ponteiros GTK
-    GtkCssProvider *css_provider;
+    
     // Iniciando interface XML para C
     builder = gtk_builder_new_from_file("../assets/ui_files/T_Dragons.glade");
     if (!builder) {
@@ -256,29 +257,43 @@ int main(int argc, char *argv[]) {
     hints.min_height = 600;
     hints.max_width = 1000;
     hints.max_height = 600;
-
     gtk_window_set_geometry_hints(GTK_WINDOW(window), NULL, &hints, GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE);
 
-    // desativa a decoração nativa e usa a headerbar
-    g_object_set(gtk_settings_get_default(),"gtk-application-prefer-dark-theme", TRUE, NULL); // Deixa em tema escuro
-    GtkWidget *hb = gtk_header_bar_new();
-    gtk_header_bar_set_title(GTK_HEADER_BAR(hb), "World of Dragons");
-    gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(hb), TRUE);
-    gtk_widget_show(hb);
-
-    gtk_window_set_titlebar(GTK_WINDOW(window), GTK_WIDGET(hb));
-    gtk_window_set_decorated(GTK_WINDOW(window), TRUE);
-
+    g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
+    
     gtk_window_set_icon_from_file(GTK_WINDOW(window), "../assets/img_files/T_dragons_icon.png", NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL); // Fecha a tela
 
-
     // Carregar e aplicar o arquivo CSS
+    /*
+    GtkCssProvider *css_provider;
     css_provider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(css_provider, "../assets/css/style.css", NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
                                               GTK_STYLE_PROVIDER(css_provider),
-                                              GTK_STYLE_PROVIDER_PRIORITY_USER);
+                                              GTK_STYLE_PROVIDER_PRIORITY_USER);*/
+
+    // ——— 1) Tema escuro Adwaita, PRIORITY_APPLICATION ———
+    GtkCssProvider *theme = gtk_css_provider_new();
+        gchar *base_dir = g_path_get_dirname(g_get_current_dir()); // Pega o diretório pai da pasta 'bin'
+    gtk_css_provider_load_from_path(theme,
+        g_build_filename(base_dir, "share", "themes", "Adwaita", "gtk-3.0", "gtk-contained-dark.css", NULL),
+        NULL);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(theme), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    // 2) Seu HeaderBar (CSD)
+    
+    //GtkHeaderBar *hb = GTK_HEADER_BAR(gtk_header_bar_new());
+    //gtk_header_bar_set_show_close_button(hb, TRUE);
+    //gtk_window_set_titlebar(GTK_WINDOW(window), GTK_WIDGET(hb));*/
+
+    // ——— 2) Seu style.css, PRIORITY_USER ———
+    GtkCssProvider *user_css = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(user_css, "../assets/css/style.css", NULL);
+    gtk_style_context_add_provider_for_screen(
+        gdk_screen_get_default(),
+        GTK_STYLE_PROVIDER(user_css),
+        GTK_STYLE_PROVIDER_PRIORITY_USER);
 
     // Stack principal
     main_stack = GTK_STACK(gtk_builder_get_object(builder, "main_stack"));

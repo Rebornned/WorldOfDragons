@@ -7,13 +7,14 @@
     <property name="width-request">1000</property>
     <property name="height-request">600</property>
     <property name="can-focus">True</property>
-    <property name="title" translatable="yes">Targaryens Dragons</property>
     <property name="default-width">1000</property>
     <property name="default-height">600</property>
     <property name="icon">../img_files\T_dragons_icon.png</property>
     <child>
       <object class="GtkStack" id="main_stack">
         <property name="name">main_stack</property>
+        <property name="width-request">1000</property>
+        <property name="height-request">600</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="transition-type">crossfade</property>
@@ -961,9 +962,6 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <child>
-                          <placeholder/>
-                        </child>
                         <style>
                           <class name="fr1_btn_close"/>
                         </style>
@@ -1699,8 +1697,8 @@ Dificuldade: </property>
                             <child>
                               <object class="GtkFixed" id="fr5_btns_container">
                                 <property name="name">fr5_btns_container</property>
-                                <property name="width-request">230</property>
-                                <property name="height-request">450</property>
+                                <property name="width-request">32</property>
+                                <property name="height-request">32</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <child>
@@ -1710,7 +1708,7 @@ Dificuldade: </property>
                                     <property name="width-request">206</property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">False</property>
+                                    <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2364,7 +2362,7 @@ Tamanho: 100-120 metros</property>
                             <child>
                               <object class="GtkFixed" id="fr5_history_container">
                                 <property name="name">fr5_history_container</property>
-                                <property name="height-request">530</property>
+                                <property name="height-request">32</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <child>
@@ -2551,8 +2549,8 @@ Tamanho: 100-120 metros</property>
                         <child>
                           <object class="GtkFixed" id="fr5_cave_newdragon">
                             <property name="name">fr5_cave_newdragon</property>
-                            <property name="width-request">293</property>
-                            <property name="height-request">281</property>
+                            <property name="width-request">32</property>
+                            <property name="height-request">32</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
@@ -2579,8 +2577,8 @@ Tamanho: 100-120 metros</property>
                         <child>
                           <object class="GtkFixed" id="fr5_cave_confirm">
                             <property name="name">fr5_cave_confirm</property>
-                            <property name="width-request">293</property>
-                            <property name="height-request">281</property>
+                            <property name="width-request">32</property>
+                            <property name="height-request">32</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
@@ -3396,7 +3394,7 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="width-request">73</property>
                 <property name="height-request">39</property>
                 <property name="sensitive">False</property>
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="opacity">0</property>
               </object>
@@ -3850,8 +3848,8 @@ Tempo de recarga: 1 turno(s)</property>
                     <child>
                       <object class="GtkFixed" id="fr6_dragon_status_frame">
                         <property name="name">fr6_dragon_status_frame</property>
-                        <property name="width-request">324</property>
-                        <property name="height-request">127</property>
+                        <property name="width-request">32</property>
+                        <property name="height-request">32</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <child>
@@ -4022,8 +4020,8 @@ Tempo de recarga: 1 turno(s)</property>
                     <child>
                       <object class="GtkFixed" id="fr6_enemy_status_frame">
                         <property name="name">fr6_enemy_status_frame</property>
-                        <property name="width-request">100</property>
-                        <property name="height-request">80</property>
+                        <property name="width-request">32</property>
+                        <property name="height-request">32</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <child>
@@ -5082,6 +5080,17 @@ Tempo de recarga: 1 turno(s)</property>
             <property name="position">3</property>
           </packing>
         </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="name">header_bar</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="title" translatable="yes">World Of Dragons</property>
+        <property name="has-subtitle">False</property>
+        <property name="spacing">0</property>
+        <property name="show-close-button">True</property>
       </object>
     </child>
   </object>

@@ -5086,7 +5086,14 @@ Tempo de recarga: 1 turno(s)</property>
       </object>
     </child>
     <child type="titlebar">
-      <placeholder/>
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="name">header_bar</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="title" translatable="yes">World of Dragons</property>
+        <property name="spacing">0</property>
+        <property name="show-close-button">True</property>
+      </object>
     </child>
   </object>
 </interface>

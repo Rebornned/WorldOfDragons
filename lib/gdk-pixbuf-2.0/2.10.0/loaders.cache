@@ -65,13 +65,6 @@
 "abcdidsc" "xxxx    " 100
 "abcdidat" "xxxx    " 100
 
-"lib\\gdk-pixbuf-2.0\\2.10.0\\loaders\\libpixbufloader-svg.dll"
-"svg" 6 "gdk-pixbuf" "Scalable Vector Graphics" "LGPL"
-"image/svg+xml" "image/svg" "image/svg-xml" "image/vnd.adobe.svg+xml" "text/xml-svg" "image/svg+xml-compressed" ""
-"svg" "svgz" "svg.gz" ""
-" <svg" "*    " 100
-" <!DOCTYPE svg" "*             " 100
-
 "lib\\gdk-pixbuf-2.0\\2.10.0\\loaders\\libpixbufloader-tga.dll"
 "tga" 4 "gdk-pixbuf" "Targa" "LGPL"
 "image/x-tga" ""
@@ -103,4 +96,12 @@
 "image/x-xpixmap" ""
 "xpm" ""
 "/* XPM */" "" 100
+
+"lib\\gdk-pixbuf-2.0\\2.10.0\\loaders\\pixbufloader_svg.dll"
+"svg" 6 "gdk-pixbuf" "Scalable Vector Graphics" "LGPL"
+"image/svg+xml" "image/svg" "image/svg-xml" "image/vnd.adobe.svg+xml" "text/xml-svg" "image/svg+xml-compressed" ""
+"svg" "svgz" "svg.gz" ""
+" <svg" "*    " 100
+" <!DOCTYPE svg" "*             " 100
+
 
