@@ -269,27 +269,39 @@ int accountsLength(FILE *pFile);
 int beastsLength(FILE *pFile);
 int attacksLength(FILE *pFile);
 
+//###################################################################################
+// File: battle_libs.c
+//###################################################################################
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex);
 int startTurn(Battle *battleInstance, Game *game);
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 
+//###################################################################################
 // Animations
+//###################################################################################
+// main.c
+//---------------------------------------------------------------------------------
 void logStartAnimation(gchar *text, gchar *color, gchar *font_size, gint duration, gint height, gint width, gint x, gint y, gint yDirection, GtkFixed *fixed);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data);
+void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
+void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
+// =================================================================================
+
+// animations_libs.c
+//---------------------------------------------------------------------------------
 void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation, gboolean canDestroy);
 gboolean delayedStartAnimation(gpointer data);
 void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName, gboolean canDestroy);
-void settingTimedImageModifier(gint timeout, GtkWidget *widget, gchar *path);
-void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint animationType, gchar *status);
 void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint posX, gint posY, gint width, gint height);
 gboolean delayedNewWidgetAnimation(gpointer data);
 gboolean timedShakeScreen(gpointer data);
 gboolean shakeAnimation(gpointer user_data);
 void shakeScreen(gint timeout, GtkWindow *window, gint duration, gint intensity);
 void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint size);
+// =================================================================================
 
 // Modifiers
 void labeltextModifier(GtkLabel *label, const gchar *text);

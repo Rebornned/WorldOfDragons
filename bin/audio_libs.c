@@ -58,18 +58,17 @@ void initAudio() {
     loadAudio("../assets/sounds/battle/victory.wav", "victory", "sound", 7, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/defeat.wav", "defeat", "sound", 8, &audioPointer, 100);
     loadAudio("../assets/sounds/common/exp_reward.wav", "exp_reward", "sound", 9, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/battle_start.wav", "battle_start", "sound", 10, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/meterbar_click.wav", "meterbar_click", "sound", 11, &audioPointer, 50);
-    loadAudio("../assets/sounds/battle/debuff_finish.wav", "debuff_finish", "sound", 12, &audioPointer, 50);
-    loadAudio("../assets/sounds/battle/terrified_status.wav", "terrified_status", "sound", 13, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/burning_status.wav", "burning_status", "sound", 14, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/broken_status.wav", "broken_status", "sound", 15, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/bleeding_status.wav", "bleeding_status", "sound", 16, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/turn_change.wav", "turn_change", "sound", 17, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/damage_hit.wav", "damage_hit", "sound", 18, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/dragon_start_roar.wav", "dragon_start_roar", "sound", 19, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/dragon_middle_roar.wav", "dragon_middle_roar", "sound", 20, &audioPointer, 100);
-    loadAudio("../assets/sounds/battle/dragon_end_roar.wav", "dragon_end_roar", "sound", 21, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/meterbar_click.wav", "meterbar_click", "sound", 10, &audioPointer, 50);
+    loadAudio("../assets/sounds/battle/debuff_finish.wav", "debuff_finish", "sound", 11, &audioPointer, 50);
+    loadAudio("../assets/sounds/battle/terrified_status.wav", "terrified_status", "sound", 12, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/burning_status.wav", "burning_status", "sound", 13, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/broken_status.wav", "broken_status", "sound", 14, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/bleeding_status.wav", "bleeding_status", "sound", 15, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/turn_change.wav", "turn_change", "sound", 16, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/damage_hit.wav", "damage_hit", "sound", 17, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/dragon_start_roar.wav", "dragon_start_roar", "sound", 18, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/dragon_middle_roar.wav", "dragon_middle_roar", "sound", 19, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/dragon_end_roar.wav", "dragon_end_roar", "sound", 20, &audioPointer, 100);
 
     
     // Músicas
