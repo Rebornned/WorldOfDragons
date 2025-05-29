@@ -14,7 +14,7 @@
 // cd C:/Users/Amage/Desktop/Prog/Projects/WorldOfDragons/bin/
 // cd C:/Users/Amage/Desktop/Programacao/GKT_C/WorldOfDragons/bin
 // gcc -o main main.c files_libs.c sorts_libs.c `pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango`
-// Sem terminal: gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c sorts_libs.c account.c player_libs.c battle_libs.c -mwindows $(pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango) -lSDL2 -lSDL2_mixer
+// Sem terminal: gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c player_libs.c battle_libs.c -mwindows $(pkg-config --cflags --libs gtk+-3.0 glib-2.0 pango) -lSDL2 -lSDL2_mixer
 
 // =====================================================================================================
 // Estrutura de dados GTK

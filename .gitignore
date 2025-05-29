@@ -1,0 +1,25 @@
+# Binários compilados
+*.exe
+*.o
+*.out
+
+# Pastas de build e executáveis
+bin_aux/
+winDistribution/
+*.so
+*.a
+
+# Arquivos gerados por IDEs
+.vscode/
+*.swp
+*.swo
+*.log
+
+# Arquivos de conta e saves
+accounts/*
+
+
+# Outros
+*.bak
+*~
+email_login_rebornned.txt
