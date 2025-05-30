@@ -144,14 +144,16 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
 
 ---
 
-## 🧰 Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
-![C](https://img.shields.io/badge/C_language-00599C?style=for-the-badge&logo=c&logoColor=white)
-![GTK](https://img.shields.io/badge/GTK-4695EB?style=for-the-badge&logo=GTK&logoColor=white)
-![GCC](https://img.shields.io/badge/GCC-353535?style=for-the-badge&logo=gnu&logoColor=white)
-![SDL2](https://img.shields.io/badge/SDL2-000000?style=for-the-badge&logo=SimpleIcons&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+<p align="left">
+  <img src="https://cdn.simpleicons.org/c/00599C" width="128" height="128" alt="C" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/GTK_logo.svg" width="128" height="128" alt="GTK"/>
+  <img src="https://cdn.simpleicons.org/python/3776AB" width="128" height="128" alt="Python" />
+  <img src="https://cdn.simpleicons.org/css3/264DE4" width="128" height="128" alt="CSS3" />
+
+   
+</p>
 
 ---
 
