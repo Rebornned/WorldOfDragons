@@ -142,7 +142,18 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
 - Desenvolvido por **Dhemerson Sousa**  
 🔗 GitHub: [@Rebornned](https://github.com/Rebornned)
 
---- 
+---
+
+## 🧰 Tecnologias Utilizadas
+
+![C](https://img.shields.io/badge/C_language-00599C?style=for-the-badge&logo=c&logoColor=white)
+![GTK](https://img.shields.io/badge/GTK-4695EB?style=for-the-badge&logo=GTK&logoColor=white)
+![GCC](https://img.shields.io/badge/GCC-353535?style=for-the-badge&logo=gnu&logoColor=white)
+![SDL2](https://img.shields.io/badge/SDL2-000000?style=for-the-badge&logo=SimpleIcons&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+
+---
 
 ## 📜 Licença
 - Este projeto está licenciado sob a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).  
