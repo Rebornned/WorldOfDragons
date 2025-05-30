@@ -705,6 +705,8 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         }
         if (g_strcmp0(button_name, g_strdup_printf("fr1_btn_confirm_slot%d", i)) == 0) {
             btn_animation_clicked(GTK_WIDGET(btn), NULL);
+            gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
+            g_timeout_add(500, turnOnButton, GTK_WIDGET(btn));
             Account *vector = readAccountvector(accountsFile);
             delAccountinlist(accountsFile,vector[i].username );
             free(vector);
@@ -970,11 +972,15 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
-    GtkWidget *dummy = GTK_WIDGET(gtk_builder_get_object(builder, "fr2_dummy"));
+    GtkWidget *dummy = gtk_label_new(NULL);
+    gtk_widget_set_can_focus(dummy, TRUE);
+    gtk_widget_set_size_request(dummy, 1, 1);
+    gtk_widget_set_opacity(dummy, 0.0);
     if(dummy != NULL ) {
-        gtk_widget_show(dummy);
-        gtk_widget_realize(dummy);
+        //gtk_widget_show(dummy);
+        //gtk_widget_realize(dummy);
         gtk_widget_grab_focus(GTK_WIDGET(dummy)); 
+        gtk_widget_destroy(dummy);
     }
 }
 
@@ -1125,7 +1131,7 @@ void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
     char dragonAge[200], dragonName[200];
     GtkWidget *fr5_unknown_history = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_unknown_history"));
     Dragon actualBeast = pBeastVector[beastIndex];
-    int actualHeight = ceil(strlen(actualBeast.history) / 1.75) - 15;
+    int actualHeight = ceil(strlen(actualBeast.history) / 2.0) + 5;
 
     gtk_widget_set_size_request(fr5_history_container, 257, actualHeight);
     gtk_fixed_move(fr5_btns_container, GTK_WIDGET(fr5_btn_marker), 6, 5 + (beastIndex+1) * 56 - 56);

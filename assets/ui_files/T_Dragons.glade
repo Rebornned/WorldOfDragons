@@ -2377,7 +2377,6 @@ Tamanho: 100-120 metros</property>
                                     <property name="can-focus">False</property>
                                     <property name="halign">start</property>
                                     <property name="valign">start</property>
-                                    <property name="justify">center</property>
                                     <property name="wrap">True</property>
                                     <style>
                                       <class name="fr5_dragon_history"/>
@@ -2620,6 +2619,7 @@ Tamanho: 100-120 metros</property>
                                   <class name="fr5_drop_shadow"/>
                                   <class name="btn_animations_transition"/>
                                   <class name="btn_animation_hover"/>
+                                  <class name="color_FFFDD0"/>
                                 </style>
                               </object>
                               <packing>
@@ -2643,6 +2643,7 @@ Tamanho: 100-120 metros</property>
                                   <class name="fr5_drop_shadow"/>
                                   <class name="btn_animations_transition"/>
                                   <class name="btn_animation_hover"/>
+                                  <class name="color_FF0000"/>
                                 </style>
                               </object>
                               <packing>
