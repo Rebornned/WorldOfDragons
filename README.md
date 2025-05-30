@@ -72,7 +72,7 @@ files/                 # Dados dos dragões e progressão
 ├── beastsList.bin
 └── lvls_experience.txt
 
-docs/                  # Documentação do projeto
+docs/                  # Documentação do projeto -- Em breve
 ├── arquitetura.md
 ├── funcoes.md
 └── eventos_gtk.md
@@ -122,7 +122,7 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
 
 ---
 
-## 📚 Documentação Técnica:
+## 📚 Documentação Técnica - Em breve:
 - A documentação detalhada está na pasta docs/, incluindo:
 - arquitetura.md: estrutura geral dos módulos
 - funcoes.md: explicação das funções principais
