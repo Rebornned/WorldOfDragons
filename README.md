@@ -151,6 +151,7 @@ gcc -o main.exe main.c audio_libs.c animations_libs.c files_libs.c account.c pla
   <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/GTK_logo.svg" width="128" height="128" alt="GTK"/>
   <img src="https://cdn.simpleicons.org/python/3776AB" width="128" height="128" alt="Python" />
   <img src="https://cdn.simpleicons.org/css3/264DE4" width="128" height="128" alt="CSS3" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Sass_Logo_Color.svg" width="128" height="128" alt="SCSS" />
 
    
 </p>
