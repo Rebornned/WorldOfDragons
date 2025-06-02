@@ -2546,7 +2546,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">286</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="transition-duration">400</property>
+                        <property name="transition-duration">0</property>
                         <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkFixed" id="fr5_cave_newdragon">
@@ -2607,7 +2607,7 @@ Tamanho: 100-120 metros</property>
                                 <property name="label" translatable="yes">Confirmar</property>
                                 <property name="name">fr5_cave_btn_confirm</property>
                                 <property name="width-request">124</property>
-                                <property name="height-request">42</property>
+                                <property name="height-request">33</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="focus-on-click">False</property>
@@ -2623,8 +2623,8 @@ Tamanho: 100-120 metros</property>
                                 </style>
                               </object>
                               <packing>
-                                <property name="x">88</property>
-                                <property name="y">167</property>
+                                <property name="x">144</property>
+                                <property name="y">236</property>
                               </packing>
                             </child>
                             <child>
@@ -2688,6 +2688,102 @@ Tamanho: 100-120 metros</property>
                               <packing>
                                 <property name="x">35</property>
                                 <property name="y">33</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr5_cave_img_element0">
+                                <property name="name">fr5_cave_img_element0</property>
+                                <property name="width-request">52</property>
+                                <property name="height-request">52</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\fire_element.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">63</property>
+                                <property name="y">170</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr5_cave_img_element1">
+                                <property name="name">fr5_cave_img_element1</property>
+                                <property name="width-request">52</property>
+                                <property name="height-request">52</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\ice_element.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">123</property>
+                                <property name="y">170</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="fr5_cave_img_element2">
+                                <property name="name">fr5_cave_img_element2</property>
+                                <property name="width-request">52</property>
+                                <property name="height-request">52</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="pixbuf">../img_files\wind_element.png</property>
+                              </object>
+                              <packing>
+                                <property name="x">185</property>
+                                <property name="y">170</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_element0">
+                                <property name="name">fr5_cave_btn_element0</property>
+                                <property name="width-request">42</property>
+                                <property name="height-request">42</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_transparent_btn"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">68</property>
+                                <property name="y">175</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_element1">
+                                <property name="name">fr5_cave_btn_element1</property>
+                                <property name="width-request">42</property>
+                                <property name="height-request">42</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_transparent_btn"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">128</property>
+                                <property name="y">175</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="fr5_cave_btn_element2">
+                                <property name="name">fr5_cave_btn_element2</property>
+                                <property name="width-request">42</property>
+                                <property name="height-request">42</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
+                                <property name="receives-default">True</property>
+                                <style>
+                                  <class name="universal_transparent_btn"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="x">190</property>
+                                <property name="y">175</property>
                               </packing>
                             </child>
                           </object>
@@ -3259,6 +3355,33 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="y">268</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_unknown_attack">
+                        <property name="name">fr5_unknown_attack</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\unknown_attack.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">721</property>
+                        <property name="y">149</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_attack_element">
+                        <property name="name">fr5_attack_element</property>
+                        <property name="width-request">36</property>
+                        <property name="height-request">35</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">937</property>
+                        <property name="y">108</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="name">fr5_cave</property>
@@ -3397,10 +3520,9 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="name">fr5_add_experience</property>
                 <property name="width-request">73</property>
                 <property name="height-request">39</property>
-                <property name="sensitive">False</property>
-                <property name="can-focus">False</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="opacity">0</property>
               </object>
               <packing>
                 <property name="x">210</property>

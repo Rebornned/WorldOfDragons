@@ -1,6 +1,6 @@
 #include "dlibs.h"
 
-Dragon getplayerDragon(FILE *pFile, char *name);
+Dragon getplayerDragon(FILE *pFile, char *name, char *element);
 Player getPlayer(FILE *pFile);
 Dragon trainplayerDragon(Dragon dragon, int lvls);
 
@@ -14,14 +14,14 @@ int initPlayer(FILE *pFile, Player *newPlayer) {
     fscanf(experienceFile, "%d %d", &lvl, &reqExp);
     rewind(experienceFile);
     fclose(experienceFile);
-
+    *newPlayer = (Player){0};
     newPlayer->level = 0;
     newPlayer->actualProgress = 0;
     newPlayer->progressPoints = 0;
     newPlayer->actualExp = 0;
     newPlayer->requiredExp = reqExp;
     newPlayer->trainPoints = 0;
-    memset(&newPlayer->dragon, 0, sizeof(newPlayer->dragon));  // Reseta o dragão do player
+    //memset(&newPlayer->dragon, 0, sizeof(newPlayer->dragon));  // Reseta o dragão do player
     if(fwrite(newPlayer, sizeof(Player), 1, pFile) != 0)
         return 1;
     fflush(pFile);
@@ -90,6 +90,21 @@ Player getPlayer(FILE *pFile) {
 
 Dragon trainplayerDragon(Dragon dragon, int lvls) {
     for(int i=0; i < lvls; i++) {
+        // Possível individualidade
+        /*
+        if(g_strcmp0(dragon.elemental, "ice") == 0) {
+            dragon.health += random_choice(3, 5);
+            dragon.defense += 2;
+        }
+        else if(g_strcmp0(dragon.elemental, "fire") == 0) {
+            dragon.attack += 1;
+        }
+        else if(g_strcmp0(dragon.elemental, "wind") == 0) {
+            dragon.speed += random_choice(1, 4);
+            dragon.health += random_choice(1, 3);
+        }
+        */
+            
         dragon.attack += random_choice(1, 3);
         dragon.defense += random_choice(1, 2);
         dragon.speed += random_choice(2, 4);
@@ -99,7 +114,7 @@ Dragon trainplayerDragon(Dragon dragon, int lvls) {
     return dragon;
 }
 
-Dragon getplayerDragon(FILE *pFile, char *name) {
+Dragon getplayerDragon(FILE *pFile, char *name, char *element) {
     Dragon newDragon;
     Player player = getPlayer(pFile);
     if(strlen(player.dragon.name) == 0) {
@@ -109,11 +124,13 @@ Dragon getplayerDragon(FILE *pFile, char *name) {
         newDragon.attack = 4;
         newDragon.defense = 4;
         newDragon.speed = 4;
+        strcpy(newDragon.elemental, element);
         strcpy(newDragon.name, name);
         changePlayerStatus(pFile, -1, -1, -1, -1, -1, -1, &newDragon);
     }
     else
         newDragon = player.dragon;
 
+    g_print("Novo dragão: %s do elemento: %s adicionado.\n", newDragon.name, newDragon.elemental);
     return newDragon;
 }

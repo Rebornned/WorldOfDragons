@@ -155,6 +155,7 @@ GtkWidget *fr5_cave_health_up;
 GtkWidget *fr5_cave_attack_up;
 GtkWidget *fr5_cave_defense_up;
 GtkWidget *fr5_cave_speed_up;
+gchar currentElemental[30] = "";
 
 // Coliseum
 GtkStack *fr5_coliseum_stack;
@@ -173,6 +174,7 @@ static void set_cursor_window(GtkWidget *widget, gpointer data);
 void settingTimedLabelModifier(gint timeout, GtkLabel *label, gchar *text);
 gboolean btn_animation_rest_opacity(gpointer data);
 void btn_animation_clicked(GtkWidget *widget, gpointer data);
+void dummy_grab_focus();
 void set_dragon_in_beastiary(GtkButton *btn, gpointer data);
 void sort_dragons_in_beastiary(GtkButton *btn, gpointer data);
 void settingUpdatelvlBarAnimation(gint exp, GtkLabel *lvlTxt, GtkLabel *expTxt, GtkWidget *lvlBar, GtkFixed *fixed, GtkWidget *lvlUpTxt);
@@ -185,6 +187,7 @@ void updateAccounts();
 void loadingSave(GtkButton *btn, gpointer data);
 void updatelvlDragon(GtkButton *btn, gpointer data);
 void labelTextAnimation(GtkLabel *label, gchar *text, int timer);
+void set_element_in_cave(GtkButton *btn, gpointer data);
 void set_attack_in_cave(GtkButton *btn, gpointer data);
 void retroBarAnimationStart(gint timer, GtkWidget *widget, gint actualValue, gint newValue);
 void settingMoveWidgetAnimation(gint timer, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
@@ -350,6 +353,7 @@ int main(int argc, char *argv[]) {
     FILE * attacksFile = createAttackslistfile();
     totalAttacks = attacksLength(attacksFile);
     pAttackVector = readAttackvector(attacksFile);
+    g_print("Attacks length: %d\n", totalAttacks);
 
     // Gtk Stack e Gtk Fixed
     fr5_cave_stack = GTK_STACK(gtk_builder_get_object(builder, "fr5_cave_stack"));
@@ -565,8 +569,8 @@ void loadingSave(GtkButton *btn, gpointer data) {
 
     sort_dragons_in_beastiary(fr5_btn_dragon1, NULL);
     set_dragon_in_beastiary(fr5_btn_dragon1, GINT_TO_POINTER(0));
+    set_element_in_cave(NULL, NULL);
     set_attack_in_cave(NULL, GINT_TO_POINTER(0));
-
     updateDataCave();
     updateColiseum();
     stopCurrentMusic();
@@ -718,10 +722,13 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     if (g_strcmp0(button_name, "fr5_btn_logout") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         updateAccounts();
+        set_element_in_cave(NULL, NULL);
         gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
         gtk_stack_set_visible_child_name(main_stack, "start_page");
         stopCurrentMusic();
         playMusicByName(0, "reign_of_targaryen", &audioPointer, -1);
+        gtk_entry_set_text(fr5_cave_inp_name, "");
+        labeltextModifier(fr5_cave_dragon_name_error, "");
 
         fclose(playerFile);
     }
@@ -777,16 +784,19 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         char dragonName[100];
         strcpy(dragonName, gtk_entry_get_text(fr5_cave_inp_name));
-        if(strlen(dragonName) >= 1 && strlen(dragonName) <= 12) {
+        if(strlen(dragonName) >= 1 && strlen(dragonName) <= 12 && strlen(currentElemental) > 0) {
             gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
-            getplayerDragon(playerFile, dragonName);
+            getplayerDragon(playerFile, dragonName, currentElemental);
             settingUpdatelvlBarAnimation(1, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
             updateColiseum();
+            set_element_in_cave(NULL, NULL);
             updateDataCave();
         }
-        else
+        else if(strlen(dragonName) < 1 || strlen(dragonName) > 12)
             labeltextModifier(fr5_cave_dragon_name_error, "O nome deve possuir entre 1 e 14 caracteres.");
-        
+        else if(g_strcmp0(currentElemental, "") == 0)
+            labeltextModifier(fr5_cave_dragon_name_error, "Você precisa escolher um elemento para o dragão.");
+
     }
 
     // Frame 5 Colíseu
@@ -972,6 +982,10 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
     // Retira o foco de todos os elementos
     // Cria um widget invisível para receber o foco temporário
+    dummy_grab_focus();
+}
+
+void dummy_grab_focus() {
     GtkWidget *dummy = gtk_label_new(NULL);
     gtk_widget_set_can_focus(dummy, TRUE);
     gtk_widget_set_size_request(dummy, 1, 1);
@@ -1045,13 +1059,20 @@ void registerSignals(GtkBuilder *builder) {
     GObject *fr5_cave_btn_train = gtk_builder_get_object(builder, "fr5_cave_btn_train");
     g_signal_connect(fr5_cave_btn_train, "clicked", G_CALLBACK(updatelvlDragon), NULL);
     
-    for(int j=0; j < totalAttacks; j++) {
+    for(int j=0; j < 4; j++) {
         char actBtnName[100];
         sprintf(actBtnName, "fr5_cave_btn_attack%d", j+1);
         GObject *actual_btn = gtk_builder_get_object(builder, actBtnName);
         g_signal_connect(actual_btn, "clicked", G_CALLBACK(set_attack_in_cave), GINT_TO_POINTER(j));
     }
     
+    for(int i=0; i<3; i++) {
+        gchar *buttonName = g_strdup_printf("fr5_cave_btn_element%d", i);
+        GObject *fr5_cave_btn_element = gtk_builder_get_object(builder, buttonName);
+        g_signal_connect(fr5_cave_btn_element, "clicked", G_CALLBACK(set_element_in_cave), GINT_TO_POINTER(i));
+        free(buttonName);
+    }
+
     // Coliseu
     GObject *fr5_btn_coliseum_next = gtk_builder_get_object(builder, "fr5_btn_coliseum_next");
     g_signal_connect(fr5_btn_coliseum_next, "clicked", G_CALLBACK(switchPage), NULL);
@@ -1117,6 +1138,7 @@ void labeltextModifier(GtkLabel *label, const gchar *text) {
 }
 
 void btn_animation_clicked(GtkWidget *widget, gpointer data) {
+    dummy_grab_focus();
     if(GTK_IS_WIDGET(widget)) {
         gtk_widget_set_opacity(widget, 0.7); // Altera a opacidade para dar um efeito de clique
         g_timeout_add(100, btn_animation_rest_opacity, widget); // Adiciona o timeout para restaurar a opacidade após 100 ms
@@ -1225,31 +1247,105 @@ void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
 
 void set_attack_in_cave(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
-
-    int index = GPOINTER_TO_INT(data);
-    char attackDetails[400];
-    int xPosVector[] = {42, 204, 362, 526};
-    int widthVector[] = {118, 118, 118, 148};
-    Attack actualAttack = pAttackVector[index];
-    GtkLabel *fr5_cave_attack_name = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack_name"));
-    GtkLabel *fr5_cave_description = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_description"));
     GtkLabel *fr5_cave_attack_details = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack_details"));
-    GtkWidget *fr5_btn_cave_marker = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_btn_cave_marker"));
+    GtkLabel *fr5_cave_attack_name = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack_name"));
+    GtkImage *fr5_unknown_attack = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_unknown_attack"));
+    GtkImage *fr5_attack_element = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_attack_element"));
 
-    sprintf(attackDetails, "Dano: ( Ataque x %.1f )\nTaxa de acerto: %d\nTempo de recarga: %d turno(s)",
-    actualAttack.multiplicator, actualAttack.precision, actualAttack.cooldownAttack);
-    gtk_fixed_move(fr5_cave, GTK_WIDGET(fr5_btn_cave_marker), xPosVector[index], 410);
-    gtk_widget_set_size_request(GTK_WIDGET(fr5_btn_cave_marker), widthVector[index], 36);
+    
 
-    labeltextModifier(fr5_cave_attack_name, actualAttack.name);
-    labeltextModifier(fr5_cave_description, actualAttack.description);
-    labeltextModifier(fr5_cave_attack_details, attackDetails);
+    if(player.dragon.elemental[0] == '\0' && currentElemental[0] == '\0') {
+        GtkWidget *fr5_btn_cave_marker = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_btn_cave_marker"));
+        gtk_fixed_move(fr5_cave, GTK_WIDGET(fr5_btn_cave_marker), 42, 410);
+        labeltextModifier(fr5_cave_attack_name, "???");
+        labeltextModifier(fr5_cave_attack_details, "Dano: ???\nTaxa de acerto: ???\nTempo de recarga: ???");
+        gtk_image_set_from_file(fr5_unknown_attack, "../assets/img_files/unknown_attack.png");
+        gtk_image_clear(fr5_attack_element);
+    }
+    else {
+        gchar attackDetails[400];
+        gint index = GPOINTER_TO_INT(data);
+        gint xPosVector[] = {42, 203, 362, 524};
+        gint widthVector[] = {118, 118, 118, 148};
+        gint buttonWidth = 0;
+        gint elemental_index = 0;
+
+        if(g_strcmp0(player.dragon.elemental, "ice") == 0 || g_strcmp0(currentElemental, "ice") == 0) 
+            elemental_index = 0;
+        else if(g_strcmp0(player.dragon.elemental, "fire") == 0 || g_strcmp0(currentElemental, "fire") == 0)
+            elemental_index = 2;
+        else if(g_strcmp0(player.dragon.elemental, "wind") == 0 || g_strcmp0(currentElemental, "wind") == 0)
+            elemental_index = 4;
+        if(index <= 1) {
+            elemental_index = 0;   
+        }
+        
+        Attack actualAttack = pAttackVector[index+elemental_index];
+        GtkLabel *fr5_cave_description = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_description"));
+        GtkWidget *fr5_btn_cave_marker = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_btn_cave_marker"));
+
+        sprintf(attackDetails, "Dano: ( Ataque x %.1f )\nTaxa de acerto: %d\nTempo de recarga: %d turno(s)",
+        actualAttack.multiplicator, actualAttack.precision, actualAttack.cooldownAttack);
+        gtk_fixed_move(fr5_cave, GTK_WIDGET(fr5_btn_cave_marker), xPosVector[index], 410);
+        if(g_strcmp0(actualAttack.elemental, "ice") == 0) gtk_image_set_from_file(fr5_attack_element, "../assets/img_files/ice_elemental.png");
+        if(g_strcmp0(actualAttack.elemental, "fire") == 0) gtk_image_set_from_file(fr5_attack_element, "../assets/img_files/fire_elemental.png");
+        if(g_strcmp0(actualAttack.elemental, "wind") == 0) gtk_image_set_from_file(fr5_attack_element, "../assets/img_files/wind_elemental.png");
+        if(g_strcmp0(actualAttack.elemental, "physic") == 0) gtk_image_set_from_file(fr5_attack_element, "../assets/img_files/physic_elemental.png");
+
+        if(GTK_IS_WIDGET(btn)) {
+            gtk_widget_get_size_request(GTK_WIDGET(btn), &buttonWidth, NULL);
+            gtk_widget_set_size_request(GTK_WIDGET(fr5_btn_cave_marker), buttonWidth-15, 36);
+        }
+        gtk_image_clear(fr5_unknown_attack);
+        labeltextModifier(fr5_cave_attack_name, actualAttack.name);
+        labeltextModifier(fr5_cave_description, actualAttack.description);
+        labeltextModifier(fr5_cave_attack_details, attackDetails);
+    }
+}
+
+void set_element_in_cave(GtkButton *btn, gpointer data) {
+    const gchar *button_name = "";
+    dummy_grab_focus();
+    if (GTK_IS_WIDGET(btn)) {
+        button_name = gtk_widget_get_name(GTK_WIDGET(btn));
+        playSoundByName(0, "click", &audioPointer, 0);
+    }
+    else if (btn == NULL) {
+        strcpy(currentElemental, "");
+        updateDataCave();
+    }
+    
+	gchar *elements[3] = {"fire", "ice", "wind"};
+
+    for(int i=0; i<3; i++) {
+        gchar *currentBtnName = g_strdup_printf("fr5_cave_btn_element%d", i);
+        gchar *currentImg = g_strdup_printf("fr5_cave_img_element%d", i);
+        GtkWidget *fr5_cave_img_element = GTK_WIDGET(gtk_builder_get_object(builder, currentImg));
+        GtkWidget *currentButton = GTK_WIDGET(gtk_builder_get_object(builder, currentBtnName));
+        if(button_name != NULL && g_strcmp0(button_name, currentBtnName) == 0) {
+            gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
+            gtk_widget_set_opacity(fr5_cave_img_element, 0.7);
+            strcpy(currentElemental, elements[i]);
+            set_attack_in_cave(NULL, GINT_TO_POINTER(0));
+            updateDataCave();
+        }
+        else {
+            gtk_widget_set_sensitive(GTK_WIDGET(currentButton), TRUE);
+            gtk_widget_set_opacity(fr5_cave_img_element, 1.0);
+        }
+
+        free(currentBtnName);
+        free(currentImg);
+    }
+    
+    
+
 }
 
 void updatelvlDragon(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
-    gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
-    g_timeout_add(900, turnOnButton, GTK_WIDGET(btn));
+    //gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
+    //g_timeout_add(900, turnOnButton, GTK_WIDGET(btn));
     
     if(strlen(player.dragon.name) == 0)
         return;
@@ -1283,10 +1379,37 @@ void updatelvlDragon(GtkButton *btn, gpointer data) {
 
 }
 
-void updateDataCave() {
-    if(strlen(player.dragon.name) > 0) {
-        char textVar[300], dragonStage[50];
-        gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
+void updateDataCave() { 
+
+    if(g_strcmp0(currentElemental, "") != 0 || strlen(player.dragon.elemental) > 0) {
+        for(int i=0; i<4; i++) {
+            GtkButton *fr5_cave_btn_attack = GTK_BUTTON(gtk_builder_get_object(builder, g_strdup_printf("fr5_cave_btn_attack%d", i+1)));
+            gtk_widget_set_sensitive(GTK_WIDGET(fr5_cave_btn_attack), TRUE);
+            if(i <= 1) { // Ataques universais
+                gtk_button_set_label(fr5_cave_btn_attack, pAttackVector[i].name);
+            }
+                else { // Ataques únicos
+                gint attack_index = 0;
+                if(g_strcmp0(player.dragon.elemental, "ice") == 0 || g_strcmp0(currentElemental, "ice") == 0)
+                    attack_index = 0;
+                else if(g_strcmp0(player.dragon.elemental, "fire") == 0 || g_strcmp0(currentElemental, "fire") == 0)
+                    attack_index = 2;
+                else if(g_strcmp0(player.dragon.elemental, "wind") == 0 || g_strcmp0(currentElemental, "wind") == 0)
+                    attack_index = 4;
+                gtk_button_set_label(fr5_cave_btn_attack, pAttackVector[i + attack_index].name);
+            }
+        }
+    }
+    else {
+        for(int i=0; i<4; i++) {
+            GtkButton *fr5_cave_btn_attack = GTK_BUTTON(gtk_builder_get_object(builder, g_strdup_printf("fr5_cave_btn_attack%d", i+1)));
+            gtk_widget_set_sensitive(GTK_WIDGET(fr5_cave_btn_attack), FALSE);
+            gtk_button_set_label(fr5_cave_btn_attack, "???");
+        }
+    }
+
+    if(player.dragon.name[0] != '\0' && strlen(player.dragon.name) > 0) {
+        gchar textVar[300], dragonStage[50], dragonAge[30], *dragonImgPath;
         GtkWidget *fr5_cave_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_cave_dragon_img"));
         GtkLabel *fr5_cave_lvl_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_lvl_label"));
         GtkLabel *fr5_cave_name_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_name_label"));
@@ -1295,6 +1418,7 @@ void updateDataCave() {
         GtkLabel *fr5_cave_attack = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_attack"));
         GtkLabel *fr5_cave_defense = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_defense"));
         GtkLabel *fr5_cave_speed = GTK_LABEL(gtk_builder_get_object(builder, "fr5_cave_speed"));
+        gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_actualdragon");
 
         sprintf(textVar, "Lvl.%d", player.dragon.level);
         labeltextModifier(fr5_cave_lvl_label, textVar);
@@ -1316,33 +1440,32 @@ void updateDataCave() {
         labeltextModifier(fr5_cave_speed, textVar);
 
         if(player.dragon.level == 0) {
-            gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/egg_wyvern_1.png");    
-            strcpy(dragonStage, "Ovo");
+            strcpy(dragonStage, "Ovo"); strcpy(dragonAge, "egg");
         }        
+        
         if(player.dragon.level >= 1) {
-            gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/baby_wyvern_1.png");    
-            strcpy(dragonStage, "Bebê");
+            strcpy(dragonStage, "Bebê"); strcpy(dragonAge, "baby");
         }
 
         if(player.dragon.level >= 10) {
-            gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/juvenile_wyvern_1.png");    
-            strcpy(dragonStage, "Jovem");
+            strcpy(dragonStage, "Jovem"); strcpy(dragonAge, "juvenile");
         }
 
         if(player.dragon.level >= 50) {
-            gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/adult_wyvern_1.png");    
-            strcpy(dragonStage, "Adulto");
+            strcpy(dragonStage, "Adulto"); strcpy(dragonAge, "adult");
         }
 
         if(player.dragon.level >= 80) { 
-            gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), "../assets/img_files/dragons/titan_wyvern_1.png");    
-            strcpy(dragonStage, "Titã");
+            strcpy(dragonStage, "Titã"); strcpy(dragonAge, "titan");
         }
 
+        dragonImgPath = g_strdup_printf("../assets/img_files/dragons/%s_%s_wyvern.png", dragonAge, player.dragon.elemental);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_cave_dragon_img), dragonImgPath);    
         sprintf(textVar, "%s ( %s )", player.dragon.name, dragonStage);
         labeltextModifier(fr5_cave_name_label, textVar);
+        free(dragonImgPath);
     }
-    else {
+    else if(g_strcmp0(currentElemental, "") == 0 && player.dragon.name[0] == '\0') {
         gchar textVar[300];
         gtk_stack_set_visible_child_name(fr5_cave_stack, "fr5_cave_newdragon");
         GtkWidget *fr5_cave_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_cave_dragon_img"));

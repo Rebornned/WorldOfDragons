@@ -15,11 +15,8 @@ int checkEmail(char *email);
 int containSpecialchar(char *email);
 int random_choice(int min, int max);
 /*
-int main() {
-    FILE *accountsFile = createAccountslistfile();
-    FILE *beastsFile = createBeastslistfile();
-    FILE *attacksFile = createAttackslistfile();
-    
+int main(int argc, char *argv[]) {
+    FILE *beastsFile = createBeastslistfile();    
     Dragon newDragon;
     Player newPlayer;
 
@@ -29,7 +26,11 @@ int main() {
 
      for(int i=0; i < 27; i++) {
         scanf("%s", inputStr);
+        strcpy(newDragon.elemental, inputStr);
+
+        scanf("%s", inputStr);
         strcpy(newDragon.name, inputStr);
+        getchar();
 
         scanf(" %[^\n]" ,inputStr);
         strcpy(newDragon.history, inputStr);
@@ -82,8 +83,8 @@ int main() {
     Dragon *newvector = readBeastvector(beastsFile);
     printfDragonvector(newvector, beastsLength(beastsFile)); 
 
-}
-*/
+}*/
+/*
     //FILE *playerFile = getAccountfile("Saleh");
     //Dragon playerDragon = getplayerDragon(playerFile, "Drogon");
     //printf("Name: %s | Attack: %d\n", playerDragon.name, playerDragon.attack);
@@ -237,3 +238,12 @@ void shuffle(int *v, int n) {
         v[j] = temp;
     }
 }
+/*
+// Compatibilidade para rodar a main
+#ifdef _WIN32
+#include <windows.h>
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow) {
+    return SDL_main(__argc, __argv);
+}
+#endif
+*/

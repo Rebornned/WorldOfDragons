@@ -57,6 +57,12 @@
     background-image: linear-gradient(rgba(167, 167, 167, 0.15), rgba(167, 167, 167, 0.15));
     background-color: rgba(167, 167, 167, 0.15);
 }
+
+.universal_transparent_btn {
+    background-image: linear-gradient(transparent, transparent);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+    border: none;
+}
 /*=============================================================================================== */
 
 /* Títulos das páginas */
@@ -480,6 +486,12 @@ scrollbar slider:hover {
 
 .fr5_btn_newdragon {
     background-image: url('../img_files/newdragon.png');
+}
+
+.fr5_wind_element {
+    background-image: url('../img_files/wind_element.png');
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+    border: none;
 }
 
 .fr5_btn_confirm {

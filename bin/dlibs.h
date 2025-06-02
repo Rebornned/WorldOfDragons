@@ -44,6 +44,7 @@ typedef struct {
 typedef struct {
     char name[150];
     char description[600];
+    char elemental[30];
     float multiplicator;
     int cooldownAttack;
     int recharge;
@@ -57,6 +58,7 @@ typedef struct {
 } Account;
 
 typedef struct {
+    char elemental[30];
     char name[50];
     char tittle[150];
     char history[1500];
@@ -228,7 +230,7 @@ Player getPlayer(FILE *pFile);
 int changePlayerStatus(FILE *pFile, int level, int points, int actualExp, int requiredExp, int progressPoints, int actualProgress, Dragon *dragon);
 Dragon trainplayerDragon(Dragon dragon, int lvls);
 int addExperiencetoPlayer(FILE *pFile, int exp);
-Dragon getplayerDragon(FILE *pFile, char *name);
+Dragon getplayerDragon(FILE *pFile, char *name, char *element);
 
 //###################################################################################
 // File: files_libs.c
