@@ -133,6 +133,7 @@ typedef struct {
     gboolean minigamePlayed;
     gboolean isPlayable;
     gboolean isActive;
+    gint eRequest;
     gint pRequest;
     gint criticalChance;
     gint attackRecharge;

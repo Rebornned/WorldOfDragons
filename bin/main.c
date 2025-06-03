@@ -2159,11 +2159,13 @@ gboolean onBattle(gpointer data) {
             game->battle->totalDamage = causeDamage(playerAttack, 1.3, precision, &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
-
-            game->battle->debuffTurns = 2;
-            game->battle->currentDebuffAnimation = 3;
-            strcpy(game->battle->currentDebuffType, "Bleeding");
-            strcpy(game->battle->currentDebuffStatus, "bleeding_status");
+            
+            if(random_choice(1, 50) <= 50) {
+                game->battle->debuffTurns = 2;
+                game->battle->currentDebuffAnimation = 3;
+                strcpy(game->battle->currentDebuffType, "Bleeding");
+                strcpy(game->battle->currentDebuffStatus, "bleeding_status");
+            }
         }
         // Ataque Tormenta
         if(g_strcmp0(game->minigame->pAction, "storm") == 0 && game->doors.mgMeterPlayed) {
@@ -2282,7 +2284,8 @@ gboolean onBattle(gpointer data) {
         gint duplicated = 0;
         gint dragonDifficult = 0;
         gint precision = 0;
-
+        gint attack_index = game->battle->EntityTwo.entDragon.attack_index;
+        
         //gtk_stack_set_visible_child_name(game->optionsStack, "fr6_battle_chat");
         labeltextModifier(game->battleText, "Turno inimigo");
 
@@ -2292,6 +2295,7 @@ gboolean onBattle(gpointer data) {
         // Comportamento inimigo
         if(!game->doors.eAttackReady) {
             gint currentAttack = 0;
+            
             if(game->battle->difficult == 1 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade fácil
                 currentAttack = random_choice(0, 3);
                 game->minigame->criticalChance = 10;
@@ -2304,54 +2308,55 @@ gboolean onBattle(gpointer data) {
             if(game->battle->difficult == 2 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Média
                 currentAttack = random_choice(0, 3);
                 game->minigame->attackRecharge = 0;
-                game->minigame->criticalChance = 25;
+                game->minigame->criticalChance = 10;
                 while(game->battle->EntityTwo.skillsCooldown[currentAttack] != 0) {
                     currentAttack = random_choice(0, 3);
-                }
-                
+                }        
             }
 
             if(game->battle->difficult == 3 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
                 currentAttack = 0;
                 game->minigame->attackRecharge = 0;
-                game->minigame->criticalChance = 50;
-                // Inteligencia para quebrar armadura sempre
-                for(gint i=0; i<4; i++) {
-                    if(g_strcmp0(game->battle->EntityOne.entityDebuffs[i].type, "Broken-Armor") == 0) { // Verifica
-                        if(game->battle->EntityTwo.skillsCooldown[2] == 0) // Verifica se dracarys está disponivel
-                            currentAttack = 2;
-                        else
-                            if(game->battle->EntityTwo.skillsCooldown[1] == 0) // Verifica se mordida está dispónivel
-                                currentAttack = 1;
+                game->minigame->criticalChance = 10;
+
+                // Inteligencia para usar sempre o ataque mais forte
+                for(gint i=3; i>=0; i--) {
+                    if(i != 1 && game->battle->EntityTwo.skillsCooldown[i] == 0) {
+                        currentAttack = i;
+                        break;
                     }
-                }
+                }       
             }
 
             if(game->battle->difficult == 4 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
                 currentAttack = 0;
                 game->minigame->attackRecharge = -1;
-                game->minigame->criticalChance = 75;
-                // Inteligencia para quebrar armadura sempre
-                for(gint i=0; i<4; i++) {
-                    if(g_strcmp0(game->battle->EntityOne.entityDebuffs[i].type, "Broken-Armor") == 0) { // Verifica
-                        if(game->battle->EntityTwo.skillsCooldown[2] == 0) // Verifica se dracarys está disponivel
-                            currentAttack = 2;
-                        else
-                            if(game->battle->EntityTwo.skillsCooldown[1] == 0) // Verifica se mordida está dispónivel
-                                currentAttack = 1;
+                game->minigame->criticalChance = 10;
+                // Inteligencia para usar sempre o ataque mais forte
+                for(gint i=3; i>=0; i--) {
+                    if(i != 1 && game->battle->EntityTwo.skillsCooldown[i] == 0) {
+                        currentAttack = i;
+                        break;
                     }
-                }
+                }  
             }
             
-            if(currentAttack == 0) { strcpy(game->minigame->eAction, "scratch"); }
-            if(currentAttack == 1) { strcpy(game->minigame->eAction, "bite"); }
-            if(currentAttack == 2) { strcpy(game->minigame->eAction, "dracarys"); }
-            if(currentAttack == 3) { strcpy(game->minigame->eAction, "roar"); }
+
+            if(currentAttack >= 0 && currentAttack <= 1)
+                attack_index = 0;
+                
+            if(g_strcmp0(pAttackVector[request+attack_index].name, "Arranhão") == 0) strcpy(game->minigame->eAction, "scratch");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Estalactite") == 0) strcpy(game->minigame->eAction, "stalactite");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Nevasca") == 0) strcpy(game->minigame->eAction, "blizzard");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Incendio") == 0) strcpy(game->minigame->eAction, "fire");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Inferno") == 0) strcpy(game->minigame->eAction, "hell");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Vendaval") == 0) strcpy(game->minigame->eAction, "gale");
+            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Tormenta") == 0) strcpy(game->minigame->eAction, "storm");
+
             game->doors.eAttackReady = TRUE;
+            game->minigame->pRequest = currentAttack;
         }
-        //g_print("Action: %s ///////////////////\n", game->minigame->pAction);
-        // Início do minigame challenge
-        
+        // Início do minigame challenge     
         if(!game->minigame->isActive && !game->doors.mgChallengerPlayed) { // Condicional
             settingTimedStackChange(1500, game->optionsStack, "fr6_battle_challenge");
             g_timeout_add(1500, timedStartChallengeGame, game);
@@ -2363,13 +2368,9 @@ gboolean onBattle(gpointer data) {
             gfloat attackDecrease = 0;
             gint precision = 0;
             if(game->minigame->minigameResultValue == 1) {
-                precision = -10;
-                game->minigame->criticalChance -= 25;
-                attackDecrease = 0.25;
+                attackDecrease = 0.2;
             }
             if(game->minigame->minigameResultValue == -1) {
-                precision = 100;
-                game->minigame->criticalChance += 15;
                 attackDecrease = 0;
                 gint randomShake = 0;
                 if(game->battle->difficult >= 3  && !game->minigame->enemyRoars) {
@@ -2397,39 +2398,20 @@ gboolean onBattle(gpointer data) {
             }
             *(game->minigame->minigameValue) = 0;
 
-            // Ataque mordida
-            if(g_strcmp0(game->minigame->eAction, "bite") == 0) {
-                strcpy(game->minigame->eAction, "");
-                g_print("==================================================================\n");
-                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
-                if(precision + 90 >= 100)
-                    precision = 100;
-                else
-                    precision += 90;
-                g_print("Precisão atual: %d | Bite\n", precision);
-                settingAttackAnimation(500, 2, 30, "bite_crunch_animation", game->fixed, 252);
-                g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
-                game->battle->EntityTwo.skillsCooldown[1] = 4 + game->minigame->attackRecharge;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.2, precision, &game->battle->EntityOne.entDragon);
-                
-                game->battle->debuffTurns = 2;
-                game->battle->currentDebuffAnimation = 3;
-                strcpy(game->battle->currentDebuffType, "Bleeding");
-                strcpy(game->battle->currentDebuffStatus, "bleeding_status");
-            }
+            // Efeito do debuff de instabilidade
+            if(haveDebuff("Unstable", game->battle->EntityTwo) == 1)
+                precision = -25;
             // Ataque Arranhão
             if(g_strcmp0(game->minigame->eAction, "scratch") == 0) {
                 strcpy(game->minigame->eAction, "");
                 g_print("==================================================================\n");
                 g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
-                if(precision + 100 >= 100)
-                    precision = 100;
-                else
-                    precision += 100;
+              
+                precision = 100 - precision;
                 g_print("Precisão atual: %d | scratch\n", precision);
                 g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 2, 40, "scratch_claw_animation", game->fixed, 252);
-                game->battle->EntityTwo.skillsCooldown[0] = 0;
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 0;
                 game->battle->totalDamage = causeDamage(enemyAttack, 1.0, precision, &game->battle->EntityOne.entDragon);
                 
                 game->battle->debuffTurns = 3;
@@ -2437,29 +2419,8 @@ gboolean onBattle(gpointer data) {
                 strcpy(game->battle->currentDebuffType, "Broken-Armor");
                 strcpy(game->battle->currentDebuffStatus, "broken_status");
             }
-            // Ataque Dracarys
-            if(g_strcmp0(game->minigame->eAction, "dracarys") == 0) {
-                strcpy(game->minigame->eAction, "");
-                g_print("==================================================================\n");
-                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
-                if(precision + 55 >= 100)
-                    precision = 100;
-                else
-                    precision += 55;
-                g_print("Precisão atual: %d | Dracarys\n", precision);
-                settingAttackAnimation(500, 2, 39, "fire_breath_animation", game->fixed, 192);
-                g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
-                game->battle->EntityTwo.skillsCooldown[2] = 6 + game->minigame->attackRecharge;
-                game->battle->totalDamage = causeDamage(enemyAttack, 2.0, precision, &game->battle->EntityOne.entDragon);
-                
-                game->battle->debuffTurns = 2;
-                game->battle->currentDebuffAnimation = 7;
-                strcpy(game->battle->currentDebuffType, "Burning");
-                strcpy(game->battle->currentDebuffStatus, "burning_status");
-            }
-            
             // Ataque Rugido
-            if(g_strcmp0(game->minigame->eAction, "roar") == 0) {
+             if(g_strcmp0(game->minigame->eAction, "roar") == 0) {
                 strcpy(game->minigame->eAction, "");
                 game->battle->EntityTwo.skillsCooldown[3] = 6 + game->minigame->attackRecharge;
                 game->battle->totalDamage = 0;
@@ -2474,6 +2435,113 @@ gboolean onBattle(gpointer data) {
                 strcpy(game->battle->currentDebuffType, "Terrified");
                 strcpy(game->battle->currentDebuffStatus, "terrified_status");
             }
+            // Ataque Estalactite
+            if(g_strcmp0(game->minigame->eAction, "stalactite") == 0) {
+                strcpy(game->minigame->eAction, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do player: %d\n", game->battle->EntityOne.entDragon.health);
+                
+                precision = 90 - precision;
+                g_print("Precisão atual: %d | stalactite\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.5, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
+                if(random_choice(1, 100) <= 25) {
+                    game->battle->debuffTurns = 2;
+                    game->battle->currentDebuffAnimation = 21;
+                    strcpy(game->battle->currentDebuffType, "Freezing");
+                    strcpy(game->battle->currentDebuffStatus, "freezing_status");
+                }
+            }
+            // Ataque Nevasca
+            if(g_strcmp0(game->minigame->eAction, "blizzard") == 0) {
+                strcpy(game->minigame->eAction, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                
+                precision = 85 - precision;
+                g_print("Precisão atual: %d | blizzard\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.1, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                //settingAttackAnimation(500, 1, 36, "blizzard", game->fixed, 252);
+                game->battle->debuffTurns = 2;
+                game->battle->currentDebuffAnimation = 21;
+                strcpy(game->battle->currentDebuffType, "Freezing");
+                strcpy(game->battle->currentDebuffStatus, "freezing_status");
+            }
+            // Ataque Incendioif(random_choice(1, 50) <= 50)
+            if(g_strcmp0(game->minigame->eAction, "fire") == 0) {
+                strcpy(game->minigame->eAction, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                precision = 80 - precision;
+                g_print("Precisão atual: %d | fire\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.4, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
+
+                game->battle->debuffTurns = 2;
+                game->battle->currentDebuffAnimation = 7;
+                strcpy(game->battle->currentDebuffType, "Burning");
+                strcpy(game->battle->currentDebuffStatus, "burning_status");
+            }
+            // Ataque Inferno
+            if(g_strcmp0(game->minigame->eAction, "hell") == 0) {
+                strcpy(game->minigame->enemyRoars, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
+                precision = 60 - precision;
+                g_print("Precisão atual: %d | hell\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
+                game->battle->totalDamage = causeDamage(enemyAttack, 2.2, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
+
+                game->battle->debuffTurns = 2;
+                game->battle->currentDebuffAnimation = 7;
+                strcpy(game->battle->currentDebuffType, "Burning");
+                strcpy(game->battle->currentDebuffStatus, "burning_status");
+            }
+            // Ataque Vendaval
+            if(g_strcmp0(game->minigame->eAction, "gale") == 0) {
+                strcpy(game->minigame->eAction, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do inimigo: %d\n", game->battle->EntityOne.entDragon.health);
+                precision = 95 - precision;
+                g_print("Precisão atual: %d | gale\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.3, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
+                // Check de porcentagem -> 50%
+                if(random_choice(1, 50) <= 50) {
+                    game->battle->debuffTurns = 2;
+                    game->battle->currentDebuffAnimation = 3;
+                    strcpy(game->battle->currentDebuffType, "Bleeding");
+                    strcpy(game->battle->currentDebuffStatus, "bleeding_status");
+                }
+            }
+            // Ataque Tormenta
+            if(g_strcmp0(game->minigame->eAction, "storm") == 0) {
+                strcpy(game->minigame->eAction, "");
+                g_print("==================================================================\n");
+                g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
+                
+                precision = 70 - precision;
+                g_print("Precisão atual: %d | storm\n", precision);
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.6, precision, &game->battle->EntityOne.entDragon);
+                g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
+                //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
+                game->battle->debuffTurns = 5;
+                game->battle->currentDebuffAnimation = 19;
+                strcpy(game->battle->currentDebuffType, "Unstable");
+                strcpy(game->battle->currentDebuffStatus, "unstable_status");
+            }
+
             // Aplica o Rugido
             if(game->doors.eFinishedAttack && game->battle->totalDamage == 0) {
                  // Aplicação de debuff
@@ -2560,6 +2628,7 @@ gboolean onBattle(gpointer data) {
             game->doors.eAttackReady = FALSE;
             game->doors.enemyPlayed = FALSE;
             game->doors.mgChallengerPlayed = FALSE;
+            game->minigame->eRequest = -1;
         }
         
         labeltextModifier(fr6_tittle_label, g_strdup_printf("Turno: %d", game->battle->actualTurn));
