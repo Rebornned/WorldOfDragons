@@ -133,6 +133,7 @@ typedef struct {
     gboolean minigamePlayed;
     gboolean isPlayable;
     gboolean isActive;
+    gint pRequest;
     gint criticalChance;
     gint attackRecharge;
     gint *minigameValue;
@@ -281,7 +282,7 @@ int startTurn(Battle *battleInstance, Game *game);
 int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
-
+int haveDebuff(gchar *type, Entity ent);
 //###################################################################################
 // Animations
 //###################################################################################

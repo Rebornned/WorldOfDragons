@@ -59,7 +59,7 @@ int delBeastinlist(FILE *pFile, char *name) {
 
 Dragon * readBeastvector(FILE *pFile) {
     int length = beastsLength(pFile);
-    Dragon *vector = (Dragon *) malloc(sizeof(Dragon) * length);
+    Dragon *vector = (Dragon *) g_malloc(sizeof(Dragon) * length);
     Dragon dragon;
 
     if(vector == NULL)
@@ -144,7 +144,7 @@ int changePassword(FILE *pFile, char *email, char *password, char *confirmPass) 
 
 Account * readAccountvector(FILE *pFile) {
     int length = accountsLength(pFile);
-    Account *vector = (Account *) malloc(sizeof(Account) * length);
+    Account *vector = (Account *) g_malloc(sizeof(Account) * length);
 
     if(vector == NULL)
         return NULL;
@@ -181,7 +181,7 @@ int addAttackinlist(Attack *attack, FILE *pFile) {
 
 Attack * readAttackvector(FILE *pFile) {
     int length = attacksLength(pFile);
-    Attack *vector = (Attack *) malloc(sizeof(Attack) * length);
+    Attack *vector = (Attack *) g_malloc(sizeof(Attack) * length);
 
     if(vector == NULL)
         return NULL;

@@ -4120,6 +4120,19 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="y">52</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_element_img_ent1">
+                            <property name="name">fr6_element_img_ent1</property>
+                            <property name="width-request">35</property>
+                            <property name="height-request">48</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="x">285</property>
+                            <property name="y">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="x">17</property>
@@ -4272,6 +4285,19 @@ Tempo de recarga: 1 turno(s)</property>
                             <property name="y">52</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkImage" id="fr6_element_img_ent2">
+                            <property name="name">fr6_element_img_ent1</property>
+                            <property name="width-request">36</property>
+                            <property name="height-request">48</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="x">285</property>
+                            <property name="y">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="x">662</property>
@@ -4385,7 +4411,6 @@ Tempo de recarga: 1 turno(s)</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
                                   <class name="fr7_btn_attacks"/>
-                                  <class name="fr6_combat_frame_font_hp"/>
                                   <class name="btn_animations_transition"/>
                                   <class name="btn_animation_hover"/>
                                   <class name="font_size_20px"/>

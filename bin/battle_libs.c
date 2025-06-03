@@ -130,7 +130,7 @@ int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated)
             entity->entDragon.defense -= (entity->entDragon.defense*0.2);
         if(strcmp(debuffType, "Terrified") == 0) 
             entity->entDragon.attack -= (entity->entDragon.attack*0.2);
-        
+
         entity->entityDebuffs[availableSlot].turns = turns;
         strcpy(entity->entityDebuffs[availableSlot].type, debuffType);
         entity->entityDebuffs[availableSlot].slot = availableSlot;
@@ -150,8 +150,8 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
     if(strcmp(debuff->type, "Bleeding") == 0) {
         gchar *damageText = g_strdup_printf("-%d", entity->fixedDragon.health*0.05);
         g_print("Vida anterior ao bleeding: %d\n", entity->entDragon.health);
-        totalDamage = (entity->fixedDragon.health*0.05);
-        entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        totalDamage = (entity->fixedDragon.health*0.025);
+        entity->entDragon.health -= (entity->fixedDragon.health*0.025);
         if(entity->entDragon.health < 0)
             entity->entDragon.health = 0;
         g_print("Vida após ao bleeding: %d\n", entity->entDragon.health);
@@ -159,9 +159,9 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
             entity->entDragon.health = 0;
     }
     if(strcmp(debuff->type, "Burning") == 0) {
-        totalDamage = (entity->fixedDragon.health*0.05);
+        totalDamage = (entity->fixedDragon.health*0.025);
         g_print("Vida anterior ao burning: %d\n", entity->entDragon.health);
-        entity->entDragon.health -= (entity->fixedDragon.health*0.05);
+        entity->entDragon.health -= (entity->fixedDragon.health*0.025);
         if(entity->entDragon.health < 0)
             entity->entDragon.health = 0;
         g_print("Vida após ao burning: %d\n", entity->entDragon.health);
@@ -202,12 +202,29 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game) {
             updateDebuffAnimation(entityNumber, "finish", debuff, 10, "terrified_status");
             //g_print("TERRIFIER FINALIZADO *************************\n");
         }
+        if(strcmp(debuff->type, "Unstable") == 0) {
+            entity->entDragon.attack = entity->fixedDragon.attack;
+            updateDebuffAnimation(entityNumber, "finish", debuff, 20, "unstable_status");
+            //g_print("TERRIFIER FINALIZADO *************************\n");
+        }
+        if(strcmp(debuff->type, "Freezing") == 0) {
+            entity->entDragon.attack = entity->fixedDragon.attack;
+            updateDebuffAnimation(entityNumber, "finish", debuff, 22, "freezing_status");
+            //g_print("TERRIFIER FINALIZADO *************************\n");
+        }
 
         strcpy(debuff->type, "");
     }
     return 0;
 }
 
+int haveDebuff(gchar *type, Entity ent) {
+    for(int i=0; i<4; i++) {
+        if(g_strcmp0(ent.entityDebuffs[i].type, type) == 0)
+            return 1;
+    }
+    return 0;
+}
 // ###############################################################################
 // Damage
 // ###############################################################################

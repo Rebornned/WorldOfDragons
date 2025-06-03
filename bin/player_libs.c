@@ -137,6 +137,6 @@ Dragon getplayerDragon(FILE *pFile, char *name, char *element) {
     else
         newDragon = player.dragon;
 
-    g_print("Novo dragão: %s do elemento: %s adicionado.\n", newDragon.name, newDragon.elemental);
+    g_print("Novo dragão: %s do elemento: %s adicionado. | Attack index: %d\n", newDragon.name, newDragon.elemental, newDragon.attack_index);
     return newDragon;
 }
