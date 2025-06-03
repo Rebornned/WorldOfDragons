@@ -25,8 +25,12 @@ int main(int argc, char *argv[]) {
     int inputInt;
 
      for(int i=0; i < 27; i++) {
+        scanf("%d", &inputInt);
+        newDragon.attack_index = inputInt;
+
         scanf("%s", inputStr);
         strcpy(newDragon.elemental, inputStr);
+        getchar();
 
         scanf("%s", inputStr);
         strcpy(newDragon.name, inputStr);

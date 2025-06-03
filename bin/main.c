@@ -560,6 +560,7 @@ void loadingSave(GtkButton *btn, gpointer data) {
     fr5_actual_dragon_index = 26;
 
     // Inicializar save do player
+    memset(&player, 0, sizeof(Player));
     playerFile = getAccountfile(currentSave);
     player = getPlayer(playerFile);
     settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
@@ -721,6 +722,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
     if (g_strcmp0(button_name, "fr5_btn_logout") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
+        memset(&player, 0, sizeof(Player));
         updateAccounts();
         set_element_in_cave(NULL, NULL);
         gtk_stack_set_visible_child_name(fr1_menu_stack, "menu_page");
@@ -839,6 +841,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
     if (g_strcmp0(button_name, "fr5_btn_battle") == 0) {
         gint dragonIndex = fr5_actual_dragon_index;
+        gchar dragonAge[30] = "";
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         //g_print("Name: %s | Unlock id: %d | actual progress: %d\n", pOriginalBeastVector[dragonIndex].name, pOriginalBeastVector[dragonIndex].unlock_id, player.actualProgress);
 
@@ -862,28 +865,25 @@ void switchPage(GtkButton *btn, gpointer user_data) {
 
             gchar *dragonBackgroundPath = g_strdup_printf("../assets/img_files/battle/%s_bg.png", pOriginalBeastVector[dragonIndex].name);
             gchar *enemyDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s.png", pOriginalBeastVector[dragonIndex].name);
-            gchar *playerDragonImgPath, dragonStage[50], *playerDragonName;
+            gchar dragonStage[50], *playerDragonName;
             gtkData *labelAnimationDataEnemy = g_malloc(sizeof(gtkData));
             
             if(player.dragon.level >= 1) {
-                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_baby_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
-                strcpy(dragonStage, "( Bebê )");
+                strcpy(dragonStage, "( Bebê )"); strcpy(dragonAge, "baby");
             }
             if(player.dragon.level >= 10) {
-                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_juvenile_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
-                strcpy(dragonStage, "( Jovem )");
+                strcpy(dragonStage, "( Jovem )"); strcpy(dragonAge, "juvenile");
             }
             if(player.dragon.level >= 50) {
-                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_adult_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
-                strcpy(dragonStage, "( Adulto )");
+                strcpy(dragonStage, "( Adulto )"); strcpy(dragonAge, "adult");
             }
             if(player.dragon.level >= 80) {
-                playerDragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_titan_wyvern_1.png", pOriginalBeastVector[dragonIndex].name);
-                strcpy(dragonStage, "( Titã )");
+                strcpy(dragonStage, "( Titã )"); strcpy(dragonAge, "titan");
             }
+            gchar *dragonImgPath = g_strdup_printf("../assets/img_files/dragons/battle_%s_%s_wyvern.png", dragonAge, player.dragon.elemental);
 
             gtk_image_set_from_file(fr6_stared_enemy_dragon, enemyDragonImgPath);
-            gtk_image_set_from_file(fr6_stared_player_dragon, playerDragonImgPath);
+            gtk_image_set_from_file(fr6_stared_player_dragon, dragonImgPath);
             gtk_image_set_from_file(fr6_stared_bg, dragonBackgroundPath);
 
             labelAnimationDataEnemy->intSingle = 1500;
@@ -946,12 +946,13 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             Battle *battleInstance = g_malloc(sizeof(Battle));
             strcpy(request, "");
             player = getPlayer(playerFile);
-            strcpy(player.dragon.img_path, playerDragonImgPath);
+            strcpy(player.dragon.img_path, dragonImgPath);
             setBattleVariables(battleInstance, player.dragon, pOriginalBeastVector[dragonIndex], player, dragonIndex);
             stopCurrentMusic();
             musicsBackground.inBattle = TRUE;
             playMusicByName(0, pOriginalBeastVector[dragonIndex].name, &audioPointer, -1);
             g_timeout_add(9420, settingBattleWindow, battleInstance);
+            free(dragonImgPath);
         }
         else {
             GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr5_coliseum"));
@@ -1783,8 +1784,6 @@ gboolean startBattle(gpointer data) {
 gboolean onBattle(gpointer data) {
     Game *game = (Game*) data;
     GtkLabel *fr6_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr6_tittle_label"));
-    //g_print("Informações de batalha turno %d\n", game->battle->actualTurn);
-    //g_print("Nível do player: %d | Nível do inimigo: %d | Recompensa de Xp: %d\n", game->battle->EntityOne.entDragon.level, game->battle->EntityTwo.entDragon.level, game->battle->expReward);
     
     // Início do round
 
@@ -1811,16 +1810,16 @@ gboolean onBattle(gpointer data) {
     animData->lbLvl = fr7_label_lvl;
     animData->wdLvlUpText = fr7_levelup_text;
 
-     // Derrota do player
-     if(game->battle->EntityOne.entDragon.health <= 0) {
-        GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
-        settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL, FALSE);
-        playSoundByName(3000, "defeat", &audioPointer, 0);
-        game->battle->expReward *= 0.1;
-        settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
-        labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
-        labeltextModifier(fr7_result_newbeast_legendary, "");
-        }
+    // Derrota do player
+    if(game->battle->EntityOne.entDragon.health <= 0) {
+    GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
+    settingTimedVideoPlay(fr7_result_animation, 3000, 91, "defeat", 0, NULL, FALSE);
+    playSoundByName(3000, "defeat", &audioPointer, 0);
+    game->battle->expReward *= 0.1;
+    settingTimedImageModifier(4080, fr7_result_img, "../assets/img_files/defeat.png");
+    labeltextModifier(fr7_result_text2, "Não desista, continue e se torne o mais forte!");
+    labeltextModifier(fr7_result_newbeast_legendary, "");
+    }
     
     // Vitória do player
     else if(game->battle->EntityTwo.entDragon.health <= 0) {
@@ -1885,7 +1884,6 @@ gboolean onBattle(gpointer data) {
         stopCurrentMusic();
         return FALSE;
     }
-    
     // Turno do player
     if(game->battle->entityTurn == 1 && !game->doors.playerPlayed && !game->doors.finishedBattle) {
         gint playerAttack = game->battle->EntityOne.entDragon.attack;
@@ -1894,7 +1892,7 @@ gboolean onBattle(gpointer data) {
         gint duplicated = 0;
         gint dragonDifficult = game->battle->difficult;
         gint precision = 0;
-
+        gint attack_index = game->battle->EntityOne.entDragon.attack_index;
         // Arrasta a barra para sinalizar quem está atacando
         gtk_fixed_move(game->fixed, game->actualTurn, 17, 165);
         
@@ -1904,6 +1902,19 @@ gboolean onBattle(gpointer data) {
             for(int i=0; i<4; i++) {
                 gchar *object = g_strdup_printf("fr6_btn_attack%d", i+1);
                 GtkWidget *fr6_btn_attack = GTK_WIDGET(gtk_builder_get_object(builder, object));
+                gtk_button_set_label(GTK_BUTTON(fr6_btn_attack), pAttackVector[i + attack_index].name);
+                if(i > 1) {
+                    gchar *colors[3] = {"color_029AF8", "color_FF4D00", "color_AEAEAE"};
+                    GtkStyleContext *btn_context = gtk_widget_get_style_context(fr6_btn_attack);
+                    gint currentColor = 0;
+                    if(g_strcmp0(game->battle->EntityOne.entDragon.elemental, "ice") == 0) currentColor = 0;
+                    else if(g_strcmp0(game->battle->EntityOne.entDragon.elemental, "fire") == 0) currentColor = 1;
+                    else if(g_strcmp0(game->battle->EntityOne.entDragon.elemental, "wind") == 0) currentColor = 2;
+                    for(int i=0; i<3; i++) {
+                        gtk_style_context_remove_class(btn_context, colors[i]);
+                    }
+                    gtk_style_context_add_class(btn_context, colors[currentColor]);
+                }
                 if(game->battle->EntityOne.skillsCooldown[i] > 0) {
                     gtk_widget_set_sensitive(fr6_btn_attack, FALSE);
                     gtk_widget_set_opacity(fr6_btn_attack, 0.5);
@@ -2642,7 +2653,6 @@ gboolean timedLabelAnimation(gpointer data) {
     g_free(labelData);
     return FALSE;
 }
-
 // Move uma widget da tela para um novo local em forma de animação
 gboolean moveWidgetAnimation(gpointer data) {
     gtkAnimationData *widgetData = (gtkAnimationData*) data;
@@ -2672,11 +2682,9 @@ gboolean moveWidgetAnimation(gpointer data) {
         widgetData->totalLoops -= 1;
         return TRUE;
     }
-   
     g_free(widgetData);
     return FALSE;
 }
-
 // Restaura a opacidade de um botão
 gboolean btn_animation_rest_opacity(gpointer data) {
     GtkWidget *button = GTK_WIDGET(data); // Converte o gpointer para GtkWidget*
@@ -2741,7 +2749,6 @@ void settingUpdatelvlBarAnimation(gint exp, GtkLabel *lvlTxt, GtkLabel *expTxt, 
 
     updateDataCave();
 }
-
 // Exibe o level up animado em cima da barra de nível
 gboolean levelUpAnimation(gpointer data) {
     gtkLevelUpAnimationData *animData = (gtkLevelUpAnimationData*) data;
@@ -2754,7 +2761,6 @@ gboolean levelUpAnimation(gpointer data) {
         
     return G_SOURCE_REMOVE;
 }
-
 // Aumenta o status da barra de nível
 gboolean updateBarAnimation(gpointer data) {
     gtkLevelUpAnimationData *animData = (gtkLevelUpAnimationData*) data;
@@ -2766,7 +2772,6 @@ gboolean updateBarAnimation(gpointer data) {
     }
     return G_SOURCE_REMOVE;
 }
-
 // Mostra a quantidade de atributos aleatórios gerados ao treinar o dragão
 gboolean atributeUpAnimation(gpointer data) {
     int actualHeight = GPOINTER_TO_INT(data);
@@ -2779,7 +2784,7 @@ gboolean atributeUpAnimation(gpointer data) {
     gtk_widget_set_opacity(fr5_cave_attack_up, 1.0 - actualHeight*0.1);
     gtk_widget_set_opacity(fr5_cave_defense_up, 1.0 - actualHeight*0.1);
     gtk_widget_set_opacity(fr5_cave_speed_up, 1.0 - actualHeight*0.1);
-    return G_SOURCE_REMOVE;
+    return G_SOURCE_REMOVE; 
 }
 
 // Carrega todas as texturas dos frames
@@ -2802,9 +2807,7 @@ void registerTexturesAnimations() {
     loadAnimationFrames("../assets/img_files/animations/battle_animations/bite_crunch_animation", 30, 16); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/battle_animations/scratch_claw_animation_ent2", 40, 17); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/common/dragon_grow_animation/dragon_grow_animation", 61, 18); // Animação de Evolução
-
 }
-
 // Carrega os frames para o vetor
 void loadAnimationFrames(gchar *path, gint totalFrames, gint animationIndex) {
     for (int i = 0; i < totalFrames; i++) {

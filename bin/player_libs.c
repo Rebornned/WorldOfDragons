@@ -104,7 +104,9 @@ Dragon trainplayerDragon(Dragon dragon, int lvls) {
             dragon.health += random_choice(1, 3);
         }
         */
-            
+        if(g_strcmp0(dragon.elemental, "wind") == 0)
+            dragon.speed += random_choice(1, 4);
+
         dragon.attack += random_choice(1, 3);
         dragon.defense += random_choice(1, 2);
         dragon.speed += random_choice(2, 4);
@@ -124,6 +126,10 @@ Dragon getplayerDragon(FILE *pFile, char *name, char *element) {
         newDragon.attack = 4;
         newDragon.defense = 4;
         newDragon.speed = 4;
+        if(g_strcmp0(element, "ice") == 0) newDragon.attack_index = 0;
+        if(g_strcmp0(element, "fire") == 0) newDragon.attack_index = 2;
+        if(g_strcmp0(element, "wind") == 0) newDragon.attack_index = 4;
+
         strcpy(newDragon.elemental, element);
         strcpy(newDragon.name, name);
         changePlayerStatus(pFile, -1, -1, -1, -1, -1, -1, &newDragon);

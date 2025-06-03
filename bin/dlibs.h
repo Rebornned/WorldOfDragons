@@ -47,6 +47,7 @@ typedef struct {
     char elemental[30];
     float multiplicator;
     int cooldownAttack;
+    int index_addition;
     int recharge;
     int precision;
 } Attack;
@@ -65,6 +66,7 @@ typedef struct {
     char img_path[400];
     char length[150];
     char age[150];
+    int attack_index;
     int unlock_id;
     int abs_age;
     int level;

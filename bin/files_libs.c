@@ -299,7 +299,7 @@ int printfDragonvector(Dragon * vector, int length) {
         return 1;
 
     for(int i=0; i < length; i++) {
-        printf("Elemento: %s | Nome: %s | Historia: %s | Caminho: %s\n", vector[i].elemental, vector[i].name, vector[i].history, vector[i].img_path);
+        printf("Index %d | Elemento: %s | Nome: %s | Historia: %s | Caminho: %s\n",vector[i].attack_index, vector[i].elemental, vector[i].name, vector[i].history, vector[i].img_path);
         printf("Level: %d | Idade: %d | Ataque: %d\n", vector[i].level, vector[i].abs_age, vector[i].attack);
         printf("Defesa: %d | Velocidade: %d | Vida: %d\n", vector[i].defense, vector[i].speed, vector[i].health);
         printf("=============================================\n");
