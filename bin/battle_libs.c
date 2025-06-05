@@ -15,7 +15,7 @@ int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 // ******************************************************************************
 // Damage
-int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
+int causeDamage(int damage, float multiplicator, int precision, char *type, Dragon *enemy);
 // ******************************************************************************
 // Turns
 int startTurn(Battle *battleInstance, Game *game);
@@ -229,7 +229,7 @@ int haveDebuff(gchar *type, Entity ent) {
 // Damage
 // ###############################################################################
 // Funcao que calcula o dano que sera causado a entidade
-int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy) {
+int causeDamage(int damage, float multiplicator, int precision, char *type, Dragon *enemy) {
     if(precision <= 0)
         return -1; // MISS
     int choiceVector[precision], randomNumber, canHit = True, totalDamage = 0;

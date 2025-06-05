@@ -39,6 +39,9 @@ typedef struct {
     gint posY;
     gint width;
     gint height;
+    gint moveTiming;
+    gint finalX;
+    gboolean move;
 } WidgetAnimationData;
 
 typedef struct {
@@ -280,7 +283,7 @@ int attacksLength(FILE *pFile);
 //###################################################################################
 void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEnt, Player player, gint dragonIndex);
 int startTurn(Battle *battleInstance, Game *game);
-int causeDamage(int damage, float multiplicator, int precision, Dragon *enemy);
+int causeDamage(int damage, float multiplicator, int precision, char *type, Dragon *enemy);
 int debuffTick(Debuff *debuff, Entity *entity, gint entityNumber, Game *game);
 int applyDebuff(gchar *debuffType, gint turns, Entity *entity, gint *duplicated);
 int haveDebuff(gchar *type, Entity ent);
@@ -301,12 +304,13 @@ void updateDebuffAnimation(gint entityNumber, gchar *type, Debuff *debuff, gint 
 void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gchar *animationName, gint isLoop, gint *cancelAnimation, gboolean canDestroy);
 gboolean delayedStartAnimation(gpointer data);
 void startAnimation(GtkWidget *widget, gint animationIndex, gint totalFrames, gint isLoop, gint *cancelAnimation, gchar *animationName, gboolean canDestroy);
-void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint posX, gint posY, gint width, gint height);
+void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint posX, gint posY, gint width, gint height, gint moveTiming, gboolean move, gint finalX);
 gboolean delayedNewWidgetAnimation(gpointer data);
 gboolean timedShakeScreen(gpointer data);
 gboolean shakeAnimation(gpointer user_data);
 void shakeScreen(gint timeout, GtkWindow *window, gint duration, gint intensity);
 void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, gchar *animationName, GtkFixed *fixed, gint size);
+void settingTimedMoveWidgetAnimation(gint timerAnimation, gint timeout, GtkWidget *widget, GtkFixed *fixed, gint actualX, gint actualY, gint finalPosX, gint finalPosY);
 // =================================================================================
 
 // Modifiers

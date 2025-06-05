@@ -105,7 +105,7 @@ gboolean keyPressed;
 Game *game;
 
 // Animations
-GdkPixbuf *pAnimationsFrameVector[30][500];  // Animations array
+GdkPixbuf *pAnimationsFrameVector[40][500];  // Animations array
 
 // Audio
 gboolean finishedMusic;
@@ -1388,7 +1388,7 @@ void updatelvlDragon(GtkButton *btn, gpointer data) {
         player = getPlayer(playerFile);
         GtkFixed *fixed = GTK_FIXED(gtk_builder_get_object(builder, "fr5_cave_actualdragon"));
         if(player.dragon.level == 1 || player.dragon.level == 10 || player.dragon.level == 50 || player.dragon.level == 80)
-            settingTimedNewWidgetAnimation(0, 61, "dragon_grow_animation", fixed, 0, 0, 295, 283);
+            settingTimedNewWidgetAnimation(0, 61, "dragon_grow_animation", fixed, 0, 0, 295, 283, 0, FALSE, -1);
 
         updateDataCave();
     }
@@ -1796,6 +1796,7 @@ gboolean settingBattleWindow(gpointer data) {
     game_pointer->doors.finishedBattle = FALSE;
     game_pointer->doors.cooldownChecked = FALSE;
     strcpy(game_pointer->minigame->pAction, "");
+    strcpy(game_pointer->battle->currentDebuffType, "");
     game = game_pointer;
     g_timeout_add(3000, startBattle, game);
 
@@ -1812,9 +1813,6 @@ gboolean onBattle(gpointer data) {
     Game *game = (Game*) data;
     GtkLabel *fr6_tittle_label = GTK_LABEL(gtk_builder_get_object(builder, "fr6_tittle_label"));
     
-    // Início do round
-
-    // Sessão de vitória ou derrota
     GtkStack *fr7_stack = GTK_STACK(gtk_builder_get_object(builder, "fr7_stack"));
     GtkLabel *fr7_result_xp_text = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_xp_text"));
     GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
@@ -1836,7 +1834,7 @@ gboolean onBattle(gpointer data) {
     animData->wdLevelBar = fr7_level_bar;
     animData->lbLvl = fr7_label_lvl;
     animData->wdLvlUpText = fr7_levelup_text;
-
+    // Sessão de vitória ou derrota
     // Derrota do player
     if(game->battle->EntityOne.entDragon.health <= 0) {
     GtkLabel *fr7_result_newbeast_legendary = GTK_LABEL(gtk_builder_get_object(builder, "fr7_result_newbeast_legendary"));
@@ -1912,6 +1910,7 @@ gboolean onBattle(gpointer data) {
         return FALSE;
     }
     
+    // Início do round
     // Turno do player
     if(haveDebuff("Freezing", game->battle->EntityOne) == 1 && !game->doors.playerPlayed && game->battle->entityTurn == 1 && !game->doors.finishedBattle) {
         game->doors.playerPlayed = TRUE;
@@ -2035,13 +2034,13 @@ gboolean onBattle(gpointer data) {
                 // Sem alterações
             }
             if(barResult == 1) { // Ataque fraco - parte vermelha da barra
-                playerAttack -= playerAttack * 0.25;
+                playerAttack -= playerAttack * 0.2;
             }
             if(barResult == 0) { // Falha - Parte preta da barra
                 playerAttack -= playerAttack * 0.5;
             }
             if(haveDebuff("Unstable", game->battle->EntityOne) == 1)
-                precision = -25;
+                precision = -25; // Quantidade de precisão reduzida
             
             g_print("resultado da barra: %d\n", barResult);
         } 
@@ -2052,10 +2051,10 @@ gboolean onBattle(gpointer data) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
             
-            precision = 100 - precision;
+            precision = 100 + precision;
             g_print("Precisão atual: %d | scratch\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 0;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.0, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.0, precision, "physic", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             settingAttackAnimation(500, 1, 36, "scratch_claw_animation", game->fixed, 252);
 
@@ -2084,12 +2083,13 @@ gboolean onBattle(gpointer data) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
             
-            precision = 90 - precision;
+            precision = 90 + precision;
             g_print("Precisão atual: %d | stalactite\n", precision);
-            game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 3;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.5, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 0;//3;
+            game->battle->totalDamage = causeDamage(playerAttack, 1.5, precision, "ice", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
-            //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
+            settingAttackAnimation(500, 1, 42, "stalactite_animation", game->fixed, 192);
+
             if(random_choice(1, 100) <= 25) {
                 game->battle->debuffTurns = 2;
                 game->battle->currentDebuffAnimation = 21;
@@ -2103,10 +2103,10 @@ gboolean onBattle(gpointer data) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
             
-            precision = 85 - precision;
+            precision = 85 + precision;
             g_print("Precisão atual: %d | blizzard\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 6;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.1, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.1, precision, "ice", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             //settingAttackAnimation(500, 1, 36, "blizzard", game->fixed, 252);
             game->battle->debuffTurns = 2;
@@ -2119,10 +2119,10 @@ gboolean onBattle(gpointer data) {
             strcpy(game->minigame->pAction, "");
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
-            precision = 80 - precision;
+            precision = 80 + precision;
             g_print("Precisão atual: %d | fire\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 3;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.4, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.4, precision, "fire", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
 
@@ -2136,10 +2136,10 @@ gboolean onBattle(gpointer data) {
             strcpy(game->minigame->pAction, "");
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
-            precision = 60 - precision;
+            precision = 60 + precision;
             g_print("Precisão atual: %d | hell\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 6;
-            game->battle->totalDamage = causeDamage(playerAttack, 2.2, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 2.2, precision, "fire", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
 
@@ -2153,10 +2153,10 @@ gboolean onBattle(gpointer data) {
             strcpy(game->minigame->pAction, "");
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
-            precision = 95 - precision;
+            precision = 95 + precision;
             g_print("Precisão atual: %d | gale\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 3;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.3, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.3, precision, "wind", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
             
@@ -2173,10 +2173,10 @@ gboolean onBattle(gpointer data) {
             g_print("==================================================================\n");
             g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
             
-            precision = 70 - precision;
+            precision = 70 + precision;
             g_print("Precisão atual: %d | storm\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 6;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.6, precision, &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.6, precision, "wind", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
             game->battle->debuffTurns = 5;
@@ -2240,15 +2240,17 @@ gboolean onBattle(gpointer data) {
                 game->battle->EntityTwo.entDragon.health = 0;
             
             // Aplicação de debuff
-            appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityTwo, &game->battle->duplicatedDebuff);
-            if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
-                updateDebuffAnimation(1, "apply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+            if(g_strcmp0(game->battle->currentDebuffType, "") != 0) {
+                appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityTwo, &game->battle->duplicatedDebuff);
+                if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
+                    updateDebuffAnimation(1, "apply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                }
+                if(game->battle->duplicatedDebuff == 1) {
+                    updateDebuffAnimation(1, "reapply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                    g_print("Debuff reaplicado com sucesso.\n");
+                }
+                g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
             }
-            if(game->battle->duplicatedDebuff == 1) {
-                updateDebuffAnimation(1, "reapply", &game->battle->EntityTwo.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
-                g_print("Debuff reaplicado com sucesso.\n");
-            }
-            g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
             retroBarAnimationStart(500, fr6_life_bar_ent2, beforeHealth, game->battle->EntityTwo.entDragon.health);
             logStartAnimation(damageText, "fr5_dragons_defeat", "font_size_40px", 1000, 45, 116, random_choice(667, 836), random_choice(270, 310), 30, game->fixed);
             g_print("Dano total causado: %d\n", game->battle->totalDamage);
@@ -2304,7 +2306,6 @@ gboolean onBattle(gpointer data) {
                     currentAttack = random_choice(0, 3);
                 }
             }
-
             if(game->battle->difficult == 2 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Média
                 currentAttack = random_choice(0, 3);
                 game->minigame->attackRecharge = 0;
@@ -2313,12 +2314,10 @@ gboolean onBattle(gpointer data) {
                     currentAttack = random_choice(0, 3);
                 }        
             }
-
             if(game->battle->difficult == 3 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
                 currentAttack = 0;
                 game->minigame->attackRecharge = 0;
                 game->minigame->criticalChance = 10;
-
                 // Inteligencia para usar sempre o ataque mais forte
                 for(gint i=3; i>=0; i--) {
                     if(i != 1 && game->battle->EntityTwo.skillsCooldown[i] == 0) {
@@ -2327,7 +2326,6 @@ gboolean onBattle(gpointer data) {
                     }
                 }       
             }
-
             if(game->battle->difficult == 4 && g_strcmp0(game->minigame->eAction, "") == 0) { // Dificuldade Difícil
                 currentAttack = 0;
                 game->minigame->attackRecharge = -1;
@@ -2341,20 +2339,21 @@ gboolean onBattle(gpointer data) {
                 }  
             }
             
-
             if(currentAttack >= 0 && currentAttack <= 1)
                 attack_index = 0;
                 
-            if(g_strcmp0(pAttackVector[request+attack_index].name, "Arranhão") == 0) strcpy(game->minigame->eAction, "scratch");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Estalactite") == 0) strcpy(game->minigame->eAction, "stalactite");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Nevasca") == 0) strcpy(game->minigame->eAction, "blizzard");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Incendio") == 0) strcpy(game->minigame->eAction, "fire");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Inferno") == 0) strcpy(game->minigame->eAction, "hell");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Vendaval") == 0) strcpy(game->minigame->eAction, "gale");
-            else if(g_strcmp0(pAttackVector[request+attack_index].name, "Tormenta") == 0) strcpy(game->minigame->eAction, "storm");
+            if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Arranhão") == 0) strcpy(game->minigame->eAction, "scratch");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Rugido") == 0) strcpy(game->minigame->eAction, "roar");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Estalactite") == 0) strcpy(game->minigame->eAction, "stalactite");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Nevasca") == 0) strcpy(game->minigame->eAction, "blizzard");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Incendio") == 0) strcpy(game->minigame->eAction, "fire");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Inferno") == 0) strcpy(game->minigame->eAction, "hell");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Vendaval") == 0) strcpy(game->minigame->eAction, "gale");
+            else if(g_strcmp0(pAttackVector[currentAttack+attack_index].name, "Tormenta") == 0) strcpy(game->minigame->eAction, "storm");
 
             game->doors.eAttackReady = TRUE;
             game->minigame->pRequest = currentAttack;
+            g_print("Ataque inimigo: %s | currentAttack: %d\n", pAttackVector[currentAttack+attack_index].name, currentAttack);
         }
         // Início do minigame challenge     
         if(!game->minigame->isActive && !game->doors.mgChallengerPlayed) { // Condicional
@@ -2400,19 +2399,19 @@ gboolean onBattle(gpointer data) {
 
             // Efeito do debuff de instabilidade
             if(haveDebuff("Unstable", game->battle->EntityTwo) == 1)
-                precision = -25;
+                precision = -25; // Quantida de precisão reduzida
             // Ataque Arranhão
             if(g_strcmp0(game->minigame->eAction, "scratch") == 0) {
                 strcpy(game->minigame->eAction, "");
                 g_print("==================================================================\n");
                 g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
               
-                precision = 100 - precision;
+                precision = 100 + precision;
                 g_print("Precisão atual: %d | scratch\n", precision);
                 g_timeout_add(2000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 2, 40, "scratch_claw_animation", game->fixed, 252);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 0;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.0, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.0, precision, "physic", &game->battle->EntityOne.entDragon);
                 
                 game->battle->debuffTurns = 3;
                 game->battle->currentDebuffAnimation = 5;
@@ -2420,9 +2419,9 @@ gboolean onBattle(gpointer data) {
                 strcpy(game->battle->currentDebuffStatus, "broken_status");
             }
             // Ataque Rugido
-             if(g_strcmp0(game->minigame->eAction, "roar") == 0) {
+            if(g_strcmp0(game->minigame->eAction, "roar") == 0) {
                 strcpy(game->minigame->eAction, "");
-                game->battle->EntityTwo.skillsCooldown[3] = 6 + game->minigame->attackRecharge;
+                game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6 + game->minigame->attackRecharge;
                 game->battle->totalDamage = 0;
                 g_timeout_add(3000, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 playSoundByName(0, "dragon_start_roar", &audioPointer, 0);
@@ -2441,12 +2440,12 @@ gboolean onBattle(gpointer data) {
                 g_print("==================================================================\n");
                 g_print("Vida atual do player: %d\n", game->battle->EntityOne.entDragon.health);
                 
-                precision = 90 - precision;
+                precision = 90 + precision;
                 g_print("Precisão atual: %d | stalactite\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.5, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.5, precision, "ice", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
-                //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
+                settingAttackAnimation(500, 2, 42, "stalactite_animation", game->fixed, 192);
                 if(random_choice(1, 100) <= 25) {
                     game->battle->debuffTurns = 2;
                     game->battle->currentDebuffAnimation = 21;
@@ -2460,10 +2459,10 @@ gboolean onBattle(gpointer data) {
                 g_print("==================================================================\n");
                 g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
                 
-                precision = 85 - precision;
+                precision = 85 + precision;
                 g_print("Precisão atual: %d | blizzard\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.1, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.1, precision, "ice", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 //settingAttackAnimation(500, 1, 36, "blizzard", game->fixed, 252);
                 game->battle->debuffTurns = 2;
@@ -2476,10 +2475,10 @@ gboolean onBattle(gpointer data) {
                 strcpy(game->minigame->eAction, "");
                 g_print("==================================================================\n");
                 g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
-                precision = 80 - precision;
+                precision = 80 + precision;
                 g_print("Precisão atual: %d | fire\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.4, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.4, precision, "fire", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
 
@@ -2490,13 +2489,13 @@ gboolean onBattle(gpointer data) {
             }
             // Ataque Inferno
             if(g_strcmp0(game->minigame->eAction, "hell") == 0) {
-                strcpy(game->minigame->enemyRoars, "");
+                strcpy(game->minigame->eAction, "");
                 g_print("==================================================================\n");
                 g_print("Vida atual do Player: %d\n", game->battle->EntityOne.entDragon.health);
-                precision = 60 - precision;
+                precision = 60 + precision;
                 g_print("Precisão atual: %d | hell\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
-                game->battle->totalDamage = causeDamage(enemyAttack, 2.2, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 2.2, precision, "fire", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
 
@@ -2510,10 +2509,10 @@ gboolean onBattle(gpointer data) {
                 strcpy(game->minigame->eAction, "");
                 g_print("==================================================================\n");
                 g_print("Vida atual do inimigo: %d\n", game->battle->EntityOne.entDragon.health);
-                precision = 95 - precision;
+                precision = 95 + precision;
                 g_print("Precisão atual: %d | gale\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.3, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.3, precision, "wind", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 //settingAttackAnimation(500, 1, 39, "fire_breath_animation", game->fixed, 192);
                 // Check de porcentagem -> 50%
@@ -2530,10 +2529,10 @@ gboolean onBattle(gpointer data) {
                 g_print("==================================================================\n");
                 g_print("Vida atual do inimigo: %d\n", game->battle->EntityTwo.entDragon.health);
                 
-                precision = 70 - precision;
+                precision = 70 + precision;
                 g_print("Precisão atual: %d | storm\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 6;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.6, precision, &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.6, precision, "wind", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 //settingAttackAnimation(500, 1, 36, "stalactite", game->fixed, 252);
                 game->battle->debuffTurns = 5;
@@ -2544,7 +2543,7 @@ gboolean onBattle(gpointer data) {
 
             // Aplica o Rugido
             if(game->doors.eFinishedAttack && game->battle->totalDamage == 0) {
-                 // Aplicação de debuff
+                // Aplicação de debuff
                 appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
                 if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
                     updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
@@ -2567,21 +2566,22 @@ gboolean onBattle(gpointer data) {
                 if(game->minigame->criticalChance > 0) { // Taxa crítica
                     if(random_choice(1, 100) <= game->minigame->criticalChance) {
                         logStartAnimation("CRITICAL", "color_FF0000", "font_size_40px", 1000, 44, 175, 412, 360, 10, game->fixed);
-                        game->battle->totalDamage *= 1.5;
+                        game->battle->totalDamage *= 1.2;
                     }
                 }
 
                 // Aplicação de debuff
-                appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
-                if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
-                    updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                if(g_strcmp0(game->battle->currentDebuffType, "") != 0) {
+                    appliedDebuff =  applyDebuff(game->battle->currentDebuffType, game->battle->debuffTurns, &game->battle->EntityOne, &game->battle->duplicatedDebuff);
+                    if(appliedDebuff >= 0 && appliedDebuff <= 4 && game->battle->duplicatedDebuff == 0) {
+                        updateDebuffAnimation(2, "apply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                    }
+                    if(game->battle->duplicatedDebuff == 1) {
+                        updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
+                        g_print("Debuff reaplicado com sucesso.\n");
+                    }
+                    g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
                 }
-                if(game->battle->duplicatedDebuff == 1) {
-                    updateDebuffAnimation(2, "reapply", &game->battle->EntityOne.entityDebuffs[appliedDebuff], game->battle->currentDebuffAnimation, game->battle->currentDebuffStatus);
-                    g_print("Debuff reaplicado com sucesso.\n");
-                }
-                g_print("Debuff aplicado no slot: %d\n", appliedDebuff);
-
                 gchar *damageText = g_strdup_printf("-%d", game->battle->totalDamage);
                 game->battle->EntityOne.entDragon.health -= game->battle->totalDamage;
                 if(game->battle->EntityOne.entDragon.health < 0)
@@ -2613,6 +2613,7 @@ gboolean onBattle(gpointer data) {
     if(game->battle->turnPlayed == TRUE) {
         startTurn(game->battle, game);
         playSoundByName(0, "turn_change", &audioPointer, 0);
+        strcpy(game->battle->currentDebuffType, "");
         game->battle->totalDamage = 0;
         if(game->battle->entityTurn == 1) {
             game->doors.pAttackReady = FALSE;
@@ -3013,11 +3014,13 @@ void registerTexturesAnimations() {
     loadAnimationFrames("../assets/img_files/animations/battle_animations/scratch_claw_animation_ent1", 36, 15); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/battle_animations/bite_crunch_animation", 30, 16); // Arranhão
     loadAnimationFrames("../assets/img_files/animations/battle_animations/scratch_claw_animation_ent2", 40, 17); // Arranhão
-    loadAnimationFrames("../assets/img_files/animations/common/dragon_grow_animation/dragon_grow_animation", 61, 18); // Animação de Evolução
-    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/unstable", 31, 19); // Debuff de quebra de armadura finalizado
-    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/unstable_finish", 31, 20); // Debuff de quebra de armadura finalizado
-    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/freezing", 31, 21); // Debuff de quebra de armadura finalizado
-    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/freezing_finish", 31, 22); // Debuff de quebra de armadura finalizado
+    loadAnimationFrames("../assets/img_files/animations/common/dragon_grow_animation", 61, 18); // Animação de Evolução
+    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/unstable", 31, 19); // Debuff de instabilidade
+    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/unstable_finish", 31, 20); // Debuff de instabilidade finalizado
+    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/freezing", 31, 21); // Debuff de congelamento
+    loadAnimationFrames("../assets/img_files/animations/debuffs_animations/freezing_finish", 31, 22); // Debuff de congelamento finalizado
+    loadAnimationFrames("../assets/img_files/animations/battle_animations/stalactite_animation_ent1", 42, 23); // Stalactite
+    loadAnimationFrames("../assets/img_files/animations/battle_animations/stalactite_animation_ent2", 42, 24); // Stalactite
 
 }
 // Carrega os frames para o vetor
@@ -3034,6 +3037,7 @@ void loadAnimationFrames(gchar *path, gint totalFrames, gint animationIndex) {
             g_printerr("Erro ao carregar frame %d: %s\n", i + 1, filename);
         }*/
     }
+    
 }
 
 gboolean on_draw_animation(GtkWidget *widget, cairo_t *cr, gpointer data) {

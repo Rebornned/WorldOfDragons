@@ -69,6 +69,7 @@ void initAudio() {
     loadAudio("../assets/sounds/battle/dragon_start_roar.wav", "dragon_start_roar", "sound", 18, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/dragon_middle_roar.wav", "dragon_middle_roar", "sound", 19, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/dragon_end_roar.wav", "dragon_end_roar", "sound", 20, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/stalactite_attack.wav", "stalactite_attack", "sound", 21, &audioPointer, 50);
 
     
     // Músicas
@@ -112,7 +113,7 @@ gint loadAudio(gchar *path, gchar *name, gchar *type, gint indexSound, audioAsse
             fprintf(stderr, "Erro ao carregar música de fundo: %s\n", Mix_GetError());
             return -1;
         }
-        g_print("Música: %s | Carregada com sucesso!!!\n", audioAssets->musics[indexSound].name);
+        //g_print("Música: %s | Carregada com sucesso!!!\n", audioAssets->musics[indexSound].name);
         return 0;
     }
     if(strcmp(type, "sound") == 0) {
@@ -124,7 +125,7 @@ gint loadAudio(gchar *path, gchar *name, gchar *type, gint indexSound, audioAsse
             fprintf(stderr, "Erro ao carregar efeito sonoro: %s\n", Mix_GetError());
             return -1;
         }
-        g_print("Efeito: %s | Carregado com sucesso!!!\n", audioAssets->sounds[indexSound].name);
+        //g_print("Efeito: %s | Carregado com sucesso!!!\n", audioAssets->sounds[indexSound].name);
         return 0;
     }
 }
