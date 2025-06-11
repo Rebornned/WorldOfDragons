@@ -5,6 +5,7 @@
 
 # Pastas de build e executáveis
 bin_aux/
+extract_all/
 winDistribution/
 *.so
 *.a

@@ -153,6 +153,8 @@ Account * readAccountvector(FILE *pFile) {
     rewind(pFile);
     int count = 0;
     while(fread(&account, sizeof(Account), 1, pFile) != 0) {
+        //int index = account.username[4] - '0';
+        //g_print("Index atual lido: %d | username: %s\n", count, account.username);
         vector[count++] = account;
     }
     rewind(pFile);

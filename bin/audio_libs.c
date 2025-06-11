@@ -70,8 +70,11 @@ void initAudio() {
     loadAudio("../assets/sounds/battle/dragon_middle_roar.wav", "dragon_middle_roar", "sound", 19, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/dragon_end_roar.wav", "dragon_end_roar", "sound", 20, &audioPointer, 100);
     loadAudio("../assets/sounds/battle/stalactite_attack.wav", "stalactite_attack", "sound", 21, &audioPointer, 50);
+    loadAudio("../assets/sounds/battle/freezing_status.wav", "freezing_status", "sound", 22, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/fire_bolt.wav", "fire_bolt", "sound", 23, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/wind_slash.wav", "wind_slash", "sound", 24, &audioPointer, 100);
+    loadAudio("../assets/sounds/battle/storm_wind.wav", "storm_wind", "sound", 25, &audioPointer, 100);
 
-    
     // Músicas
     Mix_VolumeMusic(64); // 50% de volume da música
     // Bestiário Background

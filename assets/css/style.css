@@ -785,3 +785,9 @@ Frame 5 - Colíseu
 .color_AEAEAE {
     color: #AEAEAE;
 }
+
+.white_background {
+    background-color: white;
+    background: white;
+    background-image: linear-gradient(white, white);
+}

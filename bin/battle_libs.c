@@ -35,9 +35,12 @@ void setBattleVariables(Battle *battleInstance, Dragon playerEnt, Dragon enemyEn
     battleInstance->actualTurn = 1;
     battleInstance->turnPlayed = 0;
     battleInstance->totalDamage = 0;
+    battleInstance->expReward = player.requiredExp;
     // Verifica a quantidade de xp recebida de acordo com o balanceamento
     //g_print("Level player comparado: %d | level inimigo comparado: %d\n", playerEnt.level, enemyEnt.level);
     //g_print("Xp requirido padrão: %d\n", player.requiredExp);
+    
+    g_print("EXPERIENCIA, GRAU: %d | REQUERIDO: %d\n", battleInstance->expReward, player.requiredExp);
 
     if(player.level > enemyEnt.level) {
         if(player.level - enemyEnt.level >= 2)
@@ -246,6 +249,24 @@ int causeDamage(int damage, float multiplicator, int precision, char *type, Drag
         if(totalDamage < 0)
             return -1;
     }
+    const gchar* enemyElement = enemy->elemental;
+    if(g_strcmp0(type, enemyElement) == 0) {
+        totalDamage *= 0.9; g_print("BALANCEADO\n");// Mesmo elemento - Resistência 10%
+    }
+
+    else if(g_strcmp0(type, "ice") == 0) { // Fraco e Forte - Gelo
+        if(g_strcmp0(enemyElement, "fire") == 0) {totalDamage *= 0.75; g_print("FRACO\n");} // Gelo fraco contra fogo 
+        if(g_strcmp0(enemyElement, "wind") == 0) {totalDamage *= 1.25; g_print("FORTE\n");}// Gelo forte contra vento
+    }
+    else if(g_strcmp0(type, "fire") == 0) { // Fraco e Forte - Fogo
+        if(g_strcmp0(enemyElement, "wind") == 0) {totalDamage *= 0.75; g_print("FRACO\n");}// Fogo fraco contra vento
+        if(g_strcmp0(enemyElement, "ice") == 0) {totalDamage *= 1.25; g_print("FORTE\n");}// Fogo forte contra gelo
+    }
+    else if(g_strcmp0(type, "wind") == 0) { // Fraco e Forte - Vento
+        if(g_strcmp0(enemyElement, "ice") == 0) {totalDamage *= 0.75; g_print("FRACO\n");}// Vento fraco contra gelo
+        if(g_strcmp0(enemyElement, "fire") == 0) {totalDamage *= 1.25; g_print("FORTE\n");}// Vento forte contra fogo
+    }
+    
     g_print("Totaldamage: %d\n", totalDamage);
     return totalDamage;
 }

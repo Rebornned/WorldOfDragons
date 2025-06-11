@@ -54,7 +54,7 @@ void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gc
     else if (g_strcmp0(animationName, "victory") == 0) animationIndex = 11;
     else if (g_strcmp0(animationName, "defeat") == 0) animationIndex = 12;
     else if (g_strcmp0(animationName, "keypress") == 0) animationIndex = 13;
-    else if (g_strcmp0(animationName, "fire_breath_animation") == 0) animationIndex = 14;
+    else if (g_strcmp0(animationName, "inferno_animation") == 0) animationIndex = 14;
     else if (g_strcmp0(animationName, "scratch_claw_animation_ent1") == 0) animationIndex = 15;
     else if (g_strcmp0(animationName, "bite_crunch_animation") == 0) animationIndex = 16;
     else if (g_strcmp0(animationName, "scratch_claw_animation_ent2") == 0) animationIndex = 17;
@@ -65,6 +65,14 @@ void settingTimedVideoPlay(GtkWidget *widget, gint timeout, gint totalFrames, gc
     else if (g_strcmp0(animationName, "freezing_status_finish") == 0) animationIndex = 22;
     else if (g_strcmp0(animationName, "stalactite_animation_ent1") == 0) animationIndex = 23;
     else if (g_strcmp0(animationName, "stalactite_animation_ent2") == 0) animationIndex = 24;
+    else if (g_strcmp0(animationName, "blizzard_animation") == 0) animationIndex = 25;
+    else if (g_strcmp0(animationName, "gale_blade_animation_ent1") == 0) animationIndex = 26;
+    else if (g_strcmp0(animationName, "gale_blade_animation_ent2") == 0) animationIndex = 27;
+    else if (g_strcmp0(animationName, "storm_burst_animation_ent1") == 0) animationIndex = 28;
+    else if (g_strcmp0(animationName, "storm_burst_animation_ent2") == 0) animationIndex = 29;
+    else if (g_strcmp0(animationName, "storm_explosion_animation") == 0) animationIndex = 30;
+    else if (g_strcmp0(animationName, "fire_bolt_animation_ent1") == 0) animationIndex = 31;
+    else if (g_strcmp0(animationName, "fire_bolt_animation_ent2") == 0) animationIndex = 32;
 
     if (animationIndex == -1) {
         g_print("Erro: Nome da animação inválido!\n");
@@ -88,6 +96,7 @@ void settingTimedNewWidgetAnimation(gint timeout, gint totalFrames, gchar *anima
         GtkWidget *widget = gtk_drawing_area_new();
         gtk_fixed_put(GTK_FIXED(fixed), widget, posX, posY);
         gtk_widget_set_size_request(widget, width, height);
+
         gtk_widget_show(widget);
         gtk_widget_realize(widget);
         gtk_widget_queue_draw(widget);
@@ -124,10 +133,6 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
     gint posY[10];
 
     if(entityNumber == 1) {
-        if(g_strcmp0(animationName, "fire_breath_animation") == 0) {
-            posX[0] = 664; posX[1] = 770;
-            posY[0] = 110; posY[1] = 193; posY[2] = 258; posY[3] = 324;
-        }
         if(g_strcmp0(animationName, "scratch_claw_animation") == 0) {
             posX[0] = random_choice(648, 710); posX[1] = random_choice(648, 710); posX[2] = random_choice(648, 710);
             posY[0] = random_choice(174, 260), posY[1] = random_choice(174, 260); posY[2] = random_choice(174, 260); 
@@ -138,13 +143,8 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
             posY[0] = random_choice(236, 280), posY[1] = random_choice(236, 280); posY[2] = random_choice(236, 280);
             posY[3] = random_choice(236, 280);  posY[4] = random_choice(236, 280); 
         }
-
     }
     else if(entityNumber == 2) {
-        if(g_strcmp0(animationName, "fire_breath_animation") == 0) {
-            posX[0] = 17; posX[1] = 124;
-            posY[0] = 114; posY[1] = 193; posY[2] = 258; posY[3] = 324;
-        }
         if(g_strcmp0(animationName, "scratch_claw_animation") == 0) {
             posX[0] = random_choice(40, 80); posX[1] = random_choice(40, 80); posX[2] = random_choice(40, 80);
             posY[0] = random_choice(174, 260), posY[1] = random_choice(174, 260); posY[2] = random_choice(174, 260); 
@@ -157,15 +157,6 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
         }
     }
     
-    if(g_strcmp0(animationName, "fire_breath_animation") == 0) {
-        for(int g=0; g<3; g++) {
-            playSoundByName(timeout + 500*g, "dracarys_breath", &audioPointer, 0);
-            for(int i=0; i < 2; i++)
-                for(int j=0; j < 4; j++) 
-                    settingTimedNewWidgetAnimation(timeout + (500*g), totalFrames, animationName, fixed, posX[i], posY[j], size, size, 0, FALSE, -1);
-        }
-    }
-
     if(g_strcmp0(animationName, "scratch_claw_animation") == 0) {
         if(entityNumber == 1) animationName = g_strdup("scratch_claw_animation_ent1");
         else if(entityNumber == 2) animationName = g_strdup("scratch_claw_animation_ent2");
@@ -183,6 +174,65 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
         }
     }
     
+    // Inferno
+    if(g_strcmp0(animationName, "inferno_animation") == 0) {
+        gint delay_step = 125;
+        gint finalX[3];
+        gint finalY[3];
+
+        if(entityNumber == 1) {
+            gint tmpX[3] = {654, 580, 687};
+            gint tmpY[3] = {82, 181, 188};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+        }
+        else if(entityNumber == 2) {
+            gint tmpX[3] = {9, 9, 139};
+            gint tmpY[3] = {74, 193, 208};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+        }
+        //g_print("size animation: %d\n", size);
+        //settingTimedNewWidgetAnimation(timeout, totalFrames, animationName, fixed, 688, 131, size, size, 0, FALSE, -1);
+
+        for(int i=0; i < 3; i++) {
+            playSoundByName(timeout + 500*i, "dracarys_breath", &audioPointer, 0);
+            for(int j=0; j < 3; j++) {
+                settingTimedNewWidgetAnimation(timeout + delay_step * (j) + i*608 , totalFrames, animationName, fixed, finalX[j], finalY[j], size, size, 0, FALSE, -1);
+            }
+        }
+    }
+
+    // Firebolt
+    if(g_strcmp0(animationName, "fire_bolt_animation") == 0) {
+        gint delay_step = 125;
+        gint finalX[12];
+        gint finalY[12];
+        gint initial = 0;
+
+        if(entityNumber == 1) {
+            animationName = g_strdup("fire_bolt_animation_ent1");
+            gint tmpX[12] = {639, 753, 639, 753, 639, 753, 639, 753, 639, 753, 639, 753};
+            gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initial = 500;
+        }
+        else if(entityNumber == 2) {
+            animationName = g_strdup("fire_bolt_animation_ent2");
+            gint tmpX[12] = {190, 68, 190, 68, 190, 68, 190, 68, 190, 68, 190, 68};
+            gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initial = 330;
+        }
+        for(int i=0; i<12; i++) {
+            playSoundByName(timeout + delay_step * i, "fire_bolt", &audioPointer, 0);
+            settingTimedNewWidgetAnimation(timeout + delay_step * i, totalFrames, animationName, fixed, initial, finalY[i], size, size, 150, TRUE, finalX[i]);
+        }
+    }
+
+    // Stalactite
     if(g_strcmp0(animationName, "stalactite_animation") == 0) {
         gint delay_step = 125;
         gint finalX[12];
@@ -191,7 +241,7 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
 
         if(entityNumber == 1) {
             animationName = g_strdup("stalactite_animation_ent1");
-            gint tmpX[12] = {679, 793, 679, 793, 679, 793, 679, 793, 679, 793, 679, 793};
+            gint tmpX[12] = {639, 753, 639, 753, 639, 753, 639, 753, 639, 753, 639, 753};
             gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
             memcpy(finalX, tmpX, sizeof(tmpX));
             memcpy(finalY, tmpY, sizeof(tmpY));
@@ -199,28 +249,107 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
         }
         else if(entityNumber == 2) {
             animationName = g_strdup("stalactite_animation_ent2");
-            gint tmpX[12] = {150, 28, 150, 28, 150, 28, 150, 28, 150, 28, 150, 28};
+            gint tmpX[12] = {190, 68, 190, 68, 190, 68, 190, 68, 190, 68, 190, 68};
             gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
             memcpy(finalX, tmpX, sizeof(tmpX));
             memcpy(finalY, tmpY, sizeof(tmpY));
             initial = 330;
         }
-        g_print("Stalactite\n");
         for(int i=0; i<12; i++) {
             playSoundByName(timeout + delay_step * (i+1), "stalactite_attack", &audioPointer, 0);
-            settingTimedNewWidgetAnimation(timeout + delay_step * i, totalFrames, animationName, fixed, initial, finalY[i], size, size, 330, TRUE, finalX[i]);
+            settingTimedNewWidgetAnimation(timeout + delay_step * i, totalFrames, animationName, fixed, initial, finalY[i], size, size, 250, TRUE, finalX[i]);
         }
-
-        //for(int i=0; i<6; i++) {
-            //
-            
-            //settingTimedNewWidgetAnimation(timeout + 250*i, totalFrames, animationName, fixed, posX[i], posY[i], size, size);
-        //}
     }
 
-    // Stalactite
-    // settingTimedMoveWidgetAnimation(330, 3000, fr6_stared_player_dragon_wid, fr6_stared_fixed_animation, -250, 18, 80, -1);
+     // Blizzard
+    if(g_strcmp0(animationName, "blizzard_animation") == 0) {
+        gint delay_step = 125;
+        gint finalX[6];
+        gint finalY[6];
 
+        if(entityNumber == 1) {
+            gint tmpX[6] = {670, 789, 661, 791, 672, 787};
+            gint tmpY[6] = {141, 125, 227, 208, 316, 301};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+        }
+        else if(entityNumber == 2) {
+            gint tmpX[6] = {149, 20, 154, 26, 147, 21};
+            gint tmpY[6] = {136, 114, 234, 208, 332, 302};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+        }
+        for(int j=0; j<2; j++)
+            for(int i=0; i<6; i++) {
+                playSoundByName(timeout + delay_step * (i+1) + (1152 * j), "stalactite_attack", &audioPointer, 0);
+                settingTimedNewWidgetAnimation(timeout + delay_step * i  + (1152 * j), totalFrames, animationName, fixed, finalX[i], finalY[i], size, size, 0, FALSE, -1);
+            }
+    }
+
+    // Gale
+    if(g_strcmp0(animationName, "gale_blade_animation") == 0) {
+        gint delay_step = 125;
+        gint finalX[12];
+        gint finalY[12];
+        gint initial = 0;
+
+        if(entityNumber == 1) {
+            animationName = g_strdup("gale_blade_animation_ent1");
+            gint tmpX[12] = {639, 753, 639, 753, 639, 753, 639, 753, 639, 753, 639, 753};
+            gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initial = 500;
+        }
+        else if(entityNumber == 2) {
+            animationName = g_strdup("gale_blade_animation_ent2");
+            gint tmpX[12] = {190, 68, 190, 68, 190, 68, 190, 68, 190, 68, 190, 68};
+            gint tmpY[12] = {124, 172, 207, 260, 291, 314, 124, 172, 207, 260, 291, 314};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initial = 330;
+        }
+        for(int i=0; i<12; i++) {
+            playSoundByName(timeout + delay_step * (i+1), "wind_slash", &audioPointer, 0);
+            settingTimedNewWidgetAnimation(timeout + delay_step * i, totalFrames, animationName, fixed, initial, finalY[i], size, size, 150, TRUE, finalX[i]);
+        }
+    }
+
+    // Storm
+    if(g_strcmp0(animationName, "storm_burst_animation") == 0) {
+        gint delay_step = 125;
+        gint finalX[6]; gint finalY[6];
+        gint initialX = 0; gint initialY = 0;
+
+        if(entityNumber == 1) {
+            animationName = g_strdup("storm_burst_animation_ent1");
+            gint tmpX[6] = {670, 789, 661, 791, 672, 787};
+            gint tmpY[6] = {141, 125, 227, 208, 316, 301};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initialX = 591; initialY = 137;
+        }
+        else if(entityNumber == 2) {
+            animationName = g_strdup("storm_burst_animation_ent2");
+            gint tmpX[6] = {149, 20, 154, 26, 147, 21};
+            gint tmpY[6] = {136, 114, 234, 208, 332, 302};
+            memcpy(finalX, tmpX, sizeof(tmpX));
+            memcpy(finalY, tmpY, sizeof(tmpY));
+            initialX = 192; initialY = 137;
+        }
+
+        playSoundByName(timeout, "storm_wind", &audioPointer, 0);
+        for(int i=0; i<3; i++) {
+            settingTimedNewWidgetAnimation(timeout, totalFrames, animationName, fixed, initialX, initialY+83*i, size, size, 0, FALSE, -1);
+        }
+        for(int j=0; j<6; j++)
+            for(int i=0; i<6; i++) {
+                //playSoundByName(timeout + delay_step * (i+1) + (1152 * j), "stalactite_attack", &audioPointer, 0);
+                settingTimedNewWidgetAnimation(450 + timeout + delay_step * i + (300 * j) , 34, "storm_explosion_animation", fixed, finalX[i], finalY[i], size, size, 0, FALSE, -1);
+                settingTimedNewWidgetAnimation(450 + timeout + delay_step * i + (400 * j) , 34, "storm_explosion_animation", fixed, finalX[i]+random_choice(10, 20), finalY[i]+random_choice(10,20), size, size, 0, FALSE, -1);
+                settingTimedNewWidgetAnimation(450 + timeout + delay_step * i + (500 * j) , 34, "storm_explosion_animation", fixed, finalX[i]-random_choice(10,20), finalY[i]+random_choice(20,30), size, size, 0, FALSE, -1);
+            }
+    }
 
 }
 

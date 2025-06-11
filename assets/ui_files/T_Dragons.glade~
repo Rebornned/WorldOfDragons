@@ -141,6 +141,7 @@
                         <property name="height-request">80</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="universal_font"/>
@@ -164,6 +165,7 @@
                         <property name="height-request">80</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="universal_font"/>
@@ -249,6 +251,7 @@
                         <property name="height-request">68</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="universal_font"/>
@@ -391,6 +394,7 @@
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
@@ -440,6 +444,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -463,6 +468,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -592,6 +598,7 @@
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
@@ -670,6 +677,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -693,6 +701,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -822,6 +831,7 @@
                                 <property name="height-request">64</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr6_transparent_bg"/>
@@ -900,6 +910,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -923,6 +934,7 @@
                                 <property name="height-request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="universal_font"/>
@@ -961,6 +973,7 @@
                         <property name="height-request">52</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <child>
                           <placeholder/>
@@ -981,6 +994,7 @@
                         <property name="height-request">41</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr1_btn_remove"/>
@@ -998,6 +1012,7 @@
                         <property name="height-request">41</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr1_btn_remove"/>
@@ -1015,6 +1030,7 @@
                         <property name="height-request">41</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr1_btn_remove"/>
@@ -1270,6 +1286,7 @@ Dificuldade: </property>
                         <property name="height-request">38</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_btn_battle"/>
@@ -1712,6 +1729,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1732,6 +1750,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1753,6 +1772,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1774,6 +1794,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1795,6 +1816,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1816,6 +1838,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1837,6 +1860,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1858,6 +1882,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1879,6 +1904,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1900,6 +1926,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1921,6 +1948,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1942,6 +1970,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1963,6 +1992,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -1984,6 +2014,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2005,6 +2036,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2026,6 +2058,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2047,6 +2080,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2067,6 +2101,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2087,6 +2122,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2107,6 +2143,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2147,6 +2184,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2167,6 +2205,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2187,6 +2226,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2207,6 +2247,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2227,6 +2268,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2247,6 +2289,7 @@ Dificuldade: </property>
                                     <property name="height-request">56</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
                                     <property name="receives-default">True</property>
                                     <style>
                                       <class name="fr5_btns_list"/>
@@ -2563,6 +2606,7 @@ Tamanho: 100-120 metros</property>
                                 <property name="height-request">281</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr5_page_view"/>
@@ -2865,6 +2909,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">48</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_cave_font"/>
@@ -2886,6 +2931,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">48</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_cave_font"/>
@@ -2907,6 +2953,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">48</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_cave_font"/>
@@ -2928,6 +2975,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">48</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_cave_font"/>
@@ -2949,6 +2997,7 @@ Tamanho: 100-120 metros</property>
                         <property name="height-request">50</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_cave_font"/>
@@ -3400,6 +3449,7 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="height-request">17</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
                 <style>
                   <class name="fr5_advancebutton"/>
@@ -3417,6 +3467,7 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="height-request">0</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
                 <style>
                   <class name="fr5_returnbutton"/>
@@ -3521,6 +3572,7 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="height-request">39</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
               </object>
               <packing>
@@ -3553,6 +3605,7 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="height-request">44</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
                 <style>
                   <class name="universal_font"/>
@@ -4335,6 +4388,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <property name="height-request">38</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
@@ -4359,6 +4413,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <property name="height-request">40</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
@@ -4383,6 +4438,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <property name="height-request">38</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
@@ -4407,6 +4463,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <property name="height-request">38</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
@@ -4429,6 +4486,7 @@ Tempo de recarga: 1 turno(s)</property>
                                 <property name="height-request">40</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
+                                <property name="focus-on-click">False</property>
                                 <property name="receives-default">True</property>
                                 <style>
                                   <class name="fr7_result_text_font"/>
@@ -4780,6 +4838,23 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="y">290</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="btn_active_attack_animation">
+                        <property name="label" translatable="yes">Ativar ataque</property>
+                        <property name="name">btn_active_attack_animation</property>
+                        <property name="width-request">104</property>
+                        <property name="height-request">34</property>
+                        <property name="sensitive">False</property>
+                        <property name="can-focus">False</property>
+                        <property name="focus-on-click">False</property>
+                        <property name="receives-default">True</property>
+                        <property name="opacity">0</property>
+                      </object>
+                      <packing>
+                        <property name="x">351</property>
+                        <property name="y">44</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="name">fr6_combat</property>
@@ -5098,6 +5173,7 @@ Tempo de recarga: 1 turno(s)</property>
                         <property name="height-request">38</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
                         <property name="receives-default">True</property>
                         <style>
                           <class name="fr5_btn_battle"/>
