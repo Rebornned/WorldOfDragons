@@ -332,7 +332,7 @@ void settingAttackAnimation(gint timeout, gint entityNumber, gint totalFrames, g
         else if(entityNumber == 2) {
             animationName = g_strdup("storm_burst_animation_ent2");
             gint tmpX[6] = {149, 20, 154, 26, 147, 21};
-            gint tmpY[6] = {136, 114, 234, 208, 332, 302};
+            gint tmpY[6] = {116, 94, 214, 198, 312, 282};
             memcpy(finalX, tmpX, sizeof(tmpX));
             memcpy(finalY, tmpY, sizeof(tmpY));
             initialX = 192; initialY = 137;

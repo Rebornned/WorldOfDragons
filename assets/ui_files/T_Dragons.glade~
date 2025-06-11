@@ -3570,10 +3570,11 @@ Tempo de recarga: 1 turno(s)</property>
                 <property name="name">fr5_add_experience</property>
                 <property name="width-request">73</property>
                 <property name="height-request">39</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">False</property>
                 <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
+                <property name="opacity">0</property>
               </object>
               <packing>
                 <property name="x">210</property>
