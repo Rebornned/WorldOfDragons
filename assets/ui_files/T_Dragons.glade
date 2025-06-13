@@ -1654,7 +1654,7 @@ Dificuldade: </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_dragon_label1">
+                      <object class="GtkLabel" id="fr5_dragon_label">
                         <property name="name">fr5_dragon_label</property>
                         <property name="width-request">257</property>
                         <property name="height-request">36</property>
@@ -1662,7 +1662,10 @@ Dificuldade: </property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Balerion</property>
                         <style>
-                          <class name="fr5_dragon_label"/>
+                          <class name="color_FF0000"/>
+                          <class name="universal_font"/>
+                          <class name="font_size_20px"/>
+                          <class name="fr5_beastiary_border"/>
                         </style>
                       </object>
                       <packing>
@@ -1683,22 +1686,6 @@ Dificuldade: </property>
                       </object>
                       <packing>
                         <property name="x">729</property>
-                        <property name="y">71</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkImage" id="fr5_dragon_img">
-                        <property name="name">fr5_dragon_img</property>
-                        <property name="width-request">426</property>
-                        <property name="height-request">408</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <style>
-                          <class name="fr5_dragon_img"/>
-                        </style>
-                      </object>
-                      <packing>
-                        <property name="x">292</property>
                         <property name="y">71</property>
                       </packing>
                     </child>
@@ -2369,6 +2356,7 @@ Tamanho: 100-120 metros</property>
                           <class name="fr5_dragon_label"/>
                           <class name="fr5_dragon_age"/>
                           <class name="fr5_dragon_age_border"/>
+                          <class name="universal_font"/>
                         </style>
                       </object>
                       <packing>
@@ -2384,8 +2372,10 @@ Tamanho: 100-120 metros</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <style>
-                          <class name="fr5_dragon_label"/>
-                          <class name="fr5_dragon_age"/>
+                          <class name="universal_font"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_12px"/>
+                          <class name="fr5_beastiary_border"/>
                         </style>
                       </object>
                       <packing>
@@ -2397,7 +2387,7 @@ Tamanho: 100-120 metros</property>
                       <object class="GtkScrolledWindow" id="fr5_history_scroll">
                         <property name="name">fr5_history_scroll</property>
                         <property name="width-request">257</property>
-                        <property name="height-request">320</property>
+                        <property name="height-request">312</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="shadow-type">in</property>
@@ -2420,9 +2410,12 @@ Tamanho: 100-120 metros</property>
                                     <property name="can-focus">False</property>
                                     <property name="halign">start</property>
                                     <property name="valign">start</property>
+                                    <property name="margin-bottom">10</property>
                                     <property name="wrap">True</property>
                                     <style>
-                                      <class name="fr5_dragon_history"/>
+                                      <class name="universal_font"/>
+                                      <class name="color_FFFFFF"/>
+                                      <class name="font_size_15px"/>
                                     </style>
                                   </object>
                                   <packing>
@@ -2465,57 +2458,263 @@ Tamanho: 100-120 metros</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_dragon_label2">
-                        <property name="name">fr5_dragon_label</property>
-                        <property name="width-request">257</property>
-                        <property name="height-request">36</property>
+                      <object class="GtkLabel" id="fr5_beast_speed">
+                        <property name="name">fr5_beast_speed</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">26</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion</property>
+                        <property name="label" translatable="yes">Velocidade: ???                        </property>
+                        <property name="single-line-mode">True</property>
                         <style>
-                          <class name="fr5_dragon_label"/>
-                          <class name="fr5_btns_legendary"/>
+                          <class name="universal_font"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_24px"/>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">729</property>
-                        <property name="y">74</property>
+                        <property name="x">311</property>
+                        <property name="y">446</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_dragon_label3">
-                        <property name="name">fr5_dragon_label</property>
-                        <property name="width-request">257</property>
-                        <property name="height-request">36</property>
+                      <object class="GtkLabel" id="fr5_beast_defense">
+                        <property name="name">fr5_beast_defense</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">26</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes">Defesa: ???                        </property>
+                        <property name="single-line-mode">True</property>
                         <style>
-                          <class name="fr5_dragon_label"/>
-                          <class name="fr5_btns_epic"/>
+                          <class name="universal_font"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_24px"/>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">729</property>
-                        <property name="y">74</property>
+                        <property name="x">311</property>
+                        <property name="y">409</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="fr5_dragon_label4">
-                        <property name="name">fr5_dragon_label</property>
-                        <property name="width-request">257</property>
-                        <property name="height-request">36</property>
+                      <object class="GtkLabel" id="fr5_beast_attack">
+                        <property name="name">fr5_beast_attack</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">26</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Balerion</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes">Ataque: ???                        </property>
+                        <property name="single-line-mode">True</property>
                         <style>
-                          <class name="fr5_dragon_label"/>
-                          <class name="fr5_btns_rare"/>
+                          <class name="universal_font"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_24px"/>
                         </style>
                       </object>
                       <packing>
-                        <property name="x">729</property>
-                        <property name="y">74</property>
+                        <property name="x">311</property>
+                        <property name="y">372</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_health">
+                        <property name="name">fr5_beast_health</property>
+                        <property name="width-request">110</property>
+                        <property name="height-request">26</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="label" translatable="yes">Vida: ???                        </property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="color_FFDDA6"/>
+                          <class name="font_size_24px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">311</property>
+                        <property name="y">330</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_img">
+                        <property name="name">fr5_beast_dragon_img</property>
+                        <property name="width-request">262</property>
+                        <property name="height-request">251</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">293</property>
+                        <property name="y">71</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_details">
+                        <property name="name">fr5_beast_details</property>
+                        <property name="width-request">88</property>
+                        <property name="height-request">17</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Forte contra</property>
+                        <property name="justify">center</property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="color_FFA91F"/>
+                          <class name="font_size_16px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">589</property>
+                        <property name="y">138</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_details2">
+                        <property name="name">fr5_beast_details2</property>
+                        <property name="width-request">88</property>
+                        <property name="height-request">17</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Neutro</property>
+                        <property name="justify">center</property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="color_FFA91F"/>
+                          <class name="font_size_16px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">589</property>
+                        <property name="y">199</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_details3">
+                        <property name="name">fr5_beast_details3</property>
+                        <property name="width-request">88</property>
+                        <property name="height-request">17</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Fraco contra</property>
+                        <property name="justify">center</property>
+                        <property name="single-line-mode">True</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="color_FFA91F"/>
+                          <class name="font_size_16px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">589</property>
+                        <property name="y">259</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_element">
+                        <property name="name">fr5_beast_dragon_element</property>
+                        <property name="width-request">36</property>
+                        <property name="height-request">36</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">563</property>
+                        <property name="y">78</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="fr5_beast_label_element">
+                        <property name="name">fr5_beast_label_element</property>
+                        <property name="width-request">51</property>
+                        <property name="height-request">26</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Fogo</property>
+                        <style>
+                          <class name="universal_font"/>
+                          <class name="color_FFFFFF"/>
+                          <class name="font_size_24px"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="x">608</property>
+                        <property name="y">84</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_strong">
+                        <property name="name">fr5_beast_dragon_strong</property>
+                        <property name="width-request">36</property>
+                        <property name="height-request">36</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">619</property>
+                        <property name="y">159</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_neutral">
+                        <property name="name">fr5_beast_dragon_neutral</property>
+                        <property name="width-request">36</property>
+                        <property name="height-request">36</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">619</property>
+                        <property name="y">219</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_weak">
+                        <property name="name">fr5_beast_dragon_weak</property>
+                        <property name="width-request">36</property>
+                        <property name="height-request">36</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">619</property>
+                        <property name="y">279</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beast_dragon_tier">
+                        <property name="name">fr5_beast_dragon_tier</property>
+                        <property name="width-request">156</property>
+                        <property name="height-request">134</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">535</property>
+                        <property name="y">334</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fr5_beastiary_border">
+                        <property name="name">fr5_beastiary_border</property>
+                        <property name="width-request">426</property>
+                        <property name="height-request">408</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">../img_files\beastiary_border.png</property>
+                      </object>
+                      <packing>
+                        <property name="x">292</property>
+                        <property name="y">71</property>
                       </packing>
                     </child>
                   </object>

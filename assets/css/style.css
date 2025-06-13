@@ -274,24 +274,12 @@
     color: white;
 }
 
-.fr5_dragon_label {
-    font-family: 'Pixellari';
-    font-size: 18px;
-    color: rgb(255, 255, 255);
+.fr5_beastiary_border {
     background-color: transparent;
     background-image: linear-gradient(transparent, transparent);
-    border-width: 1px;
+    border-width: 0px 0px 1px 0px;
     border-color: #97978F;
-    border-style: none;
-    border-radius: 20px;
-    font-weight: bold;
-
-    text-shadow: 
-        2px 2px 0px #000000,   /* Sombra preta no canto inferior direito */
-        -2px -2px 0px #000000, /* Sombra preta no canto superior esquerdo */
-        -2px 2px 0px #000000,  /* Sombra preta no canto inferior esquerdo */
-        2px -2px 0px #000000,  /* Sombra preta no canto superior direito */
-        2px 2px 2px #000000;   /* Sombra suave ao redor para efeito 3D */
+    border-style: solid;
 }
 
 .fr5_dragon_age {
@@ -303,13 +291,6 @@
 
 .fr5_dragon_age_border {
     border-style: none;
-}
-
-.fr5_dragon_history {
-    font-family: 'Pixellari';
-    font-size: 14px;
-    color: white; 
-    font-weight: bold;
 }
 
 .fr5_dragon_history_border {
@@ -696,6 +677,13 @@ Frame 5 - Colíseu
 }
 
 /* Font-size */
+.font_size_12px {
+    font-size: 12px;
+}
+
+.font_size_15px {
+    font-size: 15px;
+}
 
 .font_size_16px {
     font-size: 16px;
@@ -703,6 +691,10 @@ Frame 5 - Colíseu
 
 .font_size_20px {
     font-size: 20px;
+}
+
+.font_size_24px {
+    font-size: 24px;
 }
 
 .font_size_28px {
@@ -780,6 +772,10 @@ Frame 5 - Colíseu
 
 .color_FF4D00 {
     color: #FF4D00;
+}
+
+.color_FFA91F {
+    color: #FFA91F;
 }
 
 .color_AEAEAE {

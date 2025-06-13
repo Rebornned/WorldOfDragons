@@ -141,7 +141,6 @@ GtkWidget *fr5_levelup_text;
 
 // Beastiary
 GtkWidget *fr5_history_container;
-GtkWidget *fr5_dragon_img;
 GtkLabel *fr5_label_dragon_history;
 GtkLabel *fr5_dragon_age;
 GtkLabel *fr5_text_sort;
@@ -332,7 +331,6 @@ int main(int argc, char *argv[]) {
     gtk_image_set_from_file(GTK_IMAGE(fr5_page_view1), "../assets/img_files/beastiary_page1.png");
 
     fr5_history_container = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_history_container"));
-    fr5_dragon_img = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_dragon_img"));
     fr5_label_dragon_history = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_history"));
     fr5_dragon_age = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_age"));
     fr5_text_sort = GTK_LABEL(gtk_builder_get_object(builder, "fr5_text_sort"));
@@ -660,6 +658,9 @@ void switchPage(GtkButton *btn, gpointer user_data) {
     // Altera a página visível da GtkStack com base no nome do botão
     GtkStack *fr1_menu_stack = GTK_STACK(gtk_builder_get_object(builder, "fr1_menu_stack"));
 
+    // Alteração do background
+    GtkWidget *fr5_image = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_img"));
+
     // Frame 1
     if (g_strcmp0(button_name, "fr1_btn_play") == 0) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
@@ -770,6 +771,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         playSoundByName(0, "menu_change", &audioPointer, 0);
         gtk_stack_set_transition_type(GTK_STACK(fr5_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
         if(fr5_actual_page == 1) {
             gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
             labeltextModifier(fr5_tittle_label, "Caverna");
@@ -787,6 +789,8 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         btn_animation_clicked(GTK_WIDGET(btn), NULL);
         playSoundByName(0, "menu_change", &audioPointer, 0);
         gtk_stack_set_transition_type(GTK_STACK(fr5_stack), GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/background_main.png");
+
         if(fr5_actual_page == 3) {
             gtk_stack_set_visible_child_name(fr5_stack, "fr5_cave");
             labeltextModifier(fr5_tittle_label, "Caverna");
@@ -795,6 +799,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
         else if(fr5_actual_page == 2) {
             gtk_stack_set_visible_child_name(fr5_stack, "fr5_beast");
             labeltextModifier(fr5_tittle_label, "Bestiário");
+            gtk_image_set_from_file(GTK_IMAGE(fr5_image), "../assets/img_files/beastiary_background.png");
             fr5_actual_page--;
         }
         
@@ -1193,21 +1198,91 @@ void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
     player = getPlayer(playerFile);
     gint beastIndex = GPOINTER_TO_INT(data);
+    GtkImage *fr5_beastiary_border = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beastiary_border"));
+    GtkImage *fr5_beast_dragon_img = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_img"));
+    
     gchar dragonAge[200], dragonName[200];
     GtkWidget *fr5_unknown_history = GTK_WIDGET(gtk_builder_get_object(builder, "fr5_unknown_history"));
     Dragon actualBeast = pBeastVector[beastIndex];
-    gint actualHeight = ceil(strlen(actualBeast.history) / 2.0) + 5;
+    gint actualHeight = ceil(strlen(actualBeast.history) / 1.6 - 5);
 
     gtk_widget_set_size_request(fr5_history_container, 257, actualHeight);
     gtk_fixed_move(fr5_btns_container, GTK_WIDGET(fr5_btn_marker), 6, 5 + (beastIndex+1) * 56 - 56);
     
     if(((pBeastVector[beastIndex].unlock_id-27) * -1) <= player.actualProgress) {
+        GtkLabel *fr5_beast_health = GTK_LABEL(gtk_builder_get_object(builder, "fr5_beast_health"));
+        GtkLabel *fr5_beast_attack = GTK_LABEL(gtk_builder_get_object(builder, "fr5_beast_attack"));
+        GtkLabel *fr5_beast_defense = GTK_LABEL(gtk_builder_get_object(builder, "fr5_beast_defense"));
+        GtkLabel *fr5_beast_speed = GTK_LABEL(gtk_builder_get_object(builder, "fr5_beast_speed"));
+        GtkLabel *fr5_beast_label_element = GTK_LABEL(gtk_builder_get_object(builder, "fr5_beast_label_element"));
+        GtkImage *fr5_beast_dragon_element = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_element"));
+        GtkImage *fr5_beast_dragon_strong = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_strong"));
+        GtkImage *fr5_beast_dragon_neutral = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_neutral"));
+        GtkImage *fr5_beast_dragon_weak = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_weak"));
+        GtkImage *fr5_beast_dragon_tier = GTK_IMAGE(gtk_builder_get_object(builder, "fr5_beast_dragon_tier"));
+        gchar strongPath[150], neutralPath[150], weakPath[150], textVar[120]; 
+
+        // Detalhes elementais
+        if(g_strcmp0(actualBeast.elemental, "ice") == 0) {
+            labeltextModifier(fr5_beast_label_element, "Gelo");
+            strcpy(strongPath, "../assets/img_files/wind_elemental.png");
+            strcpy(neutralPath, "../assets/img_files/ice_elemental.png");
+            strcpy(weakPath, "../assets/img_files/fire_elemental.png");
+        }
+        else if(g_strcmp0(actualBeast.elemental, "fire") == 0) {
+            labeltextModifier(fr5_beast_label_element, "Fogo");
+            strcpy(strongPath, "../assets/img_files/ice_elemental.png");
+            strcpy(neutralPath, "../assets/img_files/fire_elemental.png");
+            strcpy(weakPath, "../assets/img_files/wind_elemental.png");
+        }
+        else if(g_strcmp0(actualBeast.elemental, "wind") == 0) {
+            labeltextModifier(fr5_beast_label_element, "Vento");
+            strcpy(strongPath, "../assets/img_files/fire_elemental.png");
+            strcpy(neutralPath, "../assets/img_files/wind_elemental.png");
+            strcpy(weakPath, "../assets/img_files/ice_elemental.png");
+        }
+
+        // Detalhes do tier da criatura
+        if (beastIndex < 3) {
+            gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_tier), "../assets/img_files/legendary_tier.png");
+        }
+        else if (beastIndex > 2  && beastIndex < 8) {
+            gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_tier), "../assets/img_files/epic_tier.png");
+        }
+        else if (beastIndex > 7  && beastIndex < 16) {
+            gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_tier), "../assets/img_files/rare_tier.png");
+        }
+        else if (beastIndex > 15) {
+            gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_tier), "../assets/img_files/common_tier.png");
+        }
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_element), neutralPath);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_strong), strongPath);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_neutral), neutralPath);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_weak), weakPath);
+        
+        // Atributos
+        sprintf(textVar, "Vida: %d                        ", actualBeast.health);
+        labeltextModifier(fr5_beast_health, textVar);
+        sprintf(textVar, "Ataque: %d                        ", actualBeast.attack);
+        labeltextModifier(fr5_beast_attack, textVar);
+        sprintf(textVar, "Defesa: %d                        ", actualBeast.defense);
+        labeltextModifier(fr5_beast_defense, textVar);
+        sprintf(textVar, "Velocidade: %d                        ", actualBeast.speed);
+        labeltextModifier(fr5_beast_speed, textVar);
+
+
+        // História
+        gtk_label_set_line_wrap(GTK_LABEL(fr5_label_dragon_history), TRUE);
+        gtk_label_set_line_wrap_mode(GTK_LABEL(fr5_label_dragon_history), PANGO_WRAP_WORD);
+        gtk_widget_set_valign(GTK_WIDGET(fr5_label_dragon_history), GTK_ALIGN_START); 
+        labeltextModifier(fr5_label_dragon_history, actualBeast.history);
         strcpy(dragonName, actualBeast.name);
         sprintf(dragonAge, "Idade: %s\nTamanho: %s", actualBeast.age, actualBeast.length);
         labeltextModifier(fr5_dragon_age, dragonAge);
-        labeltextModifier(fr5_label_dragon_history, actualBeast.history);
-        gtk_image_set_from_file(GTK_IMAGE(fr5_dragon_img), actualBeast.img_path);
+
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beast_dragon_img), actualBeast.img_path);
         gtk_image_clear(GTK_IMAGE(fr5_unknown_history));
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beastiary_border), "../assets/img_files/beastiary_border.png");
     }
     else {
         labeltextModifier(fr5_dragon_age, "Idade: Desconhecido\nTamanho: Desconhecido");
@@ -1215,27 +1290,11 @@ void set_dragon_in_beastiary(GtkButton *btn, gpointer data) {
         strcpy(dragonName, "???");
         gtk_widget_set_size_request(fr5_history_container, 257, 310);
         gtk_image_set_from_file(GTK_IMAGE(fr5_unknown_history), "../assets/img_files/beast_unknown_history.png");
-        gtk_image_set_from_file(GTK_IMAGE(fr5_dragon_img), "../assets/img_files/beast_unknown_img.png");
-    }
-
-    for(gint i=0; i < 4; i++) {
-        gchar actLbName[100];
-        sprintf(actLbName, "fr5_dragon_label%d", i+1);
-        GtkLabel *actual_label = GTK_LABEL(gtk_builder_get_object(builder, actLbName));
-        labeltextModifier(actual_label, "");
-        if(beastIndex <= 2 && i == 1)
-            labeltextModifier(actual_label, dragonName);
-
-        if(8 > beastIndex && beastIndex > 2 && i == 2) 
-            labeltextModifier(actual_label, dragonName);
-
-        if(( 16 > beastIndex && beastIndex > 7 ) && i == 3) 
-            labeltextModifier(actual_label, dragonName);
-        
-        if(beastIndex > 15 && i == 0) 
-            labeltextModifier(actual_label, dragonName);
+        gtk_image_set_from_file(GTK_IMAGE(fr5_beastiary_border), "../assets/img_files/beast_unknown_img.png");
     }
     
+    GtkLabel *actual_label = GTK_LABEL(gtk_builder_get_object(builder, "fr5_dragon_label"));
+    labeltextModifier(actual_label, dragonName);
 }
 
 void sort_dragons_in_beastiary(GtkButton *btn, gpointer data) {
