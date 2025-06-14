@@ -698,7 +698,7 @@ void switchPage(GtkButton *btn, gpointer user_data) {
             playerFile = getAccountfile(newSave);
             initPlayer(playerFile, &player);
             settingUpdatelvlBarAnimation(0, fr5_label_lvl, fr5_exp_text, fr5_level_bar, fr5_beastiary, fr5_levelup_text);
-            changePlayerStatus(playerFile, 100, 100, -2, -2, 27, 27, NULL); // CHEAT
+            //changePlayerStatus(playerFile, 100, 100, -2, -2, 27, 27, NULL); // CHEAT
             // Inicializar ações na tela 5
             GtkButton *fr5_btn_dragon1 = GTK_BUTTON(gtk_builder_get_object(builder, "fr5_btn_dragon1"));
 
@@ -1446,8 +1446,8 @@ void set_element_in_cave(GtkButton *btn, gpointer data) {
 
 void updatelvlDragon(GtkButton *btn, gpointer data) {
     btn_animation_clicked(GTK_WIDGET(btn), NULL);
-    //gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
-    //g_timeout_add(900, turnOnButton, GTK_WIDGET(btn));
+    gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
+    g_timeout_add(900, turnOnButton, GTK_WIDGET(btn));
     
     if(strlen(player.dragon.name) == 0)
         return;
