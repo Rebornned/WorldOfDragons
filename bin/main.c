@@ -2210,11 +2210,11 @@ gboolean onBattle(gpointer data) {
             precision = 90 + precision;
             g_print("Precisão atual: %d | fire\n", precision);
             game->battle->EntityOne.skillsCooldown[game->minigame->pRequest] = 3;
-            game->battle->totalDamage = causeDamage(playerAttack, 1.4, precision, "fire", &game->battle->EntityTwo.entDragon);
+            game->battle->totalDamage = causeDamage(playerAttack, 1.6, precision, "fire", &game->battle->EntityTwo.entDragon);
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             settingAttackAnimation(500, 1, 22, "fire_bolt_animation", game->fixed, 192);
             
-            if(random_choice(1, 50) <= 50) {
+            if(random_choice(1, 100) <= 50) {
                 game->battle->debuffTurns = 2;
                 game->battle->currentDebuffAnimation = 7;
                 strcpy(game->battle->currentDebuffType, "Burning");
@@ -2233,7 +2233,7 @@ gboolean onBattle(gpointer data) {
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             settingAttackAnimation(500, 1, 38, "inferno_animation", game->fixed, 300);
 
-            game->battle->debuffTurns = 2;
+            game->battle->debuffTurns = 3;
             game->battle->currentDebuffAnimation = 7;
             strcpy(game->battle->currentDebuffType, "Burning");
             strcpy(game->battle->currentDebuffStatus, "burning_status");
@@ -2250,7 +2250,7 @@ gboolean onBattle(gpointer data) {
             g_timeout_add(2500, timedInverseBooleanValue, &game->doors.pAttackReady);
             settingAttackAnimation(500, 1, 40, "gale_blade_animation", game->fixed, 160);
 
-            if(random_choice(1, 50) <= 50) {
+            if(random_choice(1, 100) <= 50) {
                 game->battle->debuffTurns = 2;
                 game->battle->currentDebuffAnimation = 3;
                 strcpy(game->battle->currentDebuffType, "Bleeding");
@@ -2578,11 +2578,11 @@ gboolean onBattle(gpointer data) {
                 precision = 90 + precision;
                 g_print("Precisão atual: %d | fire\n", precision);
                 game->battle->EntityTwo.skillsCooldown[game->minigame->eRequest] = 3;
-                game->battle->totalDamage = causeDamage(enemyAttack, 1.4, precision, "fire", &game->battle->EntityOne.entDragon);
+                game->battle->totalDamage = causeDamage(enemyAttack, 1.6, precision, "fire", &game->battle->EntityOne.entDragon);
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 2, 22, "fire_bolt_animation", game->fixed, 192);
                 
-                if(random_choice(1, 50) <= 50) {
+                if(random_choice(1, 100) <= 50) {
                     game->battle->debuffTurns = 2;
                     game->battle->currentDebuffAnimation = 7;
                     strcpy(game->battle->currentDebuffType, "Burning");
@@ -2618,7 +2618,7 @@ gboolean onBattle(gpointer data) {
                 g_timeout_add(2500, timedInverseBooleanValue, &game->doors.eFinishedAttack);
                 settingAttackAnimation(500, 2, 40, "gale_blade_animation", game->fixed, 160);
                 // Check de porcentagem -> 50%
-                if(random_choice(1, 50) <= 50) {
+                if(random_choice(1, 100) <= 50) {
                     game->battle->debuffTurns = 2;
                     game->battle->currentDebuffAnimation = 3;
                     strcpy(game->battle->currentDebuffType, "Bleeding");
